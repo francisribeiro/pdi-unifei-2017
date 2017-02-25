@@ -1,5 +1,66 @@
 package pacotes_28309.view;
 
-public class Tela {
+import java.awt.*;
+import javax.swing.*;
+import pacotes_28309.control.*;
 
+/**
+ * Classe Tela: Pricipal view da aplicação.
+ * 
+ * @author Francis Ribeiro
+ */
+public class Tela extends JFrame {
+	public JButton btnCarregarImagem;
+
+	/**
+	 * Contrutor da classe. Define as configurações da janela principal da
+	 * aplicacação.
+	 * 
+	 * @param appControl
+	 *            Controle principal da aplicação.
+	 */
+	public Tela(AppControl appControl) {
+
+		// Setando as configurações da janela.
+		this.setTitle("Labeling");
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		this.setLayout(new BorderLayout());
+		this.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
+
+		// Adicionando a barra de ferramentas ao JFrame.
+		toolBar(this, appControl);
+
+		// Empacotando e exibindo a aplicação.
+		this.pack();
+		this.setVisible(true);
+		this.setResizable(false);
+	}
+
+	/**
+	 * 
+	 * @param frame
+	 *            JFrame da classe {@link #Tela(AppControl)}.
+	 * @param appControl
+	 *            Controle principal da aplicação.
+	 */
+	protected void toolBar(JFrame frame, AppControl appControl) {
+		JToolBar toolBar;
+
+		// Cria a barra de ferramentas.
+		toolBar = new JToolBar();
+		toolBar.setRollover(true);
+
+		// Cria os botões.
+		btnCarregarImagem = new JButton("Carregar Imagem");
+
+		// Adiciona os listeners.
+		btnCarregarImagem.addActionListener(appControl);
+
+		toolBar.add(btnCarregarImagem);
+		toolBar.addSeparator();
+
+		// Adiciona toolbar ao JFrame.
+		frame.add(toolBar, BorderLayout.NORTH);
+	}
 }
