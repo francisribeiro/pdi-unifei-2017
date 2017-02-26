@@ -21,8 +21,8 @@ public class AppControl implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getActionCommand().equals("Carregar Imagem")) {
-			System.out.println("Abrir tela para carregar a Imagem.");
+		if (e.getActionCommand().equals("Botão")) {
+			System.out.println("cliquei no Botão");
 		}
 	}
 

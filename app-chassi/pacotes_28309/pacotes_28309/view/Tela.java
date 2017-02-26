@@ -22,7 +22,7 @@ public class Tela extends JFrame {
 	public Tela(AppControl appControl) {
 
 		// Setando as configurações da janela.
-		this.setTitle("Labeling");
+		this.setTitle("App Chassi");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		this.setLayout(new BorderLayout());
@@ -52,7 +52,7 @@ public class Tela extends JFrame {
 		toolBar.setRollover(true);
 
 		// Cria os botões.
-		btnCarregarImagem = new JButton("Carregar Imagem");
+		btnCarregarImagem = new JButton("Botão");
 
 		// Adiciona os listeners.
 		btnCarregarImagem.addActionListener(appControl);
