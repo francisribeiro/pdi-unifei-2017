@@ -16,6 +16,7 @@ public class AppControl implements ActionListener {
 
 	private Tela appView;
 	private BufferedImage img;
+	private UnionFindControl ufc;
 
 	/**
 	 * Construtor da classe. Exibe a aplicação.
