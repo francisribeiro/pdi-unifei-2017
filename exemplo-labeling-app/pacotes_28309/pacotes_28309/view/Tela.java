@@ -21,7 +21,7 @@ public class Tela extends JFrame {
 	private JLabel lblImgDireita, lblImgEsquerda;
 
 	/**
-	 * Contrutor da classe. Define as configurações da janela principal da
+	 * Contrutor da classe: Define as configurações da janela principal da
 	 * aplicacação.
 	 * 
 	 * @param appControl

@@ -2,9 +2,6 @@ package pacotes_28309.control;
 
 import java.awt.event.*;
 import java.awt.image.*;
-import java.io.*;
-import javax.imageio.*;
-import javax.swing.*;
 import pacotes_28309.view.*;
 
 /**
@@ -16,10 +13,10 @@ public class AppControl implements ActionListener {
 
 	private Tela appView;
 	private BufferedImage img;
-	private UnionFindControl ufc;
+	private RotuloControl rc;
 
 	/**
-	 * Construtor da classe. Exibe a aplicação.
+	 * Construtor da classe: Exibe a aplicação.
 	 */
 	public AppControl() {
 		appView = new Tela(this);
@@ -33,8 +30,9 @@ public class AppControl implements ActionListener {
 		}
 
 		if (e.getActionCommand().equals("Rotular Imagem")) {
-			appView.setImagemEsquerda(img);
+			rc = new RotuloControl(img);
+			rc.rotularImagem();
+			appView.setImagemEsquerda(rc.imagemSaida());
 		}
 	}
-
 }

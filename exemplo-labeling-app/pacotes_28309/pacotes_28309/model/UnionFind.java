@@ -13,7 +13,7 @@ public class UnionFind {
 	private int[] rank;
 
 	/**
-	 * Construtor da classe. Modela uma estrutura de dados do tipo Union-Find.
+	 * Construtor da classe: Modela uma estrutura de dados do tipo Union-Find.
 	 * 
 	 * @param max
 	 *            Tamanho máximo do array.

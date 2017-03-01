@@ -13,7 +13,7 @@ public class UnionFindControl {
 	private UnionFind uf;
 
 	/**
-	 * Contrutor da classe. Inicia um Union-Find para as equivalências.
+	 * Contrutor da classe: Inicia um Union-Find para as equivalências.
 	 * 
 	 * @param max
 	 *            Tamanho máximo da estrutura.
