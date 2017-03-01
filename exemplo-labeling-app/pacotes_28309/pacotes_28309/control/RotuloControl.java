@@ -52,27 +52,27 @@ public class RotuloControl {
 		for (int col = 1; col < w; col++) {
 			for (int lin = 1; lin < h; lin++) {
 
-				// Atribuindo as cores as vizinhanças
+				// Vizinhanças
 				t = img.getRGB(col - 1, lin);
 				p = img.getRGB(col, lin);
 				r = img.getRGB(col, lin - 1);
 
 				// PASSO 1
-				// Verificando os rótulos
-				if ((p & 0x00FFFFFF) == 0) { // Se o pixel for preto
+				if ((p & 0x00FFFFFF) == 0) // Se o pixel for preto
 					continue;
-				} else { // Caso não seja preto
-					if ((t & 0x00FFFFFF) == 0 && (r & 0x00FFFFFF) == 0) {
+				else {// Caso não seja preto
+					if ((t & 0x00FFFFFF) == 0 && (r & 0x00FFFFFF) == 0)
 						pixels[col][lin] = ++numeroLabel;
-					} else if ((t & 0x00FFFFFF) != 0 && (r & 0x00FFFFFF) == 0) {
+					else if ((t & 0x00FFFFFF) != 0 && (r & 0x00FFFFFF) == 0)
 						pixels[col][lin] = pixels[col - 1][lin];
-					} else if ((r & 0x00FFFFFF) != 0 && (t & 0x00FFFFFF) == 0) {
+					else if ((r & 0x00FFFFFF) != 0 && (t & 0x00FFFFFF) == 0)
 						pixels[col][lin] = pixels[col][lin - 1];
-					} else if ((r & 0x00FFFFFF) != 0 && (t & 0x00FFFFFF) != 0) {
+					else if ((r & 0x00FFFFFF) != 0 && (t & 0x00FFFFFF) != 0) {
 						pixels[col][lin] = pixels[col - 1][lin];
 						uf.union(pixels[col][lin - 1], pixels[col - 1][lin]);
 					}
 				}
+
 			}
 		}
 
@@ -99,16 +99,15 @@ public class RotuloControl {
 
 		// Atribuindo as cores à imagem.
 		for (int col = 0; col < w; col++) {
-			for (int lin = 0; lin < h; lin++) {
+			for (int lin = 0; lin < h; lin++)
 				if (pixels[col][lin] == 0)
 					newPixels[w * lin + col] = new Color(0, 0, 0).getRGB();
-				else {
+				else
 					newPixels[w * lin + col] = new Color(
 							cores[pixels[col][lin]], 
 							cores[pixels[col][lin]],
 							cores[pixels[col][lin]]).getRGB();
-				}
-			}
+
 		}
 
 		// Criando a imagem de saída
