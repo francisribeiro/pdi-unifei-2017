@@ -20,7 +20,7 @@ public class RotuloControl {
 	private BufferedImage imgOut; // Imagem de saída.
 	private int[][] pixels; // Matriz de rotulos.
 	private int[] newPixels; // Pixels novos da imagem.
-	private int[] cores; // Array de cores, para a nova imagem.
+	private int[] red, green, blue; // Array de cores, para a nova imagem.
 	private Random random;
 
 	/**
@@ -92,21 +92,24 @@ public class RotuloControl {
 	public BufferedImage imagemSaida() {
 
 		// Criando um array de cores aleatórias.
-		cores = new int[numeroLabel + 1];
+		red = new int[numeroLabel + 1];
+		green = new int[numeroLabel + 1];
+		blue = new int[numeroLabel + 1];
 
-		for (int i = 1; i < numeroLabel; i++)
-			cores[i] = random.nextInt(255);
+		for (int i = 0; i <= numeroLabel; i++) {
+			red[i] = random.nextInt(255);
+			green[i] = random.nextInt(255);
+			blue[i] = random.nextInt(255);
+		}
 
 		// Atribuindo as cores à imagem.
 		for (int col = 0; col < w; col++) {
 			for (int lin = 0; lin < h; lin++)
-				if (pixels[col][lin] == 0)
-					newPixels[w * lin + col] = new Color(0, 0, 0).getRGB();
-				else
+				if (pixels[col][lin] != 0)
 					newPixels[w * lin + col] = new Color(
-							cores[pixels[col][lin]], 
-							cores[pixels[col][lin]],
-							cores[pixels[col][lin]]).getRGB();
+							red[pixels[col][lin]], 
+							green[pixels[col][lin]],
+							blue[pixels[col][lin]]).getRGB();
 
 		}
 
