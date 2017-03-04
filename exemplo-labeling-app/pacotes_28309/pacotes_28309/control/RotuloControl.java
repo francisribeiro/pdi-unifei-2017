@@ -58,16 +58,16 @@ public class RotuloControl {
 				r = img.getRGB(col, lin - 1);
 
 				// PASSO 1
-				if (p == 0xFF000000) // Se o pixel for preto
+				if ((p & 0x00FFFFFF) == 0) // Se o pixel for preto
 					continue;
 				else {// Caso não seja preto
-					if (t == 0xFF000000 && r == 0xFF000000)
+					if ((t & 0x00FFFFFF) == 0 && (r & 0x00FFFFFF) == 0)
 						pixels[col][lin] = ++numeroLabel;
-					else if (t != 0xFF000000 && r == 0xFF000000)
+					else if ((t & 0x00FFFFFF) != 0 && (r & 0x00FFFFFF) == 0)
 						pixels[col][lin] = pixels[col - 1][lin];
-					else if (r != 0xFF000000 && t == 0xFF000000)
+					else if ((r & 0x00FFFFFF) != 0 && (t & 0x00FFFFFF) == 0)
 						pixels[col][lin] = pixels[col][lin - 1];
-					else if (r != 0xFF000000 && t != 0xFF000000) {
+					else if ((r & 0x00FFFFFF) != 0 && (t & 0x00FFFFFF) != 0) {
 						pixels[col][lin] = pixels[col - 1][lin];
 						uf.union(pixels[col][lin - 1], pixels[col - 1][lin]);
 					}
@@ -107,7 +107,7 @@ public class RotuloControl {
 			for (int lin = 0; lin < h; lin++)
 				if (pixels[col][lin] != 0)
 					newPixels[w * lin + col] = new Color(
-							red[pixels[col][lin]], 
+							red[pixels[col][lin]],
 							green[pixels[col][lin]],
 							blue[pixels[col][lin]]).getRGB();
 
