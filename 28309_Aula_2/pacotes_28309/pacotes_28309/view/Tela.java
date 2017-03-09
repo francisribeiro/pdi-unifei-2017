@@ -18,14 +18,16 @@ public class Tela extends JFrame {
 	private JButton clearImg, clearTmpl, abrirImg, abrirTmpl, salvarImg, salvarTmpl;
 	private JPanel img, tmpl;
 	private JPanel imgBot, tmplBot;
-	private JSpinner imgLinhas, imgColunas;
+	private JSlider imgLinhas, imgColunas;
 	private JButton imgCor;
 	private JLabel lblImgLinhas, lblImgColunas, lblImgCor;
-	private JSpinner tmplLinhas, tmplColunas;
+	private JSlider tmplLinhas, tmplColunas;
 	private JButton tmplCor;
 	private JLabel lblTmplLinhas, lblTmplColunas, lblTmplCor;
 	private JPanel toolBar;
 	private JButton btnConvolucao;
+	private TitledBorder one, two;
+	private Border borda;
 
 	/**
 	 * Contrutor da classe. Define as configurações da janela principal da
@@ -43,7 +45,7 @@ public class Tela extends JFrame {
 		this.setLayout(new BorderLayout());
 
 		// Montando Layout da Tela
-		generateLayout();
+		montaLayout();
 
 		// Empacotando e exibindo a aplicação.
 		this.pack();
@@ -51,9 +53,7 @@ public class Tela extends JFrame {
 		this.setResizable(false);
 	}
 
-	private void generateLayout() {
-		Border borda;
-		TitledBorder one, two;
+	private void generateComponents() {
 
 		// Criação dos painéis
 		container = new JPanel();
@@ -66,15 +66,6 @@ public class Tela extends JFrame {
 		imgBot = new JPanel(new GridBagLayout());
 		tmplBot = new JPanel(new GridBagLayout());
 		toolBar = new JPanel(new GridBagLayout());
-
-		// Adicionando as Bordas dos painéis
-		borda = BorderFactory.createLineBorder(new Color(255, 193, 7), 1);
-		one = BorderFactory.createTitledBorder(borda, "Imagem Sintética");
-		two = BorderFactory.createTitledBorder(borda, "Template");
-		one.setTitleJustification(TitledBorder.CENTER);
-		two.setTitleJustification(TitledBorder.CENTER);
-		panelOne.setBorder(one);
-		panelTwo.setBorder(two);
 
 		// Criando Botões;
 		clearImg = new JButton("Limpar Imagem");
@@ -96,32 +87,44 @@ public class Tela extends JFrame {
 		lblTmplCor = new JLabel("Cor: ");
 
 		// Criando os Spinners com base no modelo
-		imgLinhas = new JSpinner(new SpinnerNumberModel(10, 0, 100, 1));
-		imgColunas = new JSpinner(new SpinnerNumberModel(10, 0, 100, 1));
-		tmplLinhas = new JSpinner(new SpinnerNumberModel(10, 0, 100, 1));
-		tmplColunas = new JSpinner(new SpinnerNumberModel(10, 0, 100, 1));
+		imgLinhas = new JSlider(0, 100, 10);
+		imgColunas = new JSlider(0, 100, 10);
+		tmplLinhas = new JSlider(0, 100, 10);
+		tmplColunas = new JSlider(0, 100, 10);
+
+	}
+
+	private void componentProperties() {
+		// Adicionando as Bordas dos painéis
+		borda = BorderFactory.createLineBorder(new Color(255, 193, 7), 1);
+		one = BorderFactory.createTitledBorder(borda, "Imagem Sintética");
+		two = BorderFactory.createTitledBorder(borda, "Template");
+		one.setTitleJustification(TitledBorder.CENTER);
+		two.setTitleJustification(TitledBorder.CENTER);
+		panelOne.setBorder(one);
+		panelTwo.setBorder(two);
 
 		// Add botões ao Panel
-		topPanelOne.add(clearImg);
-		topPanelTwo.add(clearTmpl);
 		topPanelOne.add(abrirImg);
 		topPanelTwo.add(abrirTmpl);
 		topPanelOne.add(salvarImg);
 		topPanelTwo.add(salvarTmpl);
+		topPanelOne.add(clearImg);
+		topPanelTwo.add(clearTmpl);
 
 		// Componentes da Imagem
 		addComp(imgBot, lblImgLinhas, 0, 0, 1, 1, GridBagConstraints.EAST, GridBagConstraints.NONE);
 		addComp(imgBot, imgLinhas, 1, 0, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
-		addComp(imgBot, lblImgColunas, 2, 0, 1, 1, GridBagConstraints.EAST, GridBagConstraints.NONE);
-		addComp(imgBot, imgColunas, 3, 0, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
+		addComp(imgBot, lblImgColunas, 0, 2, 1, 1, GridBagConstraints.EAST, GridBagConstraints.NONE);
+		addComp(imgBot, imgColunas, 1, 2, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
 		addComp(imgBot, lblImgCor, 4, 0, 1, 1, GridBagConstraints.EAST, GridBagConstraints.NONE);
 		addComp(imgBot, imgCor, 5, 0, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
 
 		// Componentes do Template
 		addComp(tmplBot, lblTmplLinhas, 0, 0, 1, 1, GridBagConstraints.EAST, GridBagConstraints.NONE);
 		addComp(tmplBot, tmplLinhas, 1, 0, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
-		addComp(tmplBot, lblTmplColunas, 2, 0, 1, 1, GridBagConstraints.EAST, GridBagConstraints.NONE);
-		addComp(tmplBot, tmplColunas, 3, 0, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
+		addComp(tmplBot, lblTmplColunas, 0, 2, 1, 1, GridBagConstraints.EAST, GridBagConstraints.NONE);
+		addComp(tmplBot, tmplColunas, 1, 2, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
 		addComp(tmplBot, lblTmplCor, 4, 0, 1, 1, GridBagConstraints.EAST, GridBagConstraints.NONE);
 		addComp(tmplBot, tmplCor, 5, 0, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
 
@@ -136,9 +139,18 @@ public class Tela extends JFrame {
 		panelOne.add(imgBot, BorderLayout.SOUTH);
 		panelTwo.add(tmplBot, BorderLayout.SOUTH);
 
-		/////////////////////////////////////////////////
-		// PERSONALIZANDO //
-		/////////////////////////////////////////////////
+		// Ajustando os painéis ao painel de container
+		container.setLayout(new GridLayout(1, 2));
+		container.setBorder(new EmptyBorder(10, 10, 10, 10));
+		container.add(panelOne);
+		container.add(panelTwo);
+
+		// Add ao JFrame
+		this.add(container);
+		this.add(toolBar, BorderLayout.SOUTH);
+	}
+
+	private void layoutDesign() {
 
 		// Botões BG color
 		clearImg.setBackground(new Color(63, 81, 181));
@@ -197,26 +209,6 @@ public class Tela extends JFrame {
 		lblImgCor.setForeground(new Color(255, 193, 7));
 		lblTmplCor.setForeground(new Color(255, 193, 7));
 
-		// Spinner Font size
-		imgLinhas.setFont(new Font("Arial", Font.PLAIN, 17));
-		imgColunas.setFont(new Font("Arial", Font.PLAIN, 17));
-		tmplLinhas.setFont(new Font("Arial", Font.PLAIN, 17));
-		tmplColunas.setFont(new Font("Arial", Font.PLAIN, 17));
-
-		// Spiner BG color e Font color
-		JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) imgLinhas.getEditor();
-		editor.getTextField().setBackground(new Color(63, 81, 181));
-		editor.getTextField().setForeground(new Color(255, 255, 255));
-		JSpinner.DefaultEditor editor2 = (JSpinner.DefaultEditor) imgColunas.getEditor();
-		editor2.getTextField().setBackground(new Color(63, 81, 181));
-		editor2.getTextField().setForeground(new Color(255, 255, 255));
-		JSpinner.DefaultEditor editor3 = (JSpinner.DefaultEditor) tmplLinhas.getEditor();
-		editor3.getTextField().setBackground(new Color(63, 81, 181));
-		editor3.getTextField().setForeground(new Color(255, 255, 255));
-		JSpinner.DefaultEditor editor4 = (JSpinner.DefaultEditor) tmplColunas.getEditor();
-		editor4.getTextField().setBackground(new Color(63, 81, 181));
-		editor4.getTextField().setForeground(new Color(255, 255, 255));
-
 		// Panel BG color
 		panelOne.setBackground(new Color(33, 33, 33));
 		panelTwo.setBackground(new Color(33, 33, 33));
@@ -233,19 +225,12 @@ public class Tela extends JFrame {
 
 		// Convolução size
 		btnConvolucao.setPreferredSize(new Dimension(230, 40));
+	}
 
-		/////////////////////////////////////////////////
-		/////////////////////////////////////////////////
-
-		// Ajustando os painés ao painel de container
-		container.setLayout(new GridLayout(1, 2));
-		container.setBorder(new EmptyBorder(10, 10, 10, 10));
-		container.add(panelOne);
-		container.add(panelTwo);
-
-		// Add ao JFrame
-		this.add(container);
-		this.add(toolBar, BorderLayout.NORTH);
+	private void montaLayout() {
+		generateComponents();
+		componentProperties();
+		layoutDesign();
 	}
 
 	// Seta as regras para um componente destinado ao GridBagLayout e o adiciona
