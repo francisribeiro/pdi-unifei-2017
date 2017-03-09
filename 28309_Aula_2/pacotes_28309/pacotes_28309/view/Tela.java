@@ -1,7 +1,8 @@
 package pacotes_28309.view;
 
 import java.awt.*;
-import java.awt.event.*;
+import java.io.File;
+
 import javax.swing.*;
 import javax.swing.border.*;
 
@@ -18,16 +19,17 @@ public class Tela extends JFrame {
 	private JButton clearImg, clearTmpl, abrirImg, abrirTmpl, salvarImg, salvarTmpl;
 	private JPanel img, tmpl;
 	private JPanel imgBot, tmplBot;
-	private JSlider imgLinhas, imgColunas;
+	public JSlider imgLinhas, imgColunas;
 	private JButton imgCor;
-	private JLabel lblImgLinhas, lblImgColunas, lblImgCor;
-	private JSlider tmplLinhas, tmplColunas;
+	public JLabel lblImgLinhas, lblImgColunas;
+	public JSlider tmplLinhas, tmplColunas;
 	private JButton tmplCor;
-	private JLabel lblTmplLinhas, lblTmplColunas, lblTmplCor;
+	public JLabel lblTmplLinhas, lblTmplColunas;
 	private JPanel toolBar;
 	private JButton btnConvolucao;
 	private TitledBorder one, two;
 	private Border borda;
+	public JLabel corImg, corTmpl;
 
 	/**
 	 * Contrutor da classe. Define as configurações da janela principal da
@@ -45,7 +47,7 @@ public class Tela extends JFrame {
 		this.setLayout(new BorderLayout());
 
 		// Montando Layout da Tela
-		montaLayout();
+		montaLayout(appControl);
 
 		// Empacotando e exibindo a aplicação.
 		this.pack();
@@ -74,17 +76,17 @@ public class Tela extends JFrame {
 		abrirTmpl = new JButton("Abrir Template");
 		salvarImg = new JButton("Salvar Imagem");
 		salvarTmpl = new JButton("Salvar Template");
-		imgCor = new JButton("Alterar Cor");
-		tmplCor = new JButton("Alterar Cor");
+		imgCor = new JButton("Cor da Imagem");
+		tmplCor = new JButton("Cor do Template");
 		btnConvolucao = new JButton("Gerar Convolução");
 
 		// Labels para imagem e template
-		lblImgLinhas = new JLabel("Linhas: ");
-		lblTmplLinhas = new JLabel("Linhas: ");
-		lblImgColunas = new JLabel("Colunas: ");
-		lblTmplColunas = new JLabel("Colunas: ");
-		lblImgCor = new JLabel("Cor: ");
-		lblTmplCor = new JLabel("Cor: ");
+		lblImgLinhas = new JLabel("Linhas [10]: ");
+		lblTmplLinhas = new JLabel("Linhas [10]: ");
+		lblImgColunas = new JLabel("Colunas [10]: ");
+		lblTmplColunas = new JLabel("Colunas [10]: ");
+		corImg = new JLabel();
+		corTmpl = new JLabel();
 
 		// Criando os Spinners com base no modelo
 		imgLinhas = new JSlider(0, 100, 10);
@@ -117,16 +119,16 @@ public class Tela extends JFrame {
 		addComp(imgBot, imgLinhas, 1, 0, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
 		addComp(imgBot, lblImgColunas, 0, 2, 1, 1, GridBagConstraints.EAST, GridBagConstraints.NONE);
 		addComp(imgBot, imgColunas, 1, 2, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
-		addComp(imgBot, lblImgCor, 4, 0, 1, 1, GridBagConstraints.EAST, GridBagConstraints.NONE);
-		addComp(imgBot, imgCor, 5, 0, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
+		addComp(imgBot, imgCor, 5, 2, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
+		addComp(imgBot, corImg, 5, 0, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
 
 		// Componentes do Template
 		addComp(tmplBot, lblTmplLinhas, 0, 0, 1, 1, GridBagConstraints.EAST, GridBagConstraints.NONE);
 		addComp(tmplBot, tmplLinhas, 1, 0, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
 		addComp(tmplBot, lblTmplColunas, 0, 2, 1, 1, GridBagConstraints.EAST, GridBagConstraints.NONE);
 		addComp(tmplBot, tmplColunas, 1, 2, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
-		addComp(tmplBot, lblTmplCor, 4, 0, 1, 1, GridBagConstraints.EAST, GridBagConstraints.NONE);
-		addComp(tmplBot, tmplCor, 5, 0, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
+		addComp(tmplBot, tmplCor, 5, 2, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
+		addComp(tmplBot, corTmpl, 5, 0, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
 
 		// Componente da toobar
 		addComp(toolBar, btnConvolucao, 5, 0, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.NONE);
@@ -198,16 +200,12 @@ public class Tela extends JFrame {
 		lblTmplLinhas.setFont(new Font("Arial", Font.PLAIN, 17));
 		lblImgColunas.setFont(new Font("Arial", Font.PLAIN, 17));
 		lblTmplColunas.setFont(new Font("Arial", Font.PLAIN, 17));
-		lblImgCor.setFont(new Font("Arial", Font.PLAIN, 17));
-		lblTmplCor.setFont(new Font("Arial", Font.PLAIN, 17));
 
 		// Label Font color
 		lblImgLinhas.setForeground(new Color(255, 193, 7));
 		lblTmplLinhas.setForeground(new Color(255, 193, 7));
 		lblImgColunas.setForeground(new Color(255, 193, 7));
 		lblTmplColunas.setForeground(new Color(255, 193, 7));
-		lblImgCor.setForeground(new Color(255, 193, 7));
-		lblTmplCor.setForeground(new Color(255, 193, 7));
 
 		// Panel BG color
 		panelOne.setBackground(new Color(33, 33, 33));
@@ -225,11 +223,47 @@ public class Tela extends JFrame {
 
 		// Convolução size
 		btnConvolucao.setPreferredSize(new Dimension(230, 40));
+
+		// JSlider color
+		imgLinhas.setBackground(new Color(33, 33, 33));
+		imgColunas.setBackground(new Color(33, 33, 33));
+		tmplLinhas.setBackground(new Color(33, 33, 33));
+		tmplColunas.setBackground(new Color(33, 33, 33));
+
+		// label cor
+		corImg.setPreferredSize(new Dimension(165, 40));
+		corTmpl.setPreferredSize(new Dimension(175, 40));
+		corImg.setOpaque(true);
+		corTmpl.setOpaque(true);
+		corImg.setBackground(Color.CYAN);
+		corTmpl.setBackground(Color.MAGENTA);
+
 	}
 
-	private void montaLayout() {
+	private void addListeners(AppControl appControl) {
+
+		// Listeners dos botões
+		clearImg.addActionListener(appControl);
+		clearTmpl.addActionListener(appControl);
+		abrirImg.addActionListener(appControl);
+		abrirTmpl.addActionListener(appControl);
+		salvarImg.addActionListener(appControl);
+		salvarTmpl.addActionListener(appControl);
+		imgCor.addActionListener(appControl);
+		tmplCor.addActionListener(appControl);
+		btnConvolucao.addActionListener(appControl);
+
+		// Criando os Spinners com base no modelo
+		imgLinhas.addChangeListener(appControl);
+		imgColunas.addChangeListener(appControl);
+		tmplLinhas.addChangeListener(appControl);
+		tmplColunas.addChangeListener(appControl);
+	}
+
+	private void montaLayout(AppControl appControl) {
 		generateComponents();
 		componentProperties();
+		addListeners(appControl);
 		layoutDesign();
 	}
 
@@ -250,6 +284,58 @@ public class Tela extends JFrame {
 		gridConstraints.fill = stretch;
 
 		painel.add(comp, gridConstraints);
+	}
+
+	/**
+	 * Método para navegar pela estrutura de diretórios e carregar uma imagem.
+	 * 
+	 * @return nomeArqLido Nome do arquivo lido em uma String
+	 */
+	public String abrirImagem() {
+		JFileChooser arquivo;
+		File diretorio, nomeArq = null;
+		String nomeArqLido = null;
+		int saida;
+
+		// Localizando o arquivo
+		arquivo = new JFileChooser();
+		diretorio = new File("..\\");
+		arquivo.setCurrentDirectory(diretorio);
+		arquivo.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+		saida = arquivo.showOpenDialog(arquivo);
+
+		if (saida == JFileChooser.APPROVE_OPTION) {
+			// Fazendo a leitura do arquivo
+			nomeArq = arquivo.getSelectedFile();
+			nomeArqLido = nomeArq.toString();
+		}
+
+		return nomeArqLido;
+	}
+
+	public void salvarImagem() {
+		JFileChooser fileChooser;
+		int userSelection;
+		File fileToSave;
+
+		fileChooser = new JFileChooser();
+		userSelection = fileChooser.showSaveDialog(this);
+
+		if (userSelection == JFileChooser.APPROVE_OPTION)
+			fileToSave = fileChooser.getSelectedFile();
+	}
+
+	public Color selecionarCor(Color corPadrao) {
+		Color cor = JColorChooser.showDialog(null, "Selecionar Cor", corPadrao);
+		return cor;
+	}
+	
+	public void setLabelColor(JLabel label, Color cor){
+		label.setBackground(cor);
+	}
+
+	public void setLabel(JLabel label, String text) {
+		label.setText(text);
 	}
 
 }
