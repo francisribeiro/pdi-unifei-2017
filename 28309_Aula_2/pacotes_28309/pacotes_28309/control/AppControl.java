@@ -17,7 +17,7 @@ public class AppControl implements ActionListener, ChangeListener {
 
 	private Tela appView;
 	private TelaConvolucao appConvolucao;
-	private Grid grid;
+	private GridView grid = new GridView();
 	private Color imgLabelColor, tmplLabelColor;
 
 	/**
@@ -30,11 +30,11 @@ public class AppControl implements ActionListener, ChangeListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("Abrir Imagem")) {
-			appView.abrirImagem();
+			abrir();
 		}
 
 		if (e.getActionCommand().equals("Abrir Template")) {
-			appView.abrirImagem();
+			grid.abrirImagem();
 		}
 
 		if (e.getActionCommand().equals("Cor da Imagem")) {
@@ -50,11 +50,11 @@ public class AppControl implements ActionListener, ChangeListener {
 		}
 
 		if (e.getActionCommand().equals("Salvar Imagem")) {
-			appView.salvarImagem();
+			grid.salvarImagem("IMAGEM");
 		}
 
 		if (e.getActionCommand().equals("Salvar Template")) {
-			appView.salvarImagem();
+			grid.salvarImagem("TEMPLATE");
 		}
 
 		if (e.getActionCommand().equals("Gerar Convolução")) {
@@ -86,22 +86,32 @@ public class AppControl implements ActionListener, ChangeListener {
 	}
 
 	private void imageGrid(int lin, int col) {
-		grid = new Grid();
+		grid = new GridView();
 		grid.setColor(Color.CYAN);
 		appView.img.removeAll();
 		appView.img.repaint();
 		appView.img.revalidate();
-		appView.addGrid(appView.img, grid.TestPane(lin, col, this));
+		appView.addGrid(appView.img, grid.TestPane(lin, col, false));
 
 	}
 
 	private void templateGrid(int lin, int col) {
-		grid = new Grid();
+		grid = new GridView();
 		grid.setColor(Color.MAGENTA);
 		appView.tmpl.removeAll();
 		appView.tmpl.repaint();
 		appView.tmpl.revalidate();
-		appView.addGrid(appView.tmpl, grid.TestPane(lin, col, this));
+		appView.addGrid(appView.tmpl, grid.TestPane(lin, col, false));
+	}
+	
+	private void abrir(){
+		grid = new GridView();
+		appView.addGrid(appView.img, grid.TestPane(0, 0, true));
+		grid.setColor(Color.BLUE);
+		appView.tmpl.removeAll();
+		appView.tmpl.repaint();
+		appView.tmpl.revalidate();
+		
 	}
 
 }

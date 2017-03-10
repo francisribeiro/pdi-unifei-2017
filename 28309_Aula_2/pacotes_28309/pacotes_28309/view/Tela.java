@@ -274,44 +274,6 @@ public class Tela extends JFrame {
 		painel.add(comp, gridConstraints);
 	}
 
-	/**
-	 * Método para navegar pela estrutura de diretórios e carregar uma imagem.
-	 * 
-	 * @return nomeArqLido Nome do arquivo lido em uma String
-	 */
-	public String abrirImagem() {
-		JFileChooser arquivo;
-		File diretorio, nomeArq = null;
-		String nomeArqLido = null;
-		int saida;
-
-		// Localizando o arquivo
-		arquivo = new JFileChooser();
-		diretorio = new File("..\\");
-		arquivo.setCurrentDirectory(diretorio);
-		arquivo.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-		saida = arquivo.showOpenDialog(arquivo);
-
-		if (saida == JFileChooser.APPROVE_OPTION) {
-			// Fazendo a leitura do arquivo
-			nomeArq = arquivo.getSelectedFile();
-			nomeArqLido = nomeArq.toString();
-		}
-
-		return nomeArqLido;
-	}
-
-	public void salvarImagem() {
-		JFileChooser fileChooser;
-		int userSelection;
-		File fileToSave;
-
-		fileChooser = new JFileChooser();
-		userSelection = fileChooser.showSaveDialog(this);
-
-		if (userSelection == JFileChooser.APPROVE_OPTION)
-			fileToSave = fileChooser.getSelectedFile();
-	}
 
 	public Color selecionarCor(Color corPadrao) {
 		Color cor = JColorChooser.showDialog(null, "Selecionar Cor", corPadrao);
