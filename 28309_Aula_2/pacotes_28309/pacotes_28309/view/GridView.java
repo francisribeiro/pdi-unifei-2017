@@ -1,25 +1,12 @@
 package pacotes_28309.view;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
-import javax.swing.JFileChooser;
-import javax.swing.JPanel;
-import javax.swing.border.Border;
-import javax.swing.border.MatteBorder;
-
-import pacotes_28309.control.AppControl;
-import pacotes_28309.model.Pixel;
+import java.awt.*;
+import java.awt.event.*;
+import java.awt.image.*;
+import java.io.*;
+import javax.imageio.*;
+import javax.swing.*;
+import javax.swing.border.*;
 
 public class GridView extends JPanel {
 
@@ -105,8 +92,7 @@ public class GridView extends JPanel {
 	}
 
 	/**
-	 * Desenha uma nova célula (componente unitário do grid), e seta suas
-	 * propriedades.
+	 * Desenha uma nova célula (componente unitário do grid), e seta suas propriedades.
 	 * 
 	 * @return nova celula
 	 */

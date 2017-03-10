@@ -1,10 +1,8 @@
 package pacotes_28309.control;
 
-import java.awt.Color;
+import java.awt.*;
 import java.awt.event.*;
-
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
+import javax.swing.event.*;
 
 import pacotes_28309.view.*;
 
