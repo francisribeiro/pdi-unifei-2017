@@ -17,6 +17,8 @@ public class AppControl implements ActionListener, ChangeListener {
 
 	private Tela appView;
 	private TelaConvolucao appConvolucao;
+	private Grid grid;
+	private Color imgLabelColor, tmplLabelColor;
 
 	/**
 	 * Construtor da classe. Exibe a aplicação.
@@ -36,11 +38,15 @@ public class AppControl implements ActionListener, ChangeListener {
 		}
 
 		if (e.getActionCommand().equals("Cor da Imagem")) {
-			appView.setLabelColor(appView.corImg, appView.selecionarCor(Color.CYAN));
+			imgLabelColor = appView.selecionarCor(appView.getImgDefaultColor());
+			appView.setLabelColor(appView.corImg, imgLabelColor);
+			grid.setColor(imgLabelColor);
 		}
 
 		if (e.getActionCommand().equals("Cor do Template")) {
-			appView.setLabelColor(appView.corTmpl, appView.selecionarCor(Color.MAGENTA));
+			tmplLabelColor = appView.selecionarCor(appView.getTmplDefaultColor());
+			appView.setLabelColor(appView.corTmpl, tmplLabelColor);
+			grid.setColor(tmplLabelColor);
 		}
 
 		if (e.getActionCommand().equals("Salvar Imagem")) {
@@ -60,19 +66,42 @@ public class AppControl implements ActionListener, ChangeListener {
 	public void stateChanged(ChangeEvent e) {
 		if (e.getSource() == appView.imgLinhas) {
 			appView.setLabel(appView.lblImgLinhas, "Linhas [" + appView.imgLinhas.getValue() + "]:");
+			imageGrid(appView.imgLinhas.getValue(), appView.imgColunas.getValue());
 		}
-		
+
 		if (e.getSource() == appView.imgColunas) {
 			appView.setLabel(appView.lblImgColunas, "Coluna [" + appView.imgColunas.getValue() + "]:");
+			imageGrid(appView.imgLinhas.getValue(), appView.imgColunas.getValue());
 		}
-		
+
 		if (e.getSource() == appView.tmplLinhas) {
 			appView.setLabel(appView.lblTmplLinhas, "Linhas [" + appView.tmplLinhas.getValue() + "]:");
+			templateGrid(appView.tmplLinhas.getValue(), appView.tmplColunas.getValue());
 		}
-		
+
 		if (e.getSource() == appView.tmplColunas) {
 			appView.setLabel(appView.lblTmplColunas, "Colunas [" + appView.tmplColunas.getValue() + "]:");
+			templateGrid(appView.tmplLinhas.getValue(), appView.tmplColunas.getValue());
 		}
+	}
+
+	private void imageGrid(int lin, int col) {
+		grid = new Grid();
+		grid.setColor(Color.CYAN);
+		appView.img.removeAll();
+		appView.img.repaint();
+		appView.img.revalidate();
+		appView.addGrid(appView.img, grid.TestPane(lin, col, this));
+
+	}
+
+	private void templateGrid(int lin, int col) {
+		grid = new Grid();
+		grid.setColor(Color.MAGENTA);
+		appView.tmpl.removeAll();
+		appView.tmpl.repaint();
+		appView.tmpl.revalidate();
+		appView.addGrid(appView.tmpl, grid.TestPane(lin, col, this));
 	}
 
 }

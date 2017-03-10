@@ -16,8 +16,8 @@ import pacotes_28309.control.*;
 public class Tela extends JFrame {
 	private JPanel container, panelOne, panelTwo;
 	private JPanel topPanelOne, topPanelTwo;
-	private JButton clearImg, clearTmpl, abrirImg, abrirTmpl, salvarImg, salvarTmpl;
-	private JPanel img, tmpl;
+	private JButton abrirImg, abrirTmpl, salvarImg, salvarTmpl;
+	public JPanel img, tmpl;
 	private JPanel imgBot, tmplBot;
 	public JSlider imgLinhas, imgColunas;
 	private JButton imgCor;
@@ -70,8 +70,6 @@ public class Tela extends JFrame {
 		toolBar = new JPanel(new GridBagLayout());
 
 		// Criando Botões;
-		clearImg = new JButton("Limpar Imagem");
-		clearTmpl = new JButton("Limpar Template");
 		abrirImg = new JButton("Abrir Imagem");
 		abrirTmpl = new JButton("Abrir Template");
 		salvarImg = new JButton("Salvar Imagem");
@@ -81,18 +79,18 @@ public class Tela extends JFrame {
 		btnConvolucao = new JButton("Gerar Convolução");
 
 		// Labels para imagem e template
-		lblImgLinhas = new JLabel("Linhas [10]: ");
-		lblTmplLinhas = new JLabel("Linhas [10]: ");
-		lblImgColunas = new JLabel("Colunas [10]: ");
-		lblTmplColunas = new JLabel("Colunas [10]: ");
+		lblImgLinhas = new JLabel("Linhas [0]: ");
+		lblTmplLinhas = new JLabel("Linhas [0]: ");
+		lblImgColunas = new JLabel("Colunas [0]: ");
+		lblTmplColunas = new JLabel("Colunas [0]: ");
 		corImg = new JLabel();
 		corTmpl = new JLabel();
 
 		// Criando os Spinners com base no modelo
-		imgLinhas = new JSlider(0, 100, 10);
-		imgColunas = new JSlider(0, 100, 10);
-		tmplLinhas = new JSlider(0, 100, 10);
-		tmplColunas = new JSlider(0, 100, 10);
+		imgLinhas = new JSlider(0, 19, 1);
+		imgColunas = new JSlider(0, 25, 1);
+		tmplLinhas = new JSlider(0, 19, 1);
+		tmplColunas = new JSlider(0, 25, 1);
 
 	}
 
@@ -111,8 +109,6 @@ public class Tela extends JFrame {
 		topPanelTwo.add(abrirTmpl);
 		topPanelOne.add(salvarImg);
 		topPanelTwo.add(salvarTmpl);
-		topPanelOne.add(clearImg);
-		topPanelTwo.add(clearTmpl);
 
 		// Componentes da Imagem
 		addComp(imgBot, lblImgLinhas, 0, 0, 1, 1, GridBagConstraints.EAST, GridBagConstraints.NONE);
@@ -155,8 +151,6 @@ public class Tela extends JFrame {
 	private void layoutDesign() {
 
 		// Botões BG color
-		clearImg.setBackground(new Color(63, 81, 181));
-		clearTmpl.setBackground(new Color(63, 81, 181));
 		abrirImg.setBackground(new Color(63, 81, 181));
 		abrirTmpl.setBackground(new Color(63, 81, 181));
 		salvarImg.setBackground(new Color(63, 81, 181));
@@ -166,8 +160,6 @@ public class Tela extends JFrame {
 		btnConvolucao.setBackground(new Color(230, 74, 25));
 
 		// Botões Font size
-		clearImg.setFont(new Font("Arial", Font.PLAIN, 17));
-		clearTmpl.setFont(new Font("Arial", Font.PLAIN, 17));
 		abrirImg.setFont(new Font("Arial", Font.PLAIN, 17));
 		abrirTmpl.setFont(new Font("Arial", Font.PLAIN, 17));
 		salvarImg.setFont(new Font("Arial", Font.PLAIN, 17));
@@ -177,8 +169,6 @@ public class Tela extends JFrame {
 		btnConvolucao.setFont(new Font("Arial", Font.PLAIN, 20));
 
 		// Botões Font color
-		clearImg.setForeground(new Color(255, 193, 7));
-		clearTmpl.setForeground(new Color(255, 193, 7));
 		abrirImg.setForeground(new Color(255, 193, 7));
 		abrirTmpl.setForeground(new Color(255, 193, 7));
 		salvarImg.setForeground(new Color(255, 193, 7));
@@ -243,8 +233,6 @@ public class Tela extends JFrame {
 	private void addListeners(AppControl appControl) {
 
 		// Listeners dos botões
-		clearImg.addActionListener(appControl);
-		clearTmpl.addActionListener(appControl);
 		abrirImg.addActionListener(appControl);
 		abrirTmpl.addActionListener(appControl);
 		salvarImg.addActionListener(appControl);
@@ -329,8 +317,8 @@ public class Tela extends JFrame {
 		Color cor = JColorChooser.showDialog(null, "Selecionar Cor", corPadrao);
 		return cor;
 	}
-	
-	public void setLabelColor(JLabel label, Color cor){
+
+	public void setLabelColor(JLabel label, Color cor) {
 		label.setBackground(cor);
 	}
 
@@ -338,4 +326,16 @@ public class Tela extends JFrame {
 		label.setText(text);
 	}
 
+	public void addGrid(JPanel container, JPanel panel) {
+		container.add(panel);
+	}
+	
+	public Color getImgDefaultColor(){
+		return corImg.getBackground();
+	}
+	
+	public Color getTmplDefaultColor(){
+		return corTmpl.getBackground();
+	}
+	
 }
