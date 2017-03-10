@@ -11,7 +11,7 @@ public class TelaConvolucao extends JDialog {
 	public TelaConvolucao(AppControl appControl) {
 
 		// Setando as configurações da janela.
-		this.setTitle("Convolução");
+		this.setTitle("Convolução das Imagens");
 		this.setPreferredSize(new Dimension(600, 500));
 		this.setLayout(new BorderLayout());
 		this.setModal(true);

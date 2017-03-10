@@ -1,8 +1,6 @@
 package pacotes_28309.view;
 
 import java.awt.*;
-import java.io.File;
-
 import javax.swing.*;
 import javax.swing.border.*;
 
@@ -69,7 +67,7 @@ public class Tela extends JFrame {
 		salvarTmpl = new JButton("Salvar Template");
 		imgCor = new JButton("Cor da Imagem");
 		tmplCor = new JButton("Cor do Template");
-		btnConvolucao = new JButton("Gerar Convolução");
+		btnConvolucao = new JButton("GERAR CONVOLUÇÃO");
 
 		// Labels para imagem e template
 		lblImgLinhas = new JLabel("Linhas [0]: ");
@@ -211,7 +209,7 @@ public class Tela extends JFrame {
 	}
 
 	/**
-	 * Método que adiciona os listeners aos componentes
+	 * Método que adiciona os listeners aos componentes.
 	 * 
 	 * @param appControl controle principal da aplicação.
 	 */
@@ -277,7 +275,8 @@ public class Tela extends JFrame {
 	}
 
 	/**
-	 * Seta a cor do label para a nova cor selecionada
+	 * Seta a cor do label para a nova cor selecionada.
+	 * 
 	 * @param label label container
 	 * @param cor nova cor
 	 */
@@ -287,6 +286,7 @@ public class Tela extends JFrame {
 
 	/**
 	 * Seta um novo rótulo para o label.
+	 * 
 	 * @param label container
 	 * @param text rótulo
 	 */
@@ -294,16 +294,24 @@ public class Tela extends JFrame {
 		label.setText(text);
 	}
 
+	/**
+	 * Método que coloca o grid no painel.
+	 * 
+	 * @param container JPanel que receberá o grid
+	 * @param panel que será adicionado
+	 */
 	public void addGrid(JPanel container, JPanel panel) {
 		container.add(panel);
 	}
-
-	public Color getImgDefaultColor() {
-		return corImg.getBackground();
-	}
-
-	public Color getTmplDefaultColor() {
-		return corTmpl.getBackground();
+	
+	/**
+	 * Pega a cor de fundo de um label.
+	 * 
+	 * @param label que contêm a cor
+	 * @return cor do label
+	 */
+	public Color getDefaultColor(JLabel label) {
+		return label.getBackground();
 	}
 
 }
