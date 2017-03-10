@@ -14,40 +14,32 @@ import pacotes_28309.control.*;
  * @author Francis Ribeiro
  */
 public class Tela extends JFrame {
-	private JPanel container, panelOne, panelTwo;
-	private JPanel topPanelOne, topPanelTwo;
-	private JButton abrirImg, abrirTmpl, salvarImg, salvarTmpl;
+	private JPanel container, panelOne, panelTwo, imgBot, tmplBot, toolBar;
+	private JButton abrirImg, abrirTmpl, salvarImg, salvarTmpl, imgCor, tmplCor, btnConvolucao;
+	public JLabel lblImgLinhas, lblImgColunas, lblTmplLinhas, lblTmplColunas, corImg, corTmpl;
+	public JSlider imgLinhas, imgColunas, tmplLinhas, tmplColunas;
 	public JPanel img, tmpl;
-	private JPanel imgBot, tmplBot;
-	public JSlider imgLinhas, imgColunas;
-	private JButton imgCor;
-	public JLabel lblImgLinhas, lblImgColunas;
-	public JSlider tmplLinhas, tmplColunas;
-	private JButton tmplCor;
-	public JLabel lblTmplLinhas, lblTmplColunas;
-	private JPanel toolBar;
-	private JButton btnConvolucao;
 	private TitledBorder one, two;
 	private Border borda;
-	public JLabel corImg, corTmpl;
 
 	/**
-	 * Contrutor da classe. Define as configurações da janela principal da
-	 * aplicacação.
+	 * Contrutor da classe. Define as configurações da janela principal da aplicacação.
 	 * 
-	 * @param appControl
-	 *            Controle principal da aplicação.
+	 * @param appControl Controle principal da aplicação.
 	 */
 	public Tela(AppControl appControl) {
 
 		// Setando as configurações da janela.
-		this.setTitle("App Grid");
+		this.setTitle("App Convolução");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		this.setLayout(new BorderLayout());
 
 		// Montando Layout da Tela
-		montaLayout(appControl);
+		generateComponents();
+		componentProperties();
+		addListeners(appControl);
+		layoutDesign();
 
 		// Empacotando e exibindo a aplicação.
 		this.pack();
@@ -55,14 +47,15 @@ public class Tela extends JFrame {
 		this.setResizable(false);
 	}
 
+	/**
+	 * Método delegado para instânciar os components da view.
+	 */
 	private void generateComponents() {
 
 		// Criação dos painéis
 		container = new JPanel();
 		panelOne = new JPanel(new BorderLayout());
 		panelTwo = new JPanel(new BorderLayout());
-		topPanelOne = new JPanel(new GridLayout(1, 3, 20, 20));
-		topPanelTwo = new JPanel(new GridLayout(1, 3, 20, 20));
 		img = new JPanel(new BorderLayout());
 		tmpl = new JPanel(new BorderLayout());
 		imgBot = new JPanel(new GridBagLayout());
@@ -87,13 +80,16 @@ public class Tela extends JFrame {
 		corTmpl = new JLabel();
 
 		// Criando os Spinners com base no modelo
-		imgLinhas = new JSlider(0, 19, 1);
+		imgLinhas = new JSlider(0, 20, 1);
 		imgColunas = new JSlider(0, 25, 1);
-		tmplLinhas = new JSlider(0, 19, 1);
+		tmplLinhas = new JSlider(0, 20, 1);
 		tmplColunas = new JSlider(0, 25, 1);
 
 	}
 
+	/**
+	 * Método Resposável pelas propriedades dos componentes da view.
+	 */
 	private void componentProperties() {
 		// Adicionando as Bordas dos painéis
 		borda = BorderFactory.createLineBorder(new Color(255, 193, 7), 1);
@@ -105,10 +101,6 @@ public class Tela extends JFrame {
 		panelTwo.setBorder(two);
 
 		// Add botões ao Panel
-		topPanelOne.add(abrirImg);
-		topPanelTwo.add(abrirTmpl);
-		topPanelOne.add(salvarImg);
-		topPanelTwo.add(salvarTmpl);
 
 		// Componentes da Imagem
 		addComp(imgBot, lblImgLinhas, 0, 0, 1, 1, GridBagConstraints.EAST, GridBagConstraints.NONE);
@@ -117,6 +109,8 @@ public class Tela extends JFrame {
 		addComp(imgBot, imgColunas, 1, 2, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
 		addComp(imgBot, imgCor, 5, 2, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
 		addComp(imgBot, corImg, 5, 0, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
+		addComp(imgBot, abrirImg, 6, 2, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
+		addComp(imgBot, salvarImg, 6, 0, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
 
 		// Componentes do Template
 		addComp(tmplBot, lblTmplLinhas, 0, 0, 1, 1, GridBagConstraints.EAST, GridBagConstraints.NONE);
@@ -125,13 +119,13 @@ public class Tela extends JFrame {
 		addComp(tmplBot, tmplColunas, 1, 2, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
 		addComp(tmplBot, tmplCor, 5, 2, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
 		addComp(tmplBot, corTmpl, 5, 0, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
+		addComp(tmplBot, abrirTmpl, 6, 2, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
+		addComp(tmplBot, salvarTmpl, 6, 0, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
 
 		// Componente da toobar
 		addComp(toolBar, btnConvolucao, 5, 0, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.NONE);
 
 		// Adicionando aos painéis
-		panelOne.add(topPanelOne, BorderLayout.NORTH);
-		panelTwo.add(topPanelTwo, BorderLayout.NORTH);
 		panelOne.add(img, BorderLayout.CENTER);
 		panelTwo.add(tmpl, BorderLayout.CENTER);
 		panelOne.add(imgBot, BorderLayout.SOUTH);
@@ -148,6 +142,9 @@ public class Tela extends JFrame {
 		this.add(toolBar, BorderLayout.SOUTH);
 	}
 
+	/**
+	 * Método usado para melhorar a aparência da view.
+	 */
 	private void layoutDesign() {
 
 		// Botões BG color
@@ -158,15 +155,6 @@ public class Tela extends JFrame {
 		imgCor.setBackground(new Color(63, 81, 181));
 		tmplCor.setBackground(new Color(63, 81, 181));
 		btnConvolucao.setBackground(new Color(230, 74, 25));
-
-		// Botões Font size
-		abrirImg.setFont(new Font("Arial", Font.PLAIN, 17));
-		abrirTmpl.setFont(new Font("Arial", Font.PLAIN, 17));
-		salvarImg.setFont(new Font("Arial", Font.PLAIN, 17));
-		salvarTmpl.setFont(new Font("Arial", Font.PLAIN, 17));
-		imgCor.setFont(new Font("Arial", Font.PLAIN, 17));
-		tmplCor.setFont(new Font("Arial", Font.PLAIN, 17));
-		btnConvolucao.setFont(new Font("Arial", Font.PLAIN, 20));
 
 		// Botões Font color
 		abrirImg.setForeground(new Color(255, 193, 7));
@@ -185,12 +173,6 @@ public class Tela extends JFrame {
 		one.setTitleColor(new Color(255, 193, 7));
 		two.setTitleColor(new Color(255, 193, 7));
 
-		// Label Font Size
-		lblImgLinhas.setFont(new Font("Arial", Font.PLAIN, 17));
-		lblTmplLinhas.setFont(new Font("Arial", Font.PLAIN, 17));
-		lblImgColunas.setFont(new Font("Arial", Font.PLAIN, 17));
-		lblTmplColunas.setFont(new Font("Arial", Font.PLAIN, 17));
-
 		// Label Font color
 		lblImgLinhas.setForeground(new Color(255, 193, 7));
 		lblTmplLinhas.setForeground(new Color(255, 193, 7));
@@ -200,8 +182,6 @@ public class Tela extends JFrame {
 		// Panel BG color
 		panelOne.setBackground(new Color(33, 33, 33));
 		panelTwo.setBackground(new Color(33, 33, 33));
-		topPanelOne.setBackground(new Color(33, 33, 33));
-		topPanelTwo.setBackground(new Color(33, 33, 33));
 		img.setBackground(new Color(33, 33, 33));
 		tmpl.setBackground(new Color(33, 33, 33));
 		imgBot.setBackground(new Color(33, 33, 33));
@@ -221,8 +201,8 @@ public class Tela extends JFrame {
 		tmplColunas.setBackground(new Color(33, 33, 33));
 
 		// label cor
-		corImg.setPreferredSize(new Dimension(165, 40));
-		corTmpl.setPreferredSize(new Dimension(175, 40));
+		corImg.setPreferredSize(new Dimension(140, 25));
+		corTmpl.setPreferredSize(new Dimension(150, 25));
 		corImg.setOpaque(true);
 		corTmpl.setOpaque(true);
 		corImg.setBackground(Color.CYAN);
@@ -230,6 +210,11 @@ public class Tela extends JFrame {
 
 	}
 
+	/**
+	 * Método que adiciona os listeners aos componentes
+	 * 
+	 * @param appControl controle principal da aplicação.
+	 */
 	private void addListeners(AppControl appControl) {
 
 		// Listeners dos botões
@@ -248,14 +233,20 @@ public class Tela extends JFrame {
 		tmplColunas.addChangeListener(appControl);
 	}
 
-	private void montaLayout(AppControl appControl) {
-		generateComponents();
-		componentProperties();
-		addListeners(appControl);
-		layoutDesign();
-	}
-
-	// Seta as regras para um componente destinado ao GridBagLayout e o adiciona
+	//
+	/**
+	 * Método auxiliar para setar as regras para um componente destinado ao
+	 * GridBagLayout e o adicionar.
+	 * 
+	 * @param painel 		painel de destino
+	 * @param comp 			componente de destino
+	 * @param xPos 			posição em x
+	 * @param yPos			posição em y
+	 * @param compWidth		largura do componente
+	 * @param compHeight	altura do componente
+	 * @param place			localização
+	 * @param stretch	    preenchimento
+	 */
 	private void addComp(JPanel painel, JComponent comp, int xPos, int yPos, int compWidth, int compHeight, int place,
 			int stretch) {
 
@@ -274,16 +265,31 @@ public class Tela extends JFrame {
 		painel.add(comp, gridConstraints);
 	}
 
-
+	/**
+	 * Método para alterar a cor de pintura
+	 * 
+	 * @param corPadrao cor atual
+	 * @return cor selecionada
+	 */
 	public Color selecionarCor(Color corPadrao) {
 		Color cor = JColorChooser.showDialog(null, "Selecionar Cor", corPadrao);
 		return cor;
 	}
 
+	/**
+	 * Seta a cor do label para a nova cor selecionada
+	 * @param label label container
+	 * @param cor nova cor
+	 */
 	public void setLabelColor(JLabel label, Color cor) {
 		label.setBackground(cor);
 	}
 
+	/**
+	 * Seta um novo rótulo para o label.
+	 * @param label container
+	 * @param text rótulo
+	 */
 	public void setLabel(JLabel label, String text) {
 		label.setText(text);
 	}
@@ -291,13 +297,13 @@ public class Tela extends JFrame {
 	public void addGrid(JPanel container, JPanel panel) {
 		container.add(panel);
 	}
-	
-	public Color getImgDefaultColor(){
+
+	public Color getImgDefaultColor() {
 		return corImg.getBackground();
 	}
-	
-	public Color getTmplDefaultColor(){
+
+	public Color getTmplDefaultColor() {
 		return corTmpl.getBackground();
 	}
-	
+
 }
