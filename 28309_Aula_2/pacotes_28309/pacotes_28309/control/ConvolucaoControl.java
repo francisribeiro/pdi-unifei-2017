@@ -7,16 +7,24 @@ import java.io.*;
 import pacotes_28309.model.*;
 import pacotes_28309.view.*;
 
-public class ConvolucaoControl implements ActionListener {
+public class ConvolucaoControl {
 
 	private TelaConvolucao appConvolucao;
 	private BufferedImage imagem, template;
-	private GridView imgConvoluida;
+	private GridPanel imgConvoluida;
 
 	public ConvolucaoControl(BufferedImage imagem, BufferedImage template) {
 		this.imagem = imagem;
 		this.template = template;
-		appConvolucao = new TelaConvolucao(this);
+		this.appConvolucao = new TelaConvolucao(this);
+		
+
+		//Faz a convolução da imagem
+		try {
+			imgConvoluidaGrid(imagem.getHeight(), imagem.getWidth(), convoluir(imagem, template));
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
 
 		// Fecha a Tela caso perca o foco
 		appConvolucao.addWindowListener(new WindowAdapter() {
@@ -26,17 +34,6 @@ public class ConvolucaoControl implements ActionListener {
 		});
 	}
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		if (e.getActionCommand().equals("Convoluir")) {
-			try {
-				imgConvoluidaGrid(imagem.getHeight(), imagem.getWidth(), convoluir(imagem));
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}
-		}
-	}
-
 	/**
 	 * Gera um novo grid de imagem convoluida.
 	 * 
@@ -44,7 +41,7 @@ public class ConvolucaoControl implements ActionListener {
 	 * @param col largura do grid
 	 */
 	private void imgConvoluidaGrid(int lin, int col, BufferedImage img) {
-		imgConvoluida = new GridView();
+		imgConvoluida = new GridPanel();
 		appConvolucao.pnlImgConvolucionada.removeAll();
 		appConvolucao.pnlImgConvolucionada.repaint();
 		appConvolucao.pnlImgConvolucionada.revalidate();
@@ -52,16 +49,18 @@ public class ConvolucaoControl implements ActionListener {
 	}
 
 	/**
+	 * Não permite que uma valor RGB seja extrapolado.
 	 * 
 	 * @param valor
 	 * @param indiceFinal
-	 * @return
+	 * @return valor RGB
 	 */
-	private static int fronteira(int valor, int indiceFinal) {
+	private static int limites(int valor, int indiceFinal) {
 		if (valor < 0)
 			return 0;
 		if (valor < indiceFinal)
 			return valor;
+
 		return indiceFinal - 1;
 	}
 
@@ -72,7 +71,7 @@ public class ConvolucaoControl implements ActionListener {
 	 * @return dados das cores da imagem
 	 * @throws IOException
 	 */
-	private static Dados[] getDadosdaImagem(BufferedImage img) throws IOException {
+	private static Dados[] dadosdaImagem(BufferedImage img) throws IOException {
 
 		// Dados da Imagem
 		int largura = img.getWidth();
@@ -106,83 +105,72 @@ public class ConvolucaoControl implements ActionListener {
 	 */
 	private BufferedImage imagemDeSaida(Dados[] rgb) throws IOException {
 		Dados r = rgb[0], g = rgb[1], b = rgb[2];
-		BufferedImage outputImage = new BufferedImage(r.getWidth(), g.getHeight(), BufferedImage.TYPE_INT_ARGB);
+		BufferedImage imagemSaida = new BufferedImage(r.getLargura(), g.getAltura(), BufferedImage.TYPE_INT_ARGB);
 
-		for (int y = 0; y < r.getHeight(); y++)
-			for (int x = 0; x < r.getWidth(); x++) {
-				int red = fronteira(r.get(x, y), 256);
-				int green = fronteira(g.get(x, y), 256);
-				int blue = fronteira(b.get(x, y), 256);
+		for (int y = 0; y < r.getAltura(); y++)
+			for (int x = 0; x < r.getLargura(); x++) {
+				int red = limites(r.get(x, y), 256);
+				int green = limites(g.get(x, y), 256);
+				int blue = limites(b.get(x, y), 256);
 
 				// Gera uma imagem RGB
-				outputImage.setRGB(x, y, (red << 16) | (green << 8) | blue | -0x01000000);
+				imagemSaida.setRGB(x, y, (red << 16) | (green << 8) | blue | -0x01000000);
 			}
 
-		return outputImage;
+		return imagemSaida;
 	}
 
-	private static Dados processoDeConvolucao(Dados imagemEntrada, Dados template, int kernelDivisor) {
-		int imgLargura = imagemEntrada.getWidth();
-		int imgAltura = imagemEntrada.getHeight();
-		int tmplLargura = template.getWidth();
-		int tmplAltura = template.getHeight();
-
-		if ((tmplLargura <= 0) || ((tmplLargura & 1) != 1))
-			throw new IllegalArgumentException("Kernel must have odd width");
-		if ((tmplAltura <= 0) || ((tmplAltura & 1) != 1))
-			throw new IllegalArgumentException("Kernel must have odd height");
-
-		int kernelWidthRadius = tmplLargura >>> 1;
-		int kernelHeightRadius = tmplAltura >>> 1;
-
+	/**
+	 * Método responsável pelo processo de convolução de uma imagem.
+	 * 
+	 * @param imagemEntrada imagem a ser convolucionada
+	 * @param template que será aplicado na imagem como filtro
+	 * @param kernelDivisor divisor do filtro
+	 * @return dados da imagem de saída
+	 */
+	private static Dados processoDeConvolucao(Dados imagemEntrada, Dados template, int divisor) {
+		int imgLargura = imagemEntrada.getLargura();
+		int imgAltura = imagemEntrada.getAltura();
+		int tmplLargura = template.getLargura();
+		int tmplAltura = template.getAltura();
+		int raiolargura = tmplLargura >>> 1;
+		int raioAltura = tmplAltura >>> 1;
 		Dados dadosImgSaida = new Dados(imgLargura, imgAltura);
 
+		// Faz a convolução multiplicando as matrizes
 		for (int i = imgLargura - 1; i >= 0; i--) {
 			for (int j = imgAltura - 1; j >= 0; j--) {
 				double newValue = 0.0;
 				for (int kw = tmplLargura - 1; kw >= 0; kw--)
 					for (int kh = tmplAltura - 1; kh >= 0; kh--)
-						newValue += template.get(kw, kh)
-								* imagemEntrada.get(fronteira(i + kw - kernelWidthRadius, imgLargura),
-										fronteira(j + kh - kernelHeightRadius, imgAltura));
-				dadosImgSaida.set(i, j, (int) Math.round(newValue / kernelDivisor));
+						newValue += template.get(kw, kh) * imagemEntrada.get(limites(i + kw - raiolargura, imgLargura),
+								limites(j + kh - raioAltura, imgAltura));
+
+				dadosImgSaida.set(i, j, (int) Math.round(newValue / divisor));
 			}
 		}
 
 		return dadosImgSaida;
 	}
 
-	private BufferedImage convoluir(BufferedImage img) throws IOException {
-		int kernel[][] = { 
-							{ 1, 4, 7, 4, 1 }, 
-							{ 4, 16, 26, 16, 4 }, 
-							{ 7, 26, 41, 26, 7 }, 
-							{ 4, 16, 26, 16, 4 },
-							{ 1, 4, 7, 4, 1 } };
-		
-		int kernelWidth = 5;
-		int kernelHeight = 5;
-		int kernelDivisor = 256;
-		
-		System.out.println("Kernel size: " + kernelWidth + "x" + kernelHeight + ", divisor=" + kernelDivisor);
-		int y = 5;
-		Dados template = new Dados(kernelWidth, kernelHeight);
-		
-		for (int i = 0; i < kernelHeight; i++) {
-			System.out.print("[");
-			for (int j = 0; j < kernelWidth; j++) {
-				template.set(j, i, kernel[j][i]);
-				System.out.print(" " + kernel[j][i] + " ");
-			}
-			System.out.println("]");
-		}
+	/**
+	 * Reune todas as informações sobre a imagem e o template e faz o processo
+	 * de convolução.
+	 * 
+	 * @param img imagem de entrada
+	 * @param template template que será aplicado na imagem
+	 * @return imagem comvoluida
+	 * @throws IOException
+	 */
+	private BufferedImage convoluir(BufferedImage img, BufferedImage tmpl) throws IOException {
+		int divisor = 256;
+		Dados[] imgArray = dadosdaImagem(img);
+		Dados[] templateArray = dadosdaImagem(tmpl);
 
-		Dados[] dataArrays = getDadosdaImagem(img);
-		
-		for (int i = 0; i < dataArrays.length; i++)
-			dataArrays[i] = processoDeConvolucao(dataArrays[i], template, kernelDivisor);
-		
-		return imagemDeSaida(dataArrays);
+		for (int i = 0; i < imgArray.length; i++)
+			imgArray[i] = processoDeConvolucao(imgArray[i], templateArray[i], divisor);
+
+		return imagemDeSaida(imgArray);
 	}
 
 }

@@ -8,7 +8,7 @@ import javax.imageio.*;
 import javax.swing.*;
 import javax.swing.border.*;
 
-public class GridView extends JPanel {
+public class GridPanel extends JPanel {
 
 	private Color cor;
 	private JPanel[][] grid;
@@ -61,14 +61,14 @@ public class GridView extends JPanel {
 
 				if (lin < nLin - 1) {
 					if (col < nCol - 1)
-						border = new MatteBorder(1, 1, 0, 0, Color.GRAY);
+						border = new MatteBorder(1, 1, 0, 0, Color.DARK_GRAY);
 					else
-						border = new MatteBorder(1, 1, 0, 1, Color.GRAY);
+						border = new MatteBorder(1, 1, 0, 1, Color.DARK_GRAY);
 				} else {
 					if (col < nCol - 1)
-						border = new MatteBorder(1, 1, 1, 0, Color.GRAY);
+						border = new MatteBorder(1, 1, 1, 0, Color.DARK_GRAY);
 					else
-						border = new MatteBorder(1, 1, 1, 1, Color.GRAY);
+						border = new MatteBorder(1, 1, 1, 1, Color.DARK_GRAY);
 				}
 
 				// Adicionando as bordas e a célula ao painel

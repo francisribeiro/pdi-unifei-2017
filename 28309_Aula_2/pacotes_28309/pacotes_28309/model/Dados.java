@@ -1,42 +1,34 @@
 package pacotes_28309.model;
 
 public class Dados {
-	private int[] dataArray;
-	private int width;
-	private int height;
+	private int[] arrayDeDados;
+	private int largura;
+	private int altura;
 
-	public Dados(int width, int height) {
-		this(new int[width * height], width, height);
+	public Dados(int largura, int altura) {
+		this(new int[largura * altura], largura, altura);
 	}
 
-	public Dados(int[] dataArray, int width, int height) {
-		this.dataArray = dataArray;
-		this.width = width;
-		this.height = height;
+	public Dados(int[] dataArray, int largura, int altura) {
+		this.arrayDeDados = dataArray;
+		this.largura = largura;
+		this.altura = altura;
 	}
 
 	public int get(int x, int y) {
-		return dataArray[y * width + x];
+		return arrayDeDados[y * largura + x];
 	}
 
 	public void set(int x, int y, int value) {
-		dataArray[y * width + x] = value;
+		arrayDeDados[y * largura + x] = value;
 	}
 
-	public int getWidth() {
-		return width;
+	public int getLargura() {
+		return largura;
 	}
 
-	public void setWidth(int width) {
-		this.width = width;
-	}
-
-	public int getHeight() {
-		return height;
-	}
-
-	public void setHeight(int height) {
-		this.height = height;
+	public int getAltura() {
+		return altura;
 	}
 
 }
