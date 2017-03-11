@@ -15,7 +15,8 @@ public class Tela extends JFrame {
 	private Border borda;
 
 	/**
-	 * Contrutor da classe. Define as configurações da janela principal da aplicacação.
+	 * Contrutor da classe. Define as configurações da janela principal da
+	 * aplicacação.
 	 * 
 	 * @param appControl Controle principal da aplicação.
 	 */
@@ -71,12 +72,11 @@ public class Tela extends JFrame {
 		corImg = new JLabel();
 		corTmpl = new JLabel();
 
-		// Criando os Spinners com base no modelo
+		// Criando os Sliders com base no modelo
 		imgLinhas = new JSlider(0, 33, 1);
 		imgColunas = new JSlider(0, 40, 1);
 		tmplLinhas = new JSlider(0, 33, 1);
 		tmplColunas = new JSlider(0, 40, 1);
-
 	}
 
 	/**
@@ -229,14 +229,14 @@ public class Tela extends JFrame {
 	 * Método auxiliar para setar as regras para um componente destinado ao
 	 * GridBagLayout e o adicionar.
 	 * 
-	 * @param painel 		painel de destino
-	 * @param comp 			componente de destino
-	 * @param xPos 			posição em x
-	 * @param yPos			posição em y
-	 * @param compWidth		largura do componente
-	 * @param compHeight	altura do componente
-	 * @param place			localização
-	 * @param stretch	    preenchimento
+	 * @param painel painel de destino
+	 * @param comp componente de destino
+	 * @param xPos posição em x
+	 * @param yPos posição em y
+	 * @param compWidth largura do componente
+	 * @param compHeight altura do componente
+	 * @param place localização
+	 * @param stretch preenchimento
 	 */
 	private void addComp(JPanel painel, JComponent comp, int xPos, int yPos, int compWidth, int compHeight, int place,
 			int stretch) {
@@ -296,7 +296,7 @@ public class Tela extends JFrame {
 	public void addGrid(JPanel container, JPanel panel) {
 		container.add(panel);
 	}
-	
+
 	/**
 	 * Pega a cor de fundo de um label.
 	 * 

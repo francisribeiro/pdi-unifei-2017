@@ -21,7 +21,7 @@ public class AppControl implements ActionListener, ChangeListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		
+
 		// Abre uma imagem previamente salva
 		if (e.getActionCommand().equals("Abrir Imagem")) {
 			abrirImagem();
@@ -50,12 +50,12 @@ public class AppControl implements ActionListener, ChangeListener {
 		if (e.getActionCommand().equals("Salvar Imagem")) {
 			gridImg.salvarImagem("IMAGEM");
 		}
-		
+
 		// Salvar template
 		if (e.getActionCommand().equals("Salvar Template")) {
 			gridTmpl.salvarImagem("TEMPLATE");
-		}		
-		
+		}
+
 		// Convolucionar imagem
 		if (e.getActionCommand().equals("CONVOLUÇÃO")) {
 			cc = new ConvolucaoControl(gridImg.img(), gridTmpl.img());
@@ -81,7 +81,7 @@ public class AppControl implements ActionListener, ChangeListener {
 			appView.setLabel(appView.lblTmplLinhas, "Linhas [" + appView.tmplLinhas.getValue() + "]:");
 			templateGrid(appView.tmplLinhas.getValue(), appView.tmplColunas.getValue());
 		}
-		
+
 		// Slider de colunas do Template
 		if (e.getSource() == appView.tmplColunas) {
 			appView.setLabel(appView.lblTmplColunas, "Colunas [" + appView.tmplColunas.getValue() + "]:");
@@ -101,7 +101,7 @@ public class AppControl implements ActionListener, ChangeListener {
 		appView.img.removeAll();
 		appView.img.repaint();
 		appView.img.revalidate();
-		appView.addGrid(appView.img, gridImg.gerarGrid(lin, col, false));
+		appView.addGrid(appView.img, gridImg.gerarGrid(lin, col, false, null));
 	}
 
 	/**
@@ -116,7 +116,7 @@ public class AppControl implements ActionListener, ChangeListener {
 		appView.tmpl.removeAll();
 		appView.tmpl.repaint();
 		appView.tmpl.revalidate();
-		appView.addGrid(appView.tmpl, gridTmpl.gerarGrid(lin, col, false));
+		appView.addGrid(appView.tmpl, gridTmpl.gerarGrid(lin, col, false, null));
 	}
 
 	/**
@@ -124,8 +124,8 @@ public class AppControl implements ActionListener, ChangeListener {
 	 */
 	private void abrirImagem() {
 		gridImg = new GridView();
-		appView.addGrid(appView.img, gridImg.gerarGrid(0, 0, true));
-		gridImg.setColor(Color.BLUE);
+		appView.addGrid(appView.img, gridImg.gerarGrid(0, 0, true, null));
+		gridImg.setColor(Color.CYAN);
 		appView.tmpl.repaint();
 		appView.tmpl.revalidate();
 
@@ -136,8 +136,8 @@ public class AppControl implements ActionListener, ChangeListener {
 	 */
 	private void abrirTemplate() {
 		gridTmpl = new GridView();
-		appView.addGrid(appView.tmpl, gridTmpl.gerarGrid(0, 0, true));
-		gridTmpl.setColor(Color.BLUE);
+		appView.addGrid(appView.tmpl, gridTmpl.gerarGrid(0, 0, true, null));
+		gridTmpl.setColor(Color.MAGENTA);
 		appView.img.repaint();
 		appView.img.revalidate();
 	}

@@ -22,13 +22,14 @@ public class GridView extends JPanel {
 	 * @param nLin número de linhas do grid
 	 * @param nCol número de colunas do grid
 	 * @param abrir caso deseje abrir uma imagem
+	 * @param img imagem de entrada
 	 * @return gird gerado
 	 */
-	public JPanel gerarGrid(int nLin, int nCol, Boolean abrir) {
+	public JPanel gerarGrid(int nLin, int nCol, Boolean abrir, BufferedImage img) {
 		// Caso esteja abrindo a imagem, setamos o tamanho do grid com o tamanho
 		// da imagem.
 		if (abrir) {
-			abrirImagem();
+			abrirImagem(img);
 			nCol = imagem.getWidth(); // Largura do grid
 			nLin = imagem.getHeight(); // Altura do grid
 		}
@@ -57,6 +58,7 @@ public class GridView extends JPanel {
 
 				// Gerando as bordas do grid
 				Border border = null;
+
 				if (lin < nLin - 1) {
 					if (col < nCol - 1)
 						border = new MatteBorder(1, 1, 0, 0, Color.GRAY);
@@ -89,7 +91,8 @@ public class GridView extends JPanel {
 	}
 
 	/**
-	 * Desenha uma nova célula (componente unitário do grid), e seta suas propriedades.
+	 * Desenha uma nova célula (componente unitário do grid), e seta suas
+	 * propriedades.
 	 * 
 	 * @return nova celula
 	 */
@@ -98,7 +101,7 @@ public class GridView extends JPanel {
 
 		celula.setPreferredSize(new Dimension(15, 15));
 		celula.setBackground(new Color(33, 33, 33));
-		
+
 		celula.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
@@ -136,27 +139,27 @@ public class GridView extends JPanel {
 	 * Gera uma BufferedImage com os dados do grid.
 	 * 
 	 * @return imagem do grid
-	 */	
-	public BufferedImage img(){
+	 */
+	public BufferedImage img() {
 		BufferedImage img = new BufferedImage(colunas, linhas, BufferedImage.TYPE_INT_RGB);
 		int[] pixels = img.getRGB(0, 0, colunas, linhas, null, 0, colunas);
 
 		// Percorre o JPanel salvando cada célula como um pixel
-		for (int col = 0; col < colunas; col++) 
-			for (int lin = 0; lin < linhas; lin++) 
+		for (int col = 0; col < colunas; col++)
+			for (int lin = 0; lin < linhas; lin++)
 				pixels[colunas * lin + col] = grid[lin][col].getBackground().getRGB();
-				
+
 		// Gera uma imagem RGB
 		img.setRGB(0, 0, colunas, linhas, pixels, 0, colunas);
-		
+
 		return img;
 	}
-	
+
 	/**
 	 * Salva os pixels como imagem unica.
 	 *
 	 * @param nome da imagem
-	 * @param extensao  da imagem
+	 * @param extensao da imagem
 	 * @param tipo (IMAGEM ou TEMPLATE)
 	 */
 	private void salvaPixels(String nome, String extensao, String tipo) {
@@ -171,9 +174,14 @@ public class GridView extends JPanel {
 	 * Método para navegar pela estrutura de diretórios e carregar uma imagem.
 	 * 
 	 */
-	public void abrirImagem() {
+	public void abrirImagem(BufferedImage img) {
 		String nomeArqLido = null;
-		
+
+		if (img != null) {
+			imagem = img;
+			return;
+		}
+
 		// Localizando o arquivo
 		JFileChooser arquivo = new JFileChooser();
 		File diretorio = new File("..\\");
@@ -194,7 +202,7 @@ public class GridView extends JPanel {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Selecina a caminho para onde deverá ser salva a nova imagem.
 	 * 
