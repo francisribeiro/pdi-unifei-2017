@@ -22,7 +22,7 @@ public class GridView extends JPanel {
 	 * @param nLin número de linhas do grid
 	 * @param nCol número de colunas do grid
 	 * @param abrir caso deseje abrir uma imagem
-	 * @return
+	 * @return gird gerado
 	 */
 	public JPanel gerarGrid(int nLin, int nCol, Boolean abrir) {
 		// Caso esteja abrindo a imagem, setamos o tamanho do grid com o tamanho

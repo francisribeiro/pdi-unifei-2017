@@ -4,10 +4,10 @@ import java.awt.*;
 import javax.swing.*;
 import pacotes_28309.control.*;
 
-public class TelaConvolucao extends JDialog {
+public class TelaConvolucao extends JFrame {
 
 	private JButton btnConvoluir;
-	private JPanel pnlImgConvolucionada;
+	public JPanel pnlImgConvolucionada;
 	
 	/**
 	 * Contrutor da classe. Define as configurações da janela modal da aplicacação.
@@ -20,15 +20,15 @@ public class TelaConvolucao extends JDialog {
 		this.setTitle("Convolução das Imagens");
 		this.setPreferredSize(new Dimension(700, 600));
 		this.setLayout(new BorderLayout());
-		this.setModal(true);
+		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
-		//Panel para a imagem
-		pnlImgConvolucionada = new JPanel();
-		pnlImgConvolucionada.setBackground(new Color(33,33,33));
-		this.add(pnlImgConvolucionada);
-
 		// Adicionando a barra de ferramentas.
 		toolBar(convolucaoControl);
+		
+		//Panel para a imagem
+		pnlImgConvolucionada = new JPanel(new BorderLayout());
+		pnlImgConvolucionada.setBackground(new Color(33,33,33));
+		this.add(pnlImgConvolucionada);
 
 		// Empacotando e exibindo a aplicação.
 		this.pack();
@@ -62,4 +62,14 @@ public class TelaConvolucao extends JDialog {
 		add(toolBar, BorderLayout.NORTH);
 	}
 
+	
+	/**
+	 * Método que coloca o grid no painel.
+	 * 
+	 * @param container JPanel que receberá o grid
+	 * @param panel que será adicionado
+	 */
+	public void addGrid(JPanel container, JPanel panel) {
+		container.add(panel);
+	}
 }

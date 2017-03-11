@@ -1,15 +1,15 @@
 package pacotes_28309.model;
 
-public class DataArray {
+public class Dados {
 	private int[] dataArray;
 	private int width;
 	private int height;
 
-	public DataArray(int width, int height) {
+	public Dados(int width, int height) {
 		this(new int[width * height], width, height);
 	}
 
-	public DataArray(int[] dataArray, int width, int height) {
+	public Dados(int[] dataArray, int width, int height) {
 		this.dataArray = dataArray;
 		this.width = width;
 		this.height = height;

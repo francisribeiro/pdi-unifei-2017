@@ -3,45 +3,80 @@ package pacotes_28309.control;
 import java.awt.event.*;
 import java.awt.image.*;
 import java.io.*;
-import javax.imageio.*;
 import pacotes_28309.model.*;
-import pacotes_28309.view.TelaConvolucao;
+import pacotes_28309.view.*;
 
 public class ConvolucaoControl implements ActionListener {
 
 	private TelaConvolucao appConvolucao;
 	private BufferedImage imagem, template;
+	private GridView imgConvoluida;
 
 	public ConvolucaoControl(BufferedImage imagem, BufferedImage template) {
-		appConvolucao = new TelaConvolucao(this);
 		this.imagem = imagem;
 		this.template = template;
+		appConvolucao = new TelaConvolucao(this);
+		
+		//Fecha a Tela caso perca o foco
+		appConvolucao.addWindowListener(new WindowAdapter(){
+			public void windowDeactivated(WindowEvent e){
+				appConvolucao.dispose();
+			}
+		});
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("Convoluir")) {
-		
+			imgConvoluidaGrid(imagem.getHeight(), imagem.getWidth());
 		}
+	}
+
+	/**
+	 * Gera um novo grid de imagem convoluida.
+	 * 
+	 * @param lin altura do grid
+	 * @param col largura do grid
+	 */
+	private void imgConvoluidaGrid(int lin, int col) {
+		imgConvoluida = new GridView();
+		appConvolucao.pnlImgConvolucionada.removeAll();
+		appConvolucao.pnlImgConvolucionada.repaint();
+		appConvolucao.pnlImgConvolucionada.revalidate();
+		appConvolucao.addGrid(appConvolucao.pnlImgConvolucionada, imgConvoluida.gerarGrid(lin, col, false));
 	}
 	
-	public static DataArray[] getArrayDatasFromImage(String filename) throws IOException {
-		BufferedImage inputImage = ImageIO.read(new File(filename));
-		int width = inputImage.getWidth();
-		int height = inputImage.getHeight();
-		int[] rgbData = inputImage.getRGB(0, 0, width, height, null, 0, width);
-		DataArray reds = new DataArray(width, height);
-		DataArray greens = new DataArray(width, height);
-		DataArray blues = new DataArray(width, height);
-		for (int y = 0; y < height; y++) {
-			for (int x = 0; x < width; x++) {
-				int rgbValue = rgbData[y * width + x];
-				reds.set(x, y, (rgbValue >>> 16) & 0xFF);
-				greens.set(x, y, (rgbValue >>> 8) & 0xFF);
-				blues.set(x, y, rgbValue & 0xFF);
+	/**
+	 * Adiciona as informações das imagens em um array de Dados.
+	 * 
+	 * @param img imagem pare extrair dados
+	 * @return dados das cores da imagem
+	 * @throws IOException
+	 */
+	public static Dados[] getDadosdaImagem(BufferedImage img) throws IOException {
+
+		// Dados da Imagem
+		int largura = img.getWidth();
+		int altura = img.getHeight();
+		int[] dadosRGB = img.getRGB(0, 0, largura, altura, null, 0, largura);
+
+		// Dados das cores da Imagem
+		Dados r = new Dados(largura, altura);
+		Dados g = new Dados(largura, altura);
+		Dados b = new Dados(largura, altura);
+
+		// Aloca os valores em um array
+		for (int y = 0; y < altura; y++)
+			for (int x = 0; x < largura; x++) {
+				int valorRGB = dadosRGB[y * largura + x];
+				r.set(x, y, (valorRGB >>> 16) & 0xFF);
+				g.set(x, y, (valorRGB >>> 8) & 0xFF);
+				b.set(x, y, valorRGB & 0xFF);
 			}
-		}
-		return new DataArray[] { reds, greens, blues };
+
+		return new Dados[] { r, g, b };
 	}
+	
+	
 
 }
