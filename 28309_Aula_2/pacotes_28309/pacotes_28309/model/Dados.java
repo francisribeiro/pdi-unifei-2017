@@ -9,8 +9,8 @@ public class Dados {
 		this(new int[largura * altura], largura, altura);
 	}
 
-	public Dados(int[] dataArray, int largura, int altura) {
-		this.arrayDeDados = dataArray;
+	public Dados(int[] arrayDeDados, int largura, int altura) {
+		this.arrayDeDados = arrayDeDados;
 		this.largura = largura;
 		this.altura = altura;
 	}

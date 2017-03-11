@@ -51,23 +51,36 @@ public class AppControl implements ActionListener, ChangeListener {
 
 		// Salvar imagem
 		if (e.getActionCommand().equals("Salvar Imagem")) {
-			gridImg.salvarImagem("IMAGEM");
+			if (imgSet)
+				gridImg.salvarImagem("IMAGEM");
+			else// Emite aviso de imagem vazia
+				appView.aviso("Não Existe IMAGEM para ser salva!", "Imagem vazia");
+
 		}
 
 		// Salvar template
 		if (e.getActionCommand().equals("Salvar Template")) {
-			gridTmpl.salvarImagem("TEMPLATE");
+			if (imgSet)
+				gridTmpl.salvarImagem("TEMPLATE");
+			else // Emite aviso de template vazio
+				appView.aviso("Não Existe TEMPLATE para ser salvo!", "Template vazio");
 		}
 
 		// Convolucionar imagem
-		if (e.getActionCommand().equals("CONVOLUÇÃO")) {
-			if ((appView.tmplLinhas.getValue() & 1) != 1 || (appView.tmplColunas.getValue() & 1) != 1) {
-				appView.oddAlert(); // Emite aviso de template não ímpar
-			} else if(!imgSet){
-				appView.emptyImg(); // Emite aviso de imagem vazia
-			}else if(!tmplSet){
-				appView.emptyTmpl(); // Emite aviso de template vazio
-			}else{
+		if (e.getActionCommand().equals("GERAR CONVOLUÇÃO")) {
+			if ((appView.tmplLinhas.getValue() & 1) != 1) {
+				// Emite aviso de linha ímpar
+				appView.aviso("A LINHA deve conter um valor ÍMPAR!", "Linha ímpar");
+			} else if ((appView.tmplColunas.getValue() & 1) != 1) {
+				// Emite aviso de coluna impar
+				appView.aviso("A COLUNA deve conter um valor ÍMPAR!", "Coluna ímpar");
+			} else if (!imgSet) {
+				// Emite aviso de imagem vazia
+				appView.aviso("A IMAGEM está vazia!", "Imagem vazia");
+			} else if (!tmplSet) {
+				// Emite aviso de template vazia
+				appView.aviso("O TEMPLATE está vazio!", "Template vazio");
+			} else {
 				cc = new ConvolucaoControl(gridImg.img(), gridTmpl.img());
 			}
 
@@ -115,6 +128,7 @@ public class AppControl implements ActionListener, ChangeListener {
 		appView.img.revalidate();
 		appView.addGrid(appView.img, gridImg.gerarGrid(lin, col, false, null));
 
+		// Analisa se existe imagem
 		if (lin > 0 && col > 0)
 			imgSet = true;
 		else
@@ -134,7 +148,8 @@ public class AppControl implements ActionListener, ChangeListener {
 		appView.tmpl.repaint();
 		appView.tmpl.revalidate();
 		appView.addGrid(appView.tmpl, gridTmpl.gerarGrid(lin, col, false, null));
-
+		
+		// Analisa se existe template
 		if (lin > 0 && col > 0)
 			tmplSet = true;
 		else

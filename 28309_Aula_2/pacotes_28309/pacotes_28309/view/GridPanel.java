@@ -41,7 +41,7 @@ public class GridPanel extends JPanel {
 		// Novo grid e suas propriedades
 		grid = new JPanel[nLin][nCol];
 		setLayout(new GridBagLayout());
-		setBackground(new Color(33, 33, 33));
+		setBackground(new Color(33,33,33));
 
 		// Propriedade do gerenciado de layout
 		GridBagConstraints gbc = new GridBagConstraints();
@@ -100,8 +100,7 @@ public class GridPanel extends JPanel {
 		JPanel celula = new JPanel();
 
 		celula.setPreferredSize(new Dimension(15, 15));
-		celula.setBackground(new Color(33, 33, 33));
-
+		celula.setBackground(new Color(33,33,33));
 		celula.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
@@ -193,7 +192,8 @@ public class GridPanel extends JPanel {
 		if (saida == JFileChooser.APPROVE_OPTION) {
 			File nomeArq = arquivo.getSelectedFile();
 			nomeArqLido = nomeArq.toString();
-		}
+		}else if(saida == JFileChooser.CANCEL_OPTION)
+			nomeArqLido = "";		
 
 		// Aloca a Imagem carregada
 		try {
@@ -216,6 +216,8 @@ public class GridPanel extends JPanel {
 
 		if (userSelection == JFileChooser.APPROVE_OPTION)
 			fileToSave = fileChooser.getSelectedFile();
+		else if(userSelection == JFileChooser.CANCEL_OPTION)
+			return;
 
 		salvaPixels(fileToSave.toString(), "png", tipo);
 	}

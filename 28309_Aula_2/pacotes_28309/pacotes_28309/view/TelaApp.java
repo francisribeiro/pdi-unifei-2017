@@ -4,6 +4,7 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.*;
 import pacotes_28309.control.*;
+import javax.swing.UIManager.*;
 
 public class TelaApp extends JFrame {
 	private JPanel container, panelOne, panelTwo, imgBot, tmplBot, toolBar;
@@ -31,8 +32,8 @@ public class TelaApp extends JFrame {
 		// Montando Layout da Tela
 		generateComponents();
 		componentProperties();
-		addListeners(appControl);
 		layoutDesign();
+		addListeners(appControl);
 
 		// Empacotando e exibindo a aplicação.
 		this.pack();
@@ -62,7 +63,7 @@ public class TelaApp extends JFrame {
 		salvarTmpl = new JButton("Salvar Template");
 		imgCor = new JButton("Cor da Imagem");
 		tmplCor = new JButton("Cor do Template");
-		btnConvolucao = new JButton("CONVOLUÇÃO");
+		btnConvolucao = new JButton("GERAR CONVOLUÇÃO");
 
 		// Labels para imagem e template
 		lblImgLinhas = new JLabel("Linhas [0]: ");
@@ -310,24 +311,8 @@ public class TelaApp extends JFrame {
 	/**
 	 * Emite uma alerta caso o template não possua dimensões ímpares.
 	 */
-	public void oddAlert() {
-		JOptionPane.showMessageDialog(this, "O template precisa ter dimensões ÍMPARES!", "Aviso",
-				JOptionPane.WARNING_MESSAGE);
+	public void aviso(String msg, String titulo) {
+		JOptionPane.showMessageDialog(this, msg, titulo, JOptionPane.WARNING_MESSAGE);
 	}
-	
-	/**
-	 * Emite uma alerta caso a imagem não tenha sido setada.
-	 */
-	public void emptyImg() {
-		JOptionPane.showMessageDialog(this, "Não existe IMAGEM para ser Convoluída!", "Imagem vazia",
-				JOptionPane.WARNING_MESSAGE);
-	}
-	
-	/**
-	 * Emite uma alerta caso o template não tenha sido setada.
-	 */
-	public void emptyTmpl() {
-		JOptionPane.showMessageDialog(this, "Não existe TEMPLATE para ser Convoluído!", "Template Vazio",
-				JOptionPane.WARNING_MESSAGE);
-	}
+
 }
