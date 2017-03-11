@@ -3,20 +3,14 @@ package pacotes_28309.control;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.event.*;
-
 import pacotes_28309.view.*;
 
-/**
- * Classe AppControl: Principal controler da aplicação.
- * 
- * @author Francis Ribeiro
- */
 public class AppControl implements ActionListener, ChangeListener {
 
 	private Tela appView;
-	private TelaConvolucao appConvolucao;
 	private GridView gridImg, gridTmpl;
 	private Color imgLabelColor, tmplLabelColor;
+	private ConvolucaoControl cc;
 
 	/**
 	 * Construtor da classe. Exibe a aplicação.
@@ -63,8 +57,8 @@ public class AppControl implements ActionListener, ChangeListener {
 		}		
 		
 		// Convolucionar imagem
-		if (e.getActionCommand().equals("GERAR CONVOLUÇÃO")) {
-			appConvolucao = new TelaConvolucao(this);
+		if (e.getActionCommand().equals("CONVOLUÇÃO")) {
+			cc = new ConvolucaoControl(gridImg.img(), gridTmpl.img());
 		}
 	}
 

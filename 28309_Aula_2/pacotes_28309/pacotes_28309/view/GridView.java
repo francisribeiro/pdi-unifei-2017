@@ -25,9 +25,6 @@ public class GridView extends JPanel {
 	 * @return
 	 */
 	public JPanel gerarGrid(int nLin, int nCol, Boolean abrir) {
-		JPanel celula;
-		GridBagConstraints gbc;
-
 		// Caso esteja abrindo a imagem, setamos o tamanho do grid com o tamanho
 		// da imagem.
 		if (abrir) {
@@ -46,7 +43,7 @@ public class GridView extends JPanel {
 		setBackground(new Color(33, 33, 33));
 
 		// Propriedade do gerenciado de layout
-		gbc = new GridBagConstraints();
+		GridBagConstraints gbc = new GridBagConstraints();
 
 		// Então o grid é gerado
 		for (int lin = 0; lin < nLin; lin++) {
@@ -55,7 +52,7 @@ public class GridView extends JPanel {
 				gbc.gridy = lin;
 
 				// A cada iteração uma nova célula é gerada e armazenada no grid
-				celula = desenhaCelula();
+				JPanel celula = desenhaCelula();
 				grid[lin][col] = celula;
 
 				// Gerando as bordas do grid
@@ -97,18 +94,11 @@ public class GridView extends JPanel {
 	 * @return nova celula
 	 */
 	private JPanel desenhaCelula() {
-		JPanel celula;
+		JPanel celula = new JPanel();
 
-		// Instância de célula
-		celula = new JPanel();
-
-		// Tamanho unitário
-		celula.setPreferredSize(new Dimension(25, 25));
-
-		// Cor de fundo
+		celula.setPreferredSize(new Dimension(15, 15));
 		celula.setBackground(new Color(33, 33, 33));
-
-		// Eventos de mouse
+		
 		celula.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
@@ -143,24 +133,25 @@ public class GridView extends JPanel {
 	}
 
 	/**
-	 * Selecina a caminho para onde deverá ser salva a nova imagem.
+	 * Gera uma BufferedImage com os dados do grid.
 	 * 
-	 * @param tipo pode ser IMAGEM ou TEMPLATE
-	 */
-	public void salvarImagem(String tipo) {
-		JFileChooser fileChooser;
-		int userSelection;
-		File fileToSave = null;
+	 * @return imagem do grid
+	 */	
+	public BufferedImage img(){
+		BufferedImage img = new BufferedImage(colunas, linhas, BufferedImage.TYPE_INT_RGB);
+		int[] pixels = img.getRGB(0, 0, colunas, linhas, null, 0, colunas);
 
-		fileChooser = new JFileChooser();
-		userSelection = fileChooser.showSaveDialog(this);
-
-		if (userSelection == JFileChooser.APPROVE_OPTION)
-			fileToSave = fileChooser.getSelectedFile();
-
-		salvaPixels(fileToSave.toString(), "png", tipo);
+		// Percorre o JPanel salvando cada célula como um pixel
+		for (int col = 0; col < colunas; col++) 
+			for (int lin = 0; lin < linhas; lin++) 
+				pixels[colunas * lin + col] = grid[lin][col].getBackground().getRGB();
+				
+		// Gera uma imagem RGB
+		img.setRGB(0, 0, colunas, linhas, pixels, 0, colunas);
+		
+		return img;
 	}
-
+	
 	/**
 	 * Salva os pixels como imagem unica.
 	 *
@@ -169,22 +160,8 @@ public class GridView extends JPanel {
 	 * @param tipo (IMAGEM ou TEMPLATE)
 	 */
 	private void salvaPixels(String nome, String extensao, String tipo) {
-		BufferedImage image = new BufferedImage(colunas, linhas, BufferedImage.TYPE_INT_RGB);
-		int[] pixels = image.getRGB(0, 0, colunas, linhas, null, 0, colunas);
-
-		// Percorre o JPanel salvando cada célula como um pixel
-		for (int col = 0; col < colunas; col++) {
-			for (int lin = 0; lin < linhas; lin++) {
-				pixels[colunas * lin + col] = grid[lin][col].getBackground().getRGB();
-			}
-		}
-
-		// Gera uma imagem RGB
-		image.setRGB(0, 0, colunas, linhas, pixels, 0, colunas);
-
-		// Salva a imagem
 		try {
-			ImageIO.write(image, extensao, new File(nome + " [" + tipo + "]" + "." + extensao));
+			ImageIO.write(img(), extensao, new File(nome + " [" + tipo + "]" + "." + extensao));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -195,21 +172,18 @@ public class GridView extends JPanel {
 	 * 
 	 */
 	public void abrirImagem() {
-		JFileChooser arquivo;
-		File diretorio, nomeArq = null;
 		String nomeArqLido = null;
-		int saida;
-
+		
 		// Localizando o arquivo
-		arquivo = new JFileChooser();
-		diretorio = new File("..\\");
+		JFileChooser arquivo = new JFileChooser();
+		File diretorio = new File("..\\");
 		arquivo.setCurrentDirectory(diretorio);
 		arquivo.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-		saida = arquivo.showOpenDialog(arquivo);
+		int saida = arquivo.showOpenDialog(arquivo);
 
 		// Fazendo a leitura do arquivo
 		if (saida == JFileChooser.APPROVE_OPTION) {
-			nomeArq = arquivo.getSelectedFile();
+			File nomeArq = arquivo.getSelectedFile();
 			nomeArqLido = nomeArq.toString();
 		}
 
@@ -219,7 +193,22 @@ public class GridView extends JPanel {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
 	}
+	
+	/**
+	 * Selecina a caminho para onde deverá ser salva a nova imagem.
+	 * 
+	 * @param tipo pode ser IMAGEM ou TEMPLATE
+	 */
+	public void salvarImagem(String tipo) {
+		File fileToSave = null;
 
+		JFileChooser fileChooser = new JFileChooser();
+		int userSelection = fileChooser.showSaveDialog(this);
+
+		if (userSelection == JFileChooser.APPROVE_OPTION)
+			fileToSave = fileChooser.getSelectedFile();
+
+		salvaPixels(fileToSave.toString(), "png", tipo);
+	}
 }

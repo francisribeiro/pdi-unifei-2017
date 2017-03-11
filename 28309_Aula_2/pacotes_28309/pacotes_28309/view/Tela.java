@@ -3,14 +3,8 @@ package pacotes_28309.view;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.*;
-
 import pacotes_28309.control.*;
 
-/**
- * Classe Tela: Pricipal view da aplicação.
- * 
- * @author Francis Ribeiro
- */
 public class Tela extends JFrame {
 	private JPanel container, panelOne, panelTwo, imgBot, tmplBot, toolBar;
 	private JButton abrirImg, abrirTmpl, salvarImg, salvarTmpl, imgCor, tmplCor, btnConvolucao;
@@ -67,7 +61,7 @@ public class Tela extends JFrame {
 		salvarTmpl = new JButton("Salvar Template");
 		imgCor = new JButton("Cor da Imagem");
 		tmplCor = new JButton("Cor do Template");
-		btnConvolucao = new JButton("GERAR CONVOLUÇÃO");
+		btnConvolucao = new JButton("CONVOLUÇÃO");
 
 		// Labels para imagem e template
 		lblImgLinhas = new JLabel("Linhas [0]: ");
@@ -78,10 +72,10 @@ public class Tela extends JFrame {
 		corTmpl = new JLabel();
 
 		// Criando os Spinners com base no modelo
-		imgLinhas = new JSlider(0, 20, 1);
-		imgColunas = new JSlider(0, 25, 1);
-		tmplLinhas = new JSlider(0, 20, 1);
-		tmplColunas = new JSlider(0, 25, 1);
+		imgLinhas = new JSlider(0, 33, 1);
+		imgColunas = new JSlider(0, 40, 1);
+		tmplLinhas = new JSlider(0, 33, 1);
+		tmplColunas = new JSlider(0, 40, 1);
 
 	}
 
@@ -231,7 +225,6 @@ public class Tela extends JFrame {
 		tmplColunas.addChangeListener(appControl);
 	}
 
-	//
 	/**
 	 * Método auxiliar para setar as regras para um componente destinado ao
 	 * GridBagLayout e o adicionar.
