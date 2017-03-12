@@ -8,10 +8,12 @@ import pacotes_28309.view.*;
 public class AppControl implements ActionListener, ChangeListener {
 
 	private TelaApp appView;
-	private GridPanel gridImg, gridTmpl;
+	private GridControl gridImg, gridTmpl;
 	private Color imgLabelColor, tmplLabelColor;
-	private ConvolucaoControl cc;
 	private Boolean imgSet, tmplSet;
+
+	@SuppressWarnings("unused")
+	private ConvolucaoControl cc;
 
 	/**
 	 * Construtor da classe. Exibe a aplicação.
@@ -37,15 +39,15 @@ public class AppControl implements ActionListener, ChangeListener {
 
 		// Alterar cor da imagem
 		if (e.getActionCommand().equals("Cor da Imagem")) {
-			imgLabelColor = appView.selecionarCor(appView.getDefaultColor(appView.corImg));
-			appView.setLabelColor(appView.corImg, imgLabelColor);
+			imgLabelColor = appView.selecionarCor(appView.getDefaultColor(appView.lblCorImg));
+			appView.setLabelColor(appView.lblCorImg, imgLabelColor);
 			gridImg.setColor(imgLabelColor);
 		}
 
 		// Alterar cor do template
 		if (e.getActionCommand().equals("Cor do Template")) {
-			tmplLabelColor = appView.selecionarCor(appView.getDefaultColor(appView.corTmpl));
-			appView.setLabelColor(appView.corTmpl, tmplLabelColor);
+			tmplLabelColor = appView.selecionarCor(appView.getDefaultColor(appView.lblCorTmpl));
+			appView.setLabelColor(appView.lblCorTmpl, tmplLabelColor);
 			gridTmpl.setColor(tmplLabelColor);
 		}
 
@@ -84,27 +86,27 @@ public class AppControl implements ActionListener, ChangeListener {
 	@Override
 	public void stateChanged(ChangeEvent e) {
 		// Slider de linhas da Imagem
-		if (e.getSource() == appView.imgLinhas) {
-			appView.setLabel(appView.lblImgLinhas, "Linhas [" + appView.imgLinhas.getValue() + "]:");
-			imageGrid(appView.imgLinhas.getValue(), appView.imgColunas.getValue());
+		if (e.getSource() == appView.sldrImgLinhas) {
+			appView.setLabel(appView.lblsldrImgLinhas, "Linhas [" + appView.sldrImgLinhas.getValue() + "]:");
+			imageGrid(appView.sldrImgLinhas.getValue(), appView.sldrImgColunas.getValue());
 		}
 
 		// Slider de colunas da Imagem
-		if (e.getSource() == appView.imgColunas) {
-			appView.setLabel(appView.lblImgColunas, "Coluna [" + appView.imgColunas.getValue() + "]:");
-			imageGrid(appView.imgLinhas.getValue(), appView.imgColunas.getValue());
+		if (e.getSource() == appView.sldrImgColunas) {
+			appView.setLabel(appView.lblsldrImgColunas, "Coluna [" + appView.sldrImgColunas.getValue() + "]:");
+			imageGrid(appView.sldrImgLinhas.getValue(), appView.sldrImgColunas.getValue());
 		}
 
 		// Slider de linhas do Template
-		if (e.getSource() == appView.tmplLinhas) {
-			appView.setLabel(appView.lblTmplLinhas, "Linhas [" + appView.tmplLinhas.getValue() + "]:");
-			templateGrid(appView.tmplLinhas.getValue(), appView.tmplColunas.getValue());
+		if (e.getSource() == appView.sldrTmplLinhas) {
+			appView.setLabel(appView.lblsldrTmplLinhas, "Linhas [" + appView.sldrTmplLinhas.getValue() + "]:");
+			templateGrid(appView.sldrTmplLinhas.getValue(), appView.sldrTmplColunas.getValue());
 		}
 
 		// Slider de colunas do Template
-		if (e.getSource() == appView.tmplColunas) {
-			appView.setLabel(appView.lblTmplColunas, "Colunas [" + appView.tmplColunas.getValue() + "]:");
-			templateGrid(appView.tmplLinhas.getValue(), appView.tmplColunas.getValue());
+		if (e.getSource() == appView.sldrTmplColunas) {
+			appView.setLabel(appView.lblsldrTmplColunas, "Colunas [" + appView.sldrTmplColunas.getValue() + "]:");
+			templateGrid(appView.sldrTmplLinhas.getValue(), appView.sldrTmplColunas.getValue());
 		}
 	}
 
@@ -115,13 +117,12 @@ public class AppControl implements ActionListener, ChangeListener {
 	 * @param col largura do grid
 	 */
 	private void imageGrid(int lin, int col) {
-		gridImg = new GridPanel();
-		gridImg.setColor(appView.getDefaultColor(appView.corImg));
+		gridImg = new GridControl(lin, col, false, null);
 		appView.img.removeAll();
-		appView.img.repaint();
+		gridImg.setColor(appView.getDefaultColor(appView.lblCorImg));
 		appView.img.revalidate();
-		appView.addGrid(appView.img, gridImg.gerarGrid(lin, col, false, null));
-		appView.setLabelColor(appView.corImg, appView.getDefaultColor(appView.corImg));
+		appView.addGrid(appView.img, gridImg.criarGrid());
+		appView.setLabelColor(appView.lblCorImg, appView.getDefaultColor(appView.lblCorImg));
 
 		// Analisa se existe imagem
 		if (lin > 0 && col > 0)
@@ -137,13 +138,12 @@ public class AppControl implements ActionListener, ChangeListener {
 	 * @param col largura do grid
 	 */
 	private void templateGrid(int lin, int col) {
-		gridTmpl = new GridPanel();
-		gridTmpl.setColor(appView.getDefaultColor(appView.corTmpl));
+		gridTmpl = new GridControl(lin, col, false, null);
 		appView.tmpl.removeAll();
-		appView.tmpl.repaint();
+		gridTmpl.setColor(appView.getDefaultColor(appView.lblCorTmpl));
 		appView.tmpl.revalidate();
-		appView.addGrid(appView.tmpl, gridTmpl.gerarGrid(lin, col, false, null));
-		appView.setLabelColor(appView.corTmpl, appView.getDefaultColor(appView.corTmpl));
+		appView.addGrid(appView.tmpl, gridTmpl.criarGrid());
+		appView.setLabelColor(appView.lblCorTmpl, appView.getDefaultColor(appView.lblCorTmpl));
 
 		// Analisa se existe template
 		if (lin > 0 && col > 0)
@@ -156,11 +156,11 @@ public class AppControl implements ActionListener, ChangeListener {
 	 * Abre uma imagem.
 	 */
 	private void abrirImagem() {
-		gridImg = new GridPanel();
-		appView.addGrid(appView.img, gridImg.gerarGrid(0, 0, true, null));
+		gridImg = new GridControl(0, 0, true, null);
+		appView.img.removeAll();
+		appView.addGrid(appView.img, gridImg.criarGrid());
 		gridImg.setColor(Color.orange);
-		appView.tmpl.repaint();
-		appView.tmpl.revalidate();
+		appView.img.revalidate();
 		imgSet = true;
 	}
 
@@ -168,11 +168,11 @@ public class AppControl implements ActionListener, ChangeListener {
 	 * Abre um template.
 	 */
 	private void abrirTemplate() {
-		gridTmpl = new GridPanel();
-		appView.addGrid(appView.tmpl, gridTmpl.gerarGrid(0, 0, true, null));
+		gridTmpl = new GridControl(0, 0, true, null);
+		appView.tmpl.removeAll();
+		appView.addGrid(appView.tmpl, gridTmpl.criarGrid());
 		gridTmpl.setColor(Color.orange);
-		appView.img.repaint();
-		appView.img.revalidate();
+		appView.tmpl.revalidate();
 		tmplSet = true;
 	}
 

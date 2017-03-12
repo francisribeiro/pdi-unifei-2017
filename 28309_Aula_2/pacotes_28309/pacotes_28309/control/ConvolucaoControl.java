@@ -10,12 +10,9 @@ import pacotes_28309.view.*;
 public class ConvolucaoControl {
 
 	private TelaConvolucao appConvolucao;
-	private BufferedImage imagem, template;
-	private GridPanel imgConvoluida;
+	private GridControl imgConvoluida;
 
 	public ConvolucaoControl(BufferedImage imagem, BufferedImage template) {
-		this.imagem = imagem;
-		this.template = template;
 		this.appConvolucao = new TelaConvolucao(this);
 
 		// Faz a convolução da imagem
@@ -38,13 +35,14 @@ public class ConvolucaoControl {
 	 * 
 	 * @param lin altura do grid
 	 * @param col largura do grid
+	 * @param img que será colocada no grid
 	 */
 	private void imgConvoluidaGrid(int lin, int col, BufferedImage img) {
-		imgConvoluida = new GridPanel();
+		imgConvoluida = new GridControl(lin, col, true, img);
 		appConvolucao.pnlImgConvolucionada.removeAll();
 		appConvolucao.pnlImgConvolucionada.repaint();
 		appConvolucao.pnlImgConvolucionada.revalidate();
-		appConvolucao.addGrid(appConvolucao.pnlImgConvolucionada, imgConvoluida.gerarGrid(lin, col, true, img));
+		appConvolucao.addGrid(appConvolucao.pnlImgConvolucionada, imgConvoluida.criarGrid());
 	}
 
 	/**
@@ -70,7 +68,7 @@ public class ConvolucaoControl {
 	 * @return dados das cores da imagem
 	 * @throws IOException
 	 */
-	private static Dados[] dadosdaImagem(BufferedImage img) throws IOException {
+	private static ImageINFO[] dadosdaImagem(BufferedImage img) throws IOException {
 
 		// Dados da Imagem
 		int largura = img.getWidth();
@@ -78,9 +76,9 @@ public class ConvolucaoControl {
 		int[] dadosRGB = img.getRGB(0, 0, largura, altura, null, 0, largura);
 
 		// Dados das cores da Imagem
-		Dados r = new Dados(largura, altura);
-		Dados g = new Dados(largura, altura);
-		Dados b = new Dados(largura, altura);
+		ImageINFO r = new ImageINFO(largura, altura);
+		ImageINFO g = new ImageINFO(largura, altura);
+		ImageINFO b = new ImageINFO(largura, altura);
 
 		// Aloca os valores em um array
 		for (int y = 0; y < altura; y++)
@@ -91,7 +89,7 @@ public class ConvolucaoControl {
 				b.set(x, y, valorRGB & 0xFF);
 			}
 
-		return new Dados[] { r, g, b };
+		return new ImageINFO[] { r, g, b };
 	}
 
 	/**
@@ -102,8 +100,8 @@ public class ConvolucaoControl {
 	 * @return imagem de saída
 	 * @throws IOException
 	 */
-	private BufferedImage imagemDeSaida(Dados[] rgb) throws IOException {
-		Dados r = rgb[0], g = rgb[1], b = rgb[2];
+	private BufferedImage imagemDeSaida(ImageINFO[] rgb) throws IOException {
+		ImageINFO r = rgb[0], g = rgb[1], b = rgb[2];
 		BufferedImage imagemSaida = new BufferedImage(r.getLargura(), g.getAltura(), BufferedImage.TYPE_INT_ARGB);
 
 		for (int y = 0; y < r.getAltura(); y++)
@@ -127,14 +125,14 @@ public class ConvolucaoControl {
 	 * @param kernelDivisor divisor do filtro
 	 * @return dados da imagem de saída
 	 */
-	private static Dados processoDeConvolucao(Dados imagemEntrada, Dados template, int divisor) {
+	private static ImageINFO processoDeConvolucao(ImageINFO imagemEntrada, ImageINFO template, int divisor) {
 		int imgLargura = imagemEntrada.getLargura();
 		int imgAltura = imagemEntrada.getAltura();
 		int tmplLargura = template.getLargura();
 		int tmplAltura = template.getAltura();
 		int raiolargura = tmplLargura >>> 1;
 		int raioAltura = tmplAltura >>> 1;
-		Dados dadosImgSaida = new Dados(imgLargura, imgAltura);
+		ImageINFO dadosImgSaida = new ImageINFO(imgLargura, imgAltura);
 
 		// Faz a convolução multiplicando as matrizes
 		for (int i = imgLargura - 1; i >= 0; i--) {
@@ -163,8 +161,8 @@ public class ConvolucaoControl {
 	 */
 	private BufferedImage convoluir(BufferedImage img, BufferedImage tmpl) throws IOException {
 		int divisor = 256;
-		Dados[] imgArray = dadosdaImagem(img);
-		Dados[] templateArray = dadosdaImagem(tmpl);
+		ImageINFO[] imgArray = dadosdaImagem(img);
+		ImageINFO[] templateArray = dadosdaImagem(tmpl);
 
 		for (int i = 0; i < imgArray.length; i++)
 			imgArray[i] = processoDeConvolucao(imgArray[i], templateArray[i], divisor);

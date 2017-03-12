@@ -4,6 +4,7 @@ import java.awt.*;
 import javax.swing.*;
 import pacotes_28309.control.*;
 
+@SuppressWarnings("serial")
 public class TelaConvolucao extends JFrame {
 
 	public JPanel pnlImgConvolucionada;

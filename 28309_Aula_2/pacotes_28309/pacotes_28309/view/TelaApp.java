@@ -4,13 +4,13 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.*;
 import pacotes_28309.control.*;
-import javax.swing.UIManager.*;
 
+@SuppressWarnings("serial")
 public class TelaApp extends JFrame {
-	private JPanel container, panelOne, panelTwo, imgBot, tmplBot, toolBar;
+	private JPanel container, panelOne, panelTwo, imgBottom, tmplBottom, toolBar;
 	private JButton abrirImg, abrirTmpl, salvarImg, salvarTmpl, imgCor, tmplCor, btnConvolucao;
-	public JLabel lblImgLinhas, lblImgColunas, lblTmplLinhas, lblTmplColunas, corImg, corTmpl;
-	public JSlider imgLinhas, imgColunas, tmplLinhas, tmplColunas;
+	public JLabel lblsldrImgLinhas, lblsldrImgColunas, lblsldrTmplLinhas, lblsldrTmplColunas, lblCorImg, lblCorTmpl;
+	public JSlider sldrImgLinhas, sldrImgColunas, sldrTmplLinhas, sldrTmplColunas;
 	public JPanel img, tmpl;
 	private TitledBorder one, two;
 	private Border borda;
@@ -52,8 +52,8 @@ public class TelaApp extends JFrame {
 		panelTwo = new JPanel(new BorderLayout());
 		img = new JPanel(new BorderLayout());
 		tmpl = new JPanel(new BorderLayout());
-		imgBot = new JPanel(new GridBagLayout());
-		tmplBot = new JPanel(new GridBagLayout());
+		imgBottom = new JPanel(new GridBagLayout());
+		tmplBottom = new JPanel(new GridBagLayout());
 		toolBar = new JPanel(new GridBagLayout());
 
 		// Criando Botões;
@@ -66,18 +66,18 @@ public class TelaApp extends JFrame {
 		btnConvolucao = new JButton("GERAR CONVOLUÇÃO");
 
 		// Labels para imagem e template
-		lblImgLinhas = new JLabel("Linhas [0]: ");
-		lblTmplLinhas = new JLabel("Linhas [0]: ");
-		lblImgColunas = new JLabel("Colunas [0]: ");
-		lblTmplColunas = new JLabel("Colunas [0]: ");
-		corImg = new JLabel();
-		corTmpl = new JLabel();
+		lblsldrImgLinhas = new JLabel("Linhas [0]: ");
+		lblsldrTmplLinhas = new JLabel("Linhas [0]: ");
+		lblsldrImgColunas = new JLabel("Colunas [0]: ");
+		lblsldrTmplColunas = new JLabel("Colunas [0]: ");
+		lblCorImg = new JLabel();
+		lblCorTmpl = new JLabel();
 
 		// Criando os Sliders com base no modelo
-		imgLinhas = new JSlider(0, 33, 1);
-		imgColunas = new JSlider(0, 40, 1);
-		tmplLinhas = new JSlider(0, 33, 1);
-		tmplColunas = new JSlider(0, 40, 1);
+		sldrImgLinhas = new JSlider(0, 33, 1);
+		sldrImgColunas = new JSlider(0, 40, 1);
+		sldrTmplLinhas = new JSlider(0, 33, 1);
+		sldrTmplColunas = new JSlider(0, 40, 1);
 	}
 
 	/**
@@ -96,24 +96,24 @@ public class TelaApp extends JFrame {
 		// Add botões ao Panel
 
 		// Componentes da Imagem
-		addComp(imgBot, lblImgLinhas, 0, 0, 1, 1, GridBagConstraints.EAST, GridBagConstraints.NONE);
-		addComp(imgBot, imgLinhas, 1, 0, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
-		addComp(imgBot, lblImgColunas, 0, 2, 1, 1, GridBagConstraints.EAST, GridBagConstraints.NONE);
-		addComp(imgBot, imgColunas, 1, 2, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
-		addComp(imgBot, imgCor, 5, 2, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
-		addComp(imgBot, corImg, 5, 0, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
-		addComp(imgBot, abrirImg, 6, 2, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
-		addComp(imgBot, salvarImg, 6, 0, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
+		addComp(imgBottom, lblsldrImgLinhas, 0, 0, 1, 1, GridBagConstraints.EAST, GridBagConstraints.NONE);
+		addComp(imgBottom, sldrImgLinhas, 1, 0, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
+		addComp(imgBottom, lblsldrImgColunas, 0, 2, 1, 1, GridBagConstraints.EAST, GridBagConstraints.NONE);
+		addComp(imgBottom, sldrImgColunas, 1, 2, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
+		addComp(imgBottom, imgCor, 5, 2, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
+		addComp(imgBottom, lblCorImg, 5, 0, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
+		addComp(imgBottom, abrirImg, 6, 2, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
+		addComp(imgBottom, salvarImg, 6, 0, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
 
 		// Componentes do Template
-		addComp(tmplBot, lblTmplLinhas, 0, 0, 1, 1, GridBagConstraints.EAST, GridBagConstraints.NONE);
-		addComp(tmplBot, tmplLinhas, 1, 0, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
-		addComp(tmplBot, lblTmplColunas, 0, 2, 1, 1, GridBagConstraints.EAST, GridBagConstraints.NONE);
-		addComp(tmplBot, tmplColunas, 1, 2, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
-		addComp(tmplBot, tmplCor, 5, 2, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
-		addComp(tmplBot, corTmpl, 5, 0, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
-		addComp(tmplBot, abrirTmpl, 6, 2, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
-		addComp(tmplBot, salvarTmpl, 6, 0, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
+		addComp(tmplBottom, lblsldrTmplLinhas, 0, 0, 1, 1, GridBagConstraints.EAST, GridBagConstraints.NONE);
+		addComp(tmplBottom, sldrTmplLinhas, 1, 0, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
+		addComp(tmplBottom, lblsldrTmplColunas, 0, 2, 1, 1, GridBagConstraints.EAST, GridBagConstraints.NONE);
+		addComp(tmplBottom, sldrTmplColunas, 1, 2, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
+		addComp(tmplBottom, tmplCor, 5, 2, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
+		addComp(tmplBottom, lblCorTmpl, 5, 0, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
+		addComp(tmplBottom, abrirTmpl, 6, 2, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
+		addComp(tmplBottom, salvarTmpl, 6, 0, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
 
 		// Componente da toobar
 		addComp(toolBar, btnConvolucao, 5, 0, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.NONE);
@@ -121,8 +121,8 @@ public class TelaApp extends JFrame {
 		// Adicionando aos painéis
 		panelOne.add(img, BorderLayout.CENTER);
 		panelTwo.add(tmpl, BorderLayout.CENTER);
-		panelOne.add(imgBot, BorderLayout.SOUTH);
-		panelTwo.add(tmplBot, BorderLayout.SOUTH);
+		panelOne.add(imgBottom, BorderLayout.SOUTH);
+		panelTwo.add(tmplBottom, BorderLayout.SOUTH);
 
 		// Ajustando os painéis ao painel de container
 		container.setLayout(new GridLayout(1, 2));
@@ -148,7 +148,7 @@ public class TelaApp extends JFrame {
 		imgCor.setBackground(new Color(52, 73, 94));
 		tmplCor.setBackground(new Color(52, 73, 94));
 		btnConvolucao.setBackground(new Color(52, 73, 94));
-		
+
 		// Botões Font color
 		abrirImg.setForeground(new Color(189, 195, 199));
 		abrirTmpl.setForeground(new Color(189, 195, 199));
@@ -171,39 +171,39 @@ public class TelaApp extends JFrame {
 		two.setTitleColor(new Color(189, 195, 199));
 
 		// Label Font color
-		lblImgLinhas.setForeground(new Color(189, 195, 199));
-		lblTmplLinhas.setForeground(new Color(189, 195, 199));
-		lblImgColunas.setForeground(new Color(189, 195, 199));
-		lblTmplColunas.setForeground(new Color(189, 195, 199));
+		lblsldrImgLinhas.setForeground(new Color(189, 195, 199));
+		lblsldrTmplLinhas.setForeground(new Color(189, 195, 199));
+		lblsldrImgColunas.setForeground(new Color(189, 195, 199));
+		lblsldrTmplColunas.setForeground(new Color(189, 195, 199));
 
 		// Panel BG color
-		panelOne.setBackground(new Color(5,5,5));
-		panelTwo.setBackground(new Color(5,5,5));
-		img.setBackground(new Color(5,5,5));
-		tmpl.setBackground(new Color(5,5,5));
-		imgBot.setBackground(new Color(5,5,5));
-		tmplBot.setBackground(new Color(5,5,5));
-		toolBar.setBackground(new Color(5,5,5));
+		panelOne.setBackground(new Color(5, 5, 5));
+		panelTwo.setBackground(new Color(5, 5, 5));
+		img.setBackground(new Color(5, 5, 5));
+		tmpl.setBackground(new Color(5, 5, 5));
+		imgBottom.setBackground(new Color(5, 5, 5));
+		tmplBottom.setBackground(new Color(5, 5, 5));
+		toolBar.setBackground(new Color(5, 5, 5));
 
 		// Container bg color
-		container.setBackground(new Color(5,5,5));
+		container.setBackground(new Color(5, 5, 5));
 
 		// Convolução size
 		btnConvolucao.setPreferredSize(new Dimension(230, 40));
 
 		// JSlider color
-		imgLinhas.setBackground(new Color(5,5,5));
-		imgColunas.setBackground(new Color(5,5,5));
-		tmplLinhas.setBackground(new Color(5,5,5));
-		tmplColunas.setBackground(new Color(5,5,5));
+		sldrImgLinhas.setBackground(new Color(5, 5, 5));
+		sldrImgColunas.setBackground(new Color(5, 5, 5));
+		sldrTmplLinhas.setBackground(new Color(5, 5, 5));
+		sldrTmplColunas.setBackground(new Color(5, 5, 5));
 
 		// label cor
-		corImg.setPreferredSize(new Dimension(140, 25));
-		corTmpl.setPreferredSize(new Dimension(150, 25));
-		corImg.setOpaque(true);
-		corTmpl.setOpaque(true);
-		corImg.setBackground(Color.orange);
-		corTmpl.setBackground(Color.orange);
+		lblCorImg.setPreferredSize(new Dimension(140, 25));
+		lblCorTmpl.setPreferredSize(new Dimension(150, 25));
+		lblCorImg.setOpaque(true);
+		lblCorTmpl.setOpaque(true);
+		lblCorImg.setBackground(Color.orange);
+		lblCorTmpl.setBackground(Color.orange);
 
 	}
 
@@ -224,10 +224,10 @@ public class TelaApp extends JFrame {
 		btnConvolucao.addActionListener(appControl);
 
 		// Criando os Spinners com base no modelo
-		imgLinhas.addChangeListener(appControl);
-		imgColunas.addChangeListener(appControl);
-		tmplLinhas.addChangeListener(appControl);
-		tmplColunas.addChangeListener(appControl);
+		sldrImgLinhas.addChangeListener(appControl);
+		sldrImgColunas.addChangeListener(appControl);
+		sldrTmplLinhas.addChangeListener(appControl);
+		sldrTmplColunas.addChangeListener(appControl);
 	}
 
 	/**
@@ -314,6 +314,9 @@ public class TelaApp extends JFrame {
 
 	/**
 	 * Emite uma alerta caso o template não possua dimensões ímpares.
+	 * 
+	 * @param msg que será exibida
+	 * @param titulo da caixa de mensagem
 	 */
 	public void aviso(String msg, String titulo) {
 		JOptionPane.showMessageDialog(this, msg, titulo, JOptionPane.WARNING_MESSAGE);
