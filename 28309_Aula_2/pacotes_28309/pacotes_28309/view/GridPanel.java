@@ -41,7 +41,7 @@ public class GridPanel extends JPanel {
 		// Novo grid e suas propriedades
 		grid = new JPanel[nLin][nCol];
 		setLayout(new GridBagLayout());
-		setBackground(new Color(33,33,33));
+		setBackground(new Color(5, 5, 5));
 
 		// Propriedade do gerenciado de layout
 		GridBagConstraints gbc = new GridBagConstraints();
@@ -61,14 +61,14 @@ public class GridPanel extends JPanel {
 
 				if (lin < nLin - 1) {
 					if (col < nCol - 1)
-						border = new MatteBorder(1, 1, 0, 0, Color.DARK_GRAY);
+						border = new MatteBorder(1, 1, 0, 0, new Color(33, 33, 33));
 					else
-						border = new MatteBorder(1, 1, 0, 1, Color.DARK_GRAY);
+						border = new MatteBorder(1, 1, 0, 1, new Color(33, 33, 33));
 				} else {
 					if (col < nCol - 1)
-						border = new MatteBorder(1, 1, 1, 0, Color.DARK_GRAY);
+						border = new MatteBorder(1, 1, 1, 0, new Color(33, 33, 33));
 					else
-						border = new MatteBorder(1, 1, 1, 1, Color.DARK_GRAY);
+						border = new MatteBorder(1, 1, 1, 1, new Color(33, 33, 33));
 				}
 
 				// Adicionando as bordas e a célula ao painel
@@ -100,7 +100,8 @@ public class GridPanel extends JPanel {
 		JPanel celula = new JPanel();
 
 		celula.setPreferredSize(new Dimension(15, 15));
-		celula.setBackground(new Color(33,33,33));
+		// celula.setBackground(new Color(33,33,33));
+		celula.setBackground(new Color(0, 0, 0));
 		celula.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
@@ -192,8 +193,8 @@ public class GridPanel extends JPanel {
 		if (saida == JFileChooser.APPROVE_OPTION) {
 			File nomeArq = arquivo.getSelectedFile();
 			nomeArqLido = nomeArq.toString();
-		}else if(saida == JFileChooser.CANCEL_OPTION)
-			nomeArqLido = "";		
+		} else if (saida == JFileChooser.CANCEL_OPTION)
+			nomeArqLido = "";
 
 		// Aloca a Imagem carregada
 		try {
@@ -216,7 +217,7 @@ public class GridPanel extends JPanel {
 
 		if (userSelection == JFileChooser.APPROVE_OPTION)
 			fileToSave = fileChooser.getSelectedFile();
-		else if(userSelection == JFileChooser.CANCEL_OPTION)
+		else if (userSelection == JFileChooser.CANCEL_OPTION)
 			return;
 
 		salvaPixels(fileToSave.toString(), "png", tipo);

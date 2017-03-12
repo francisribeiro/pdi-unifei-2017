@@ -76,8 +76,8 @@ public class TelaApp extends JFrame {
 		// Criando os Sliders com base no modelo
 		imgLinhas = new JSlider(0, 33, 1);
 		imgColunas = new JSlider(0, 40, 1);
-		tmplLinhas = new JSlider(0, 7, 1);
-		tmplColunas = new JSlider(0, 7, 1);
+		tmplLinhas = new JSlider(0, 33, 1);
+		tmplColunas = new JSlider(0, 40, 1);
 	}
 
 	/**
@@ -85,7 +85,7 @@ public class TelaApp extends JFrame {
 	 */
 	private void componentProperties() {
 		// Adicionando as Bordas dos painéis
-		borda = BorderFactory.createLineBorder(new Color(255, 193, 7), 1);
+		borda = BorderFactory.createLineBorder(new Color(189, 195, 199), 1);
 		one = BorderFactory.createTitledBorder(borda, "Imagem Sintética");
 		two = BorderFactory.createTitledBorder(borda, "Template");
 		one.setTitleJustification(TitledBorder.CENTER);
@@ -141,57 +141,61 @@ public class TelaApp extends JFrame {
 	private void layoutDesign() {
 
 		// Botões BG color
-		abrirImg.setBackground(new Color(63, 81, 181));
-		abrirTmpl.setBackground(new Color(63, 81, 181));
-		salvarImg.setBackground(new Color(63, 81, 181));
-		salvarTmpl.setBackground(new Color(63, 81, 181));
-		imgCor.setBackground(new Color(63, 81, 181));
-		tmplCor.setBackground(new Color(63, 81, 181));
-		btnConvolucao.setBackground(new Color(230, 74, 25));
-
+		abrirImg.setBackground(new Color(52, 73, 94));
+		abrirTmpl.setBackground(new Color(52, 73, 94));
+		salvarImg.setBackground(new Color(52, 73, 94));
+		salvarTmpl.setBackground(new Color(52, 73, 94));
+		imgCor.setBackground(new Color(52, 73, 94));
+		tmplCor.setBackground(new Color(52, 73, 94));
+		btnConvolucao.setBackground(new Color(52, 73, 94));
+		
 		// Botões Font color
-		abrirImg.setForeground(new Color(255, 193, 7));
-		abrirTmpl.setForeground(new Color(255, 193, 7));
-		salvarImg.setForeground(new Color(255, 193, 7));
-		salvarTmpl.setForeground(new Color(255, 193, 7));
-		imgCor.setForeground(new Color(255, 193, 7));
-		tmplCor.setForeground(new Color(255, 193, 7));
-		btnConvolucao.setForeground(new Color(255, 255, 255));
+		abrirImg.setForeground(new Color(189, 195, 199));
+		abrirTmpl.setForeground(new Color(189, 195, 199));
+		salvarImg.setForeground(new Color(189, 195, 199));
+		salvarTmpl.setForeground(new Color(189, 195, 199));
+		imgCor.setForeground(new Color(189, 195, 199));
+		tmplCor.setForeground(new Color(189, 195, 199));
+		btnConvolucao.setForeground(new Color(189, 195, 199));
+
+		// Botões tamanho
+		abrirImg.setPreferredSize(new Dimension(137, 26));
+		abrirTmpl.setPreferredSize(new Dimension(147, 26));
 
 		// Borda Font size
 		one.setTitleFont(new Font("Arial", Font.PLAIN, 20));
 		two.setTitleFont(new Font("Arial", Font.PLAIN, 20));
 
 		// Borda Font color
-		one.setTitleColor(new Color(255, 193, 7));
-		two.setTitleColor(new Color(255, 193, 7));
+		one.setTitleColor(new Color(189, 195, 199));
+		two.setTitleColor(new Color(189, 195, 199));
 
 		// Label Font color
-		lblImgLinhas.setForeground(new Color(255, 193, 7));
-		lblTmplLinhas.setForeground(new Color(255, 193, 7));
-		lblImgColunas.setForeground(new Color(255, 193, 7));
-		lblTmplColunas.setForeground(new Color(255, 193, 7));
+		lblImgLinhas.setForeground(new Color(189, 195, 199));
+		lblTmplLinhas.setForeground(new Color(189, 195, 199));
+		lblImgColunas.setForeground(new Color(189, 195, 199));
+		lblTmplColunas.setForeground(new Color(189, 195, 199));
 
 		// Panel BG color
-		panelOne.setBackground(new Color(33, 33, 33));
-		panelTwo.setBackground(new Color(33, 33, 33));
-		img.setBackground(new Color(33, 33, 33));
-		tmpl.setBackground(new Color(33, 33, 33));
-		imgBot.setBackground(new Color(33, 33, 33));
-		tmplBot.setBackground(new Color(33, 33, 33));
-		toolBar.setBackground(new Color(33, 33, 33));
+		panelOne.setBackground(new Color(5,5,5));
+		panelTwo.setBackground(new Color(5,5,5));
+		img.setBackground(new Color(5,5,5));
+		tmpl.setBackground(new Color(5,5,5));
+		imgBot.setBackground(new Color(5,5,5));
+		tmplBot.setBackground(new Color(5,5,5));
+		toolBar.setBackground(new Color(5,5,5));
 
 		// Container bg color
-		container.setBackground(new Color(33, 33, 33));
+		container.setBackground(new Color(5,5,5));
 
 		// Convolução size
 		btnConvolucao.setPreferredSize(new Dimension(230, 40));
 
 		// JSlider color
-		imgLinhas.setBackground(new Color(33, 33, 33));
-		imgColunas.setBackground(new Color(33, 33, 33));
-		tmplLinhas.setBackground(new Color(33, 33, 33));
-		tmplColunas.setBackground(new Color(33, 33, 33));
+		imgLinhas.setBackground(new Color(5,5,5));
+		imgColunas.setBackground(new Color(5,5,5));
+		tmplLinhas.setBackground(new Color(5,5,5));
+		tmplColunas.setBackground(new Color(5,5,5));
 
 		// label cor
 		corImg.setPreferredSize(new Dimension(140, 25));
@@ -199,7 +203,7 @@ public class TelaApp extends JFrame {
 		corImg.setOpaque(true);
 		corTmpl.setOpaque(true);
 		corImg.setBackground(Color.CYAN);
-		corTmpl.setBackground(Color.MAGENTA);
+		corTmpl.setBackground(Color.CYAN);
 
 	}
 

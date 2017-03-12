@@ -24,7 +24,6 @@ public class TelaConvolucao extends JFrame {
 
 		// Panel para a imagem
 		pnlImgConvolucionada = new JPanel(new BorderLayout());
-		pnlImgConvolucionada.setBackground(new Color(33, 33, 33));
 		this.add(pnlImgConvolucionada);
 
 		// Empacotando e exibindo a aplicação.

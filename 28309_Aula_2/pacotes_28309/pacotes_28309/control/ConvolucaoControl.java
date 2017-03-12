@@ -140,13 +140,13 @@ public class ConvolucaoControl {
 		// Faz a convolução multiplicando as matrizes
 		for (int i = imgLargura - 1; i >= 0; i--) {
 			for (int j = imgAltura - 1; j >= 0; j--) {
-				double newValue = 0.0;
+				double novoValor = 0.0;
 				for (int kw = tmplLargura - 1; kw >= 0; kw--)
 					for (int kh = tmplAltura - 1; kh >= 0; kh--)
-						newValue += template.get(kw, kh) * imagemEntrada.get(limites(i + kw - raiolargura, imgLargura),
+						novoValor += template.get(kw, kh) * imagemEntrada.get(limites(i + kw - raiolargura, imgLargura),
 								limites(j + kh - raioAltura, imgAltura));
 
-				dadosImgSaida.set(i, j, (int) Math.round(newValue / divisor));
+				dadosImgSaida.set(i, j, (int) Math.round(novoValor / divisor));
 			}
 		}
 

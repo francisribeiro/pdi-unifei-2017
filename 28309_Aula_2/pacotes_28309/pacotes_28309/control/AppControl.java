@@ -60,7 +60,7 @@ public class AppControl implements ActionListener, ChangeListener {
 
 		// Salvar template
 		if (e.getActionCommand().equals("Salvar Template")) {
-			if (imgSet)
+			if (tmplSet)
 				gridTmpl.salvarImagem("TEMPLATE");
 			else // Emite aviso de template vazio
 				appView.aviso("Não Existe TEMPLATE para ser salvo!", "Template vazio");
@@ -68,13 +68,7 @@ public class AppControl implements ActionListener, ChangeListener {
 
 		// Convolucionar imagem
 		if (e.getActionCommand().equals("GERAR CONVOLUÇÃO")) {
-			if ((appView.tmplLinhas.getValue() & 1) != 1) {
-				// Emite aviso de linha ímpar
-				appView.aviso("A LINHA deve conter um valor ÍMPAR!", "Linha ímpar");
-			} else if ((appView.tmplColunas.getValue() & 1) != 1) {
-				// Emite aviso de coluna impar
-				appView.aviso("A COLUNA deve conter um valor ÍMPAR!", "Coluna ímpar");
-			} else if (!imgSet) {
+			if (!imgSet) {
 				// Emite aviso de imagem vazia
 				appView.aviso("A IMAGEM está vazia!", "Imagem vazia");
 			} else if (!tmplSet) {
@@ -143,7 +137,7 @@ public class AppControl implements ActionListener, ChangeListener {
 	 */
 	private void templateGrid(int lin, int col) {
 		gridTmpl = new GridPanel();
-		gridTmpl.setColor(Color.MAGENTA);
+		gridTmpl.setColor(Color.CYAN);
 		appView.tmpl.removeAll();
 		appView.tmpl.repaint();
 		appView.tmpl.revalidate();
