@@ -158,7 +158,7 @@ public class AppControl implements ActionListener, ChangeListener {
 	private void abrirImagem() {
 		gridImg = new GridPanel();
 		appView.addGrid(appView.img, gridImg.gerarGrid(0, 0, true, null));
-		gridImg.setColor(Color.MAGENTA);
+		gridImg.setColor(Color.orange);
 		appView.tmpl.repaint();
 		appView.tmpl.revalidate();
 		imgSet = true;
@@ -170,7 +170,7 @@ public class AppControl implements ActionListener, ChangeListener {
 	private void abrirTemplate() {
 		gridTmpl = new GridPanel();
 		appView.addGrid(appView.tmpl, gridTmpl.gerarGrid(0, 0, true, null));
-		gridTmpl.setColor(Color.MAGENTA);
+		gridTmpl.setColor(Color.orange);
 		appView.img.repaint();
 		appView.img.revalidate();
 		tmplSet = true;

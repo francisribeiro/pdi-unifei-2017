@@ -202,8 +202,8 @@ public class TelaApp extends JFrame {
 		corTmpl.setPreferredSize(new Dimension(150, 25));
 		corImg.setOpaque(true);
 		corTmpl.setOpaque(true);
-		corImg.setBackground(Color.MAGENTA);
-		corTmpl.setBackground(Color.MAGENTA);
+		corImg.setBackground(Color.orange);
+		corTmpl.setBackground(Color.orange);
 
 	}
 
