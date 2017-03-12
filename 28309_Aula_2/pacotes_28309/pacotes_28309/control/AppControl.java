@@ -109,7 +109,7 @@ public class AppControl implements ActionListener, ChangeListener {
 	}
 
 	/**
-	 * Gera um novo grid de imagem
+	 * Gera um novo grid de imagem e faz algumas atribuições à esse grid.
 	 * 
 	 * @param lin altura do grid
 	 * @param col largura do grid
@@ -131,7 +131,7 @@ public class AppControl implements ActionListener, ChangeListener {
 	}
 
 	/**
-	 * Gera um novo grid de template
+	 * Gera um novo grid de imagem e faz algumas atribuições à esse grid.
 	 * 
 	 * @param lin altura do grid
 	 * @param col largura do grid
@@ -158,7 +158,7 @@ public class AppControl implements ActionListener, ChangeListener {
 	private void abrirImagem() {
 		gridImg = new GridPanel();
 		appView.addGrid(appView.img, gridImg.gerarGrid(0, 0, true, null));
-		gridImg.setColor(Color.CYAN);
+		gridImg.setColor(Color.MAGENTA);
 		appView.tmpl.repaint();
 		appView.tmpl.revalidate();
 		imgSet = true;

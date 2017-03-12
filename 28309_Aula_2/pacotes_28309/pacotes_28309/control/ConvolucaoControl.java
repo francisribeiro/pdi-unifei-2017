@@ -17,9 +17,8 @@ public class ConvolucaoControl {
 		this.imagem = imagem;
 		this.template = template;
 		this.appConvolucao = new TelaConvolucao(this);
-		
 
-		//Faz a convolução da imagem
+		// Faz a convolução da imagem
 		try {
 			imgConvoluidaGrid(imagem.getHeight(), imagem.getWidth(), convoluir(imagem, template));
 		} catch (IOException e1) {
@@ -143,8 +142,8 @@ public class ConvolucaoControl {
 				double novoValor = 0.0;
 				for (int kw = tmplLargura - 1; kw >= 0; kw--)
 					for (int kh = tmplAltura - 1; kh >= 0; kh--)
-						novoValor += template.get(kw, kh) * imagemEntrada.get(limites(i + kw - raiolargura, imgLargura),
-								limites(j + kh - raioAltura, imgAltura));
+						novoValor += template.get(kw, kh) * imagemEntrada.get(limites(i - kw + raiolargura, imgLargura),
+								limites(j - kh + raioAltura, imgAltura));
 
 				dadosImgSaida.set(i, j, (int) Math.round(novoValor / divisor));
 			}
