@@ -116,11 +116,12 @@ public class AppControl implements ActionListener, ChangeListener {
 	 */
 	private void imageGrid(int lin, int col) {
 		gridImg = new GridPanel();
-		gridImg.setColor(Color.CYAN);
+		gridImg.setColor(appView.getDefaultColor(appView.corImg));
 		appView.img.removeAll();
 		appView.img.repaint();
 		appView.img.revalidate();
 		appView.addGrid(appView.img, gridImg.gerarGrid(lin, col, false, null));
+		appView.setLabelColor(appView.corImg, appView.getDefaultColor(appView.corImg));
 
 		// Analisa se existe imagem
 		if (lin > 0 && col > 0)
@@ -137,12 +138,13 @@ public class AppControl implements ActionListener, ChangeListener {
 	 */
 	private void templateGrid(int lin, int col) {
 		gridTmpl = new GridPanel();
-		gridTmpl.setColor(Color.CYAN);
+		gridTmpl.setColor(appView.getDefaultColor(appView.corTmpl));
 		appView.tmpl.removeAll();
 		appView.tmpl.repaint();
 		appView.tmpl.revalidate();
 		appView.addGrid(appView.tmpl, gridTmpl.gerarGrid(lin, col, false, null));
-		
+		appView.setLabelColor(appView.corTmpl, appView.getDefaultColor(appView.corTmpl));
+
 		// Analisa se existe template
 		if (lin > 0 && col > 0)
 			tmplSet = true;
