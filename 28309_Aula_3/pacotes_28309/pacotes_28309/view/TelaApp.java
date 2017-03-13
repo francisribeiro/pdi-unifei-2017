@@ -5,10 +5,13 @@ import java.awt.image.*;
 import javax.swing.*;
 import pacotes_28309.control.*;
 
+@SuppressWarnings("serial")
 public class TelaApp extends JFrame {
 	public JButton btnAbrirImagem, btnZoomMais, btnZoomMenos, btnGirarEsquerda, btnGirarDireita;
 	public JButton btnEspelhar, btnFrente, btnTras, btnCima, btnBaixo;
+	private JToolBar toolBar;
 	private JPanel canvas;
+	private Graphics draw;
 
 	/**
 	 * Contrutor da classe. Define as configurações da janela principal da
@@ -27,10 +30,8 @@ public class TelaApp extends JFrame {
 
 		// Adicionando a barra de ferramentas ao JFrame.
 		toolBar(this, appControl);
-
-		// Criando e adicionando painel ao Frame
-		canvas = new JPanel(new BorderLayout());
-		this.add(canvas);
+		canvas = new JPanel();
+		this.add(canvas, BorderLayout.CENTER);
 
 		// Empacotando e exibindo a aplicação.
 		this.pack();
@@ -44,12 +45,10 @@ public class TelaApp extends JFrame {
 	 * @param appControl Controle principal da aplicação.
 	 */
 	protected void toolBar(JFrame frame, AppControl appControl) {
-		JToolBar toolBar;
-
 		// Cria a barra de ferramentas.
 		toolBar = new JToolBar();
-		toolBar.setRollover(true);
-		toolBar.setOrientation(JToolBar.VERTICAL);
+		toolBar.setFloatable(false);
+		// toolBar.setOrientation(JToolBar.VERTICAL);
 
 		// Cria os botões.
 		btnAbrirImagem = new JButton();
@@ -74,6 +73,17 @@ public class TelaApp extends JFrame {
 		btnTras.setIcon(new ImageIcon(this.getClass().getResource("tras.png")));
 		btnCima.setIcon(new ImageIcon(this.getClass().getResource("cima.png")));
 		btnBaixo.setIcon(new ImageIcon(this.getClass().getResource("baixo.png")));
+
+		// Desabilita os botões
+		btnZoomMais.setEnabled(false);
+		btnZoomMenos.setEnabled(false);
+		btnGirarEsquerda.setEnabled(false);
+		btnGirarDireita.setEnabled(false);
+		btnEspelhar.setEnabled(false);
+		btnFrente.setEnabled(false);
+		btnTras.setEnabled(false);
+		btnCima.setEnabled(false);
+		btnBaixo.setEnabled(false);
 
 		// Adiciona os listeners.
 		btnAbrirImagem.addActionListener(appControl);
@@ -118,7 +128,20 @@ public class TelaApp extends JFrame {
 		toolBar.add(btnBaixo);
 
 		// Adiciona toolbar ao JFrame.
-		frame.add(toolBar, BorderLayout.WEST);
+		frame.add(toolBar, BorderLayout.NORTH);
+	}
+
+	public void paintComponent(Graphics g, BufferedImage img) {
+		canvas.paintComponents(g);
+		g.drawImage(img, 10, 10, this);
+	}
+
+	public Graphics startDrawing() {
+
+		// Add os elementos gráficos ao painel.
+		draw = canvas.getGraphics();
+
+		return (draw);
 	}
 
 	/**
@@ -126,13 +149,23 @@ public class TelaApp extends JFrame {
 	 * 
 	 * @param img que será alocada
 	 */
-	public void displayImage(BufferedImage img) {
-		if (img != null) {
-			canvas.removeAll(); // Limpa o painel
-			ImageIcon image = new ImageIcon(img);
-			JLabel label = new JLabel("", image, JLabel.CENTER);
-			canvas.add(label, BorderLayout.CENTER);
-			canvas.revalidate(); // Reativa o painel
-		}
+	public void habilitarBotoes() {
+		btnZoomMais.setEnabled(true);
+		btnZoomMenos.setEnabled(true);
+		btnGirarEsquerda.setEnabled(true);
+		btnGirarDireita.setEnabled(true);
+		btnEspelhar.setEnabled(true);
+		btnFrente.setEnabled(true);
+		btnTras.setEnabled(true);
+		btnCima.setEnabled(true);
+		btnBaixo.setEnabled(true);
+
 	}
+	
+	public void limparTela() {
+		this.draw.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+		this.draw.setColor(getBackground());
+		this.draw.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+	}
+
 }

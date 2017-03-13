@@ -1,5 +1,6 @@
 package pacotes_28309.control;
 
+import java.awt.Graphics;
 import java.awt.event.*;
 import java.awt.image.*;
 import java.io.*;
@@ -16,7 +17,9 @@ import pacotes_28309.view.*;
 public class AppControl implements ActionListener {
 
 	private TelaApp appView;
-	private BufferedImage imagem;
+	private BufferedImage img;
+	private Graphics draw;
+	private ImagemControl imagemControl;
 
 	/**
 	 * Construtor da classe. Exibe a aplicação.
@@ -29,8 +32,11 @@ public class AppControl implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		// Abrir Imagem
 		if (e.getSource() == appView.btnAbrirImagem) {
-			System.out.println("Abrir imagem");
-			appView.displayImage(abrirImagem());
+			abrirImagem();
+			if (img != null)
+				appView.habilitarBotoes();
+			
+			plotarImagem();
 		}
 
 		// Zoom +
@@ -79,8 +85,7 @@ public class AppControl implements ActionListener {
 		}
 
 	}
-	
-	
+
 	/**
 	 * Método para navegar pela estrutura de diretórios e carregar uma imagem.
 	 * 
@@ -104,12 +109,23 @@ public class AppControl implements ActionListener {
 
 		// Aloca a Imagem carregada
 		try {
-			imagem = ImageIO.read(new File(nomeArqLido));
+			img = ImageIO.read(new File(nomeArqLido));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
-		return imagem;
+		return img;
+	}
+
+	/**
+	 * 
+	 */
+	private void plotarImagem() {
+		draw = appView.startDrawing();
+		appView.limparTela();
+		imagemControl = new ImagemControl(img, draw);
+		imagemControl.plotarImagem(); 
+		//appView.paintComponent(draw,imagemControl.plotarImagem() );
 	}
 
 }
