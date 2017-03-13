@@ -9,7 +9,7 @@ import pacotes_28309.control.*;
  * 
  * @author Francis Ribeiro
  */
-public class Tela extends JFrame {
+public class TelaApp extends JFrame {
 	public JButton btnCarregarImagem;
 
 	/**
@@ -19,7 +19,7 @@ public class Tela extends JFrame {
 	 * @param appControl
 	 *            Controle principal da aplicação.
 	 */
-	public Tela(AppControl appControl) {
+	public TelaApp(AppControl appControl) {
 
 		// Setando as configurações da janela.
 		this.setTitle("App Chassi");
