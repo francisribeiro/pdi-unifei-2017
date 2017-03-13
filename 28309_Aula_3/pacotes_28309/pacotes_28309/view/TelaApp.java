@@ -1,12 +1,14 @@
 package pacotes_28309.view;
 
 import java.awt.*;
+import java.awt.image.*;
 import javax.swing.*;
 import pacotes_28309.control.*;
 
 public class TelaApp extends JFrame {
-	private JButton btnAbrirImagem, btnZoomMais, btnZoomMenos, btnGirarEsquerda, btnGirarDireita;
-	private JButton btnEspelhar, btnFrente, btnTras, btnCima, btnBaixo;
+	public JButton btnAbrirImagem, btnZoomMais, btnZoomMenos, btnGirarEsquerda, btnGirarDireita;
+	public JButton btnEspelhar, btnFrente, btnTras, btnCima, btnBaixo;
+	private JPanel canvas;
 
 	/**
 	 * Contrutor da classe. Define as configurações da janela principal da
@@ -26,6 +28,10 @@ public class TelaApp extends JFrame {
 		// Adicionando a barra de ferramentas ao JFrame.
 		toolBar(this, appControl);
 
+		// Criando e adicionando painel ao Frame
+		canvas = new JPanel(new BorderLayout());
+		this.add(canvas);
+
 		// Empacotando e exibindo a aplicação.
 		this.pack();
 		this.setVisible(true);
@@ -43,18 +49,31 @@ public class TelaApp extends JFrame {
 		// Cria a barra de ferramentas.
 		toolBar = new JToolBar();
 		toolBar.setRollover(true);
+		toolBar.setOrientation(JToolBar.VERTICAL);
 
 		// Cria os botões.
-		btnAbrirImagem = new JButton("Abrir Imagem");
-		btnZoomMais = new JButton("Zoom +");
-		btnZoomMenos = new JButton("Zoom -");
-		btnGirarEsquerda = new JButton("<-- Girar");
-		btnGirarDireita = new JButton("Girar -->");
-		btnEspelhar = new JButton("Espelhar");
-		btnFrente = new JButton("Frente");
-		btnTras = new JButton("Trás");
-		btnCima = new JButton("Cima");
-		btnBaixo = new JButton("Baixo");
+		btnAbrirImagem = new JButton();
+		btnZoomMais = new JButton();
+		btnZoomMenos = new JButton();
+		btnGirarEsquerda = new JButton();
+		btnGirarDireita = new JButton();
+		btnEspelhar = new JButton();
+		btnFrente = new JButton();
+		btnTras = new JButton();
+		btnCima = new JButton();
+		btnBaixo = new JButton();
+
+		// Adiciona os icones
+		btnAbrirImagem.setIcon(new ImageIcon(this.getClass().getResource("abrir.png")));
+		btnZoomMais.setIcon(new ImageIcon(this.getClass().getResource("zoom_in.png")));
+		btnZoomMenos.setIcon(new ImageIcon(this.getClass().getResource("zoom_out.png")));
+		btnGirarEsquerda.setIcon(new ImageIcon(this.getClass().getResource("esquerda.png")));
+		btnGirarDireita.setIcon(new ImageIcon(this.getClass().getResource("direita.png")));
+		btnEspelhar.setIcon(new ImageIcon(this.getClass().getResource("espelhar.png")));
+		btnFrente.setIcon(new ImageIcon(this.getClass().getResource("frente.png")));
+		btnTras.setIcon(new ImageIcon(this.getClass().getResource("tras.png")));
+		btnCima.setIcon(new ImageIcon(this.getClass().getResource("cima.png")));
+		btnBaixo.setIcon(new ImageIcon(this.getClass().getResource("baixo.png")));
 
 		// Adiciona os listeners.
 		btnAbrirImagem.addActionListener(appControl);
@@ -99,6 +118,21 @@ public class TelaApp extends JFrame {
 		toolBar.add(btnBaixo);
 
 		// Adiciona toolbar ao JFrame.
-		frame.add(toolBar, BorderLayout.NORTH);
+		frame.add(toolBar, BorderLayout.WEST);
+	}
+
+	/**
+	 * Coloca uma Imagem dentro do painel
+	 * 
+	 * @param img que será alocada
+	 */
+	public void displayImage(BufferedImage img) {
+		if (img != null) {
+			canvas.removeAll(); // Limpa o painel
+			ImageIcon image = new ImageIcon(img);
+			JLabel label = new JLabel("", image, JLabel.CENTER);
+			canvas.add(label, BorderLayout.CENTER);
+			canvas.revalidate(); // Reativa o painel
+		}
 	}
 }
