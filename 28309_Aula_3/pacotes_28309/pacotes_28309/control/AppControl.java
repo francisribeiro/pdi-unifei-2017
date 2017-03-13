@@ -18,7 +18,6 @@ public class AppControl implements ActionListener {
 
 	private TelaApp appView;
 	private BufferedImage img;
-	private Graphics draw;
 	private ImagemControl imagemControl;
 
 	/**
@@ -32,11 +31,9 @@ public class AppControl implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		// Abrir Imagem
 		if (e.getSource() == appView.btnAbrirImagem) {
-			abrirImagem();
-			if (img != null)
+			appView.plotaImagem(abrirImagem());
+			if(img != null)
 				appView.habilitarBotoes();
-			
-			plotarImagem();
 		}
 
 		// Zoom +
@@ -115,17 +112,6 @@ public class AppControl implements ActionListener {
 		}
 
 		return img;
-	}
-
-	/**
-	 * 
-	 */
-	private void plotarImagem() {
-		draw = appView.startDrawing();
-		appView.limparTela();
-		imagemControl = new ImagemControl(img, draw);
-		imagemControl.plotarImagem(); 
-		//appView.paintComponent(draw,imagemControl.plotarImagem() );
 	}
 
 }

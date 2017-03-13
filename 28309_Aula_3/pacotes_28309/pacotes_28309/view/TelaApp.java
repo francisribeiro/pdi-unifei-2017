@@ -132,23 +132,20 @@ public class TelaApp extends JFrame {
 	}
 
 	public void paintComponent(Graphics g, BufferedImage img) {
+		int x = (canvas.getWidth() - img.getWidth()) / 2;
+		int y = (canvas.getHeight() - img.getHeight()) / 2;
 		canvas.paintComponents(g);
-		g.drawImage(img, 10, 10, this);
+		g.drawImage(img, 0, 0, this);
 	}
 
-	public Graphics startDrawing() {
-
-		// Add os elementos gráficos ao painel.
-		draw = canvas.getGraphics();
-
-		return (draw);
+	public void plotaImagem(BufferedImage img){
+		if(img != null){
+			canvas.removeAll();
+			paintComponent(canvas.getGraphics(), img);
+			canvas.revalidate();
+		}
 	}
-
-	/**
-	 * Coloca uma Imagem dentro do painel
-	 * 
-	 * @param img que será alocada
-	 */
+		
 	public void habilitarBotoes() {
 		btnZoomMais.setEnabled(true);
 		btnZoomMenos.setEnabled(true);
@@ -159,13 +156,6 @@ public class TelaApp extends JFrame {
 		btnTras.setEnabled(true);
 		btnCima.setEnabled(true);
 		btnBaixo.setEnabled(true);
-
-	}
-	
-	public void limparTela() {
-		this.draw.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-		this.draw.setColor(getBackground());
-		this.draw.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 	}
 
 }
