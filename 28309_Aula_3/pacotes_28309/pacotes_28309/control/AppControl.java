@@ -1,6 +1,5 @@
 package pacotes_28309.control;
 
-import java.awt.Graphics;
 import java.awt.event.*;
 import java.awt.image.*;
 import java.io.*;
@@ -32,18 +31,20 @@ public class AppControl implements ActionListener {
 		// Abrir Imagem
 		if (e.getSource() == appView.btnAbrirImagem) {
 			appView.plotaImagem(abrirImagem());
-			if(img != null)
+			if (img != null){
 				appView.habilitarBotoes();
+				imagemControl = new ImagemControl(img);
+			}
 		}
 
 		// Zoom +
 		if (e.getSource() == appView.btnZoomMais) {
-			System.out.println("Zoom +");
+			appView.plotaImagem(imagemControl.zoomIn());
 		}
 
 		// Zoom -
 		if (e.getSource() == appView.btnZoomMenos) {
-			System.out.println("Zoom -");
+			appView.plotaImagem(imagemControl.zoomOut());
 		}
 
 		// Girar esquerda
@@ -110,7 +111,7 @@ public class AppControl implements ActionListener {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
+		
 		return img;
 	}
 

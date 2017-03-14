@@ -11,7 +11,6 @@ public class TelaApp extends JFrame {
 	public JButton btnEspelhar, btnFrente, btnTras, btnCima, btnBaixo;
 	private JToolBar toolBar;
 	private JPanel canvas;
-	private Graphics draw;
 
 	/**
 	 * Contrutor da classe. Define as configurações da janela principal da
@@ -131,21 +130,47 @@ public class TelaApp extends JFrame {
 		frame.add(toolBar, BorderLayout.NORTH);
 	}
 
+	/**
+	 * Repinta o canvas para os eventos futuros.
+	 * 
+	 * @param g graficos
+	 */
+	private void limparTela(Graphics g) {
+		g.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+		g.setColor(getBackground());
+		g.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+	}
+
+	/**
+	 * Responsável gráfico por colocar a imagem na tela
+	 * 
+	 * @param g gráficos
+	 * @param img imagem para ser plotada
+	 */
 	public void paintComponent(Graphics g, BufferedImage img) {
 		int x = (canvas.getWidth() - img.getWidth()) / 2;
 		int y = (canvas.getHeight() - img.getHeight()) / 2;
+
 		canvas.paintComponents(g);
-		g.drawImage(img, 0, 0, this);
+		limparTela(g);
+		g.drawImage(img, x, y, this);
 	}
 
-	public void plotaImagem(BufferedImage img){
-		if(img != null){
-			canvas.removeAll();
+	/**
+	 * Plota a imagem na tela
+	 * 
+	 * @param img de entrada
+	 */
+	public void plotaImagem(BufferedImage img) {
+		if (img != null) {
 			paintComponent(canvas.getGraphics(), img);
-			canvas.revalidate();
+
 		}
 	}
-		
+
+	/** 
+	 * Habilita os botões de transformações
+	 */
 	public void habilitarBotoes() {
 		btnZoomMais.setEnabled(true);
 		btnZoomMenos.setEnabled(true);
