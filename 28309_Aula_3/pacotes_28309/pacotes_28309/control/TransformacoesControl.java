@@ -1,95 +1,67 @@
 package pacotes_28309.control;
 
+import java.awt.*;
 import java.awt.image.*;
-import java.io.IOException;
-import pacotes_28309.model.*;
 
 public class TransformacoesControl {
 
 	private BufferedImage img;
-	private int colunas, linhas;
+	private int largura, altura;
 	protected int angulo = 0;
 	protected int escala = 0;
+	protected int l = 0;
+	protected int a = 0;
 
 	public TransformacoesControl(BufferedImage img) {
 		this.img = img;
-		this.colunas = img.getWidth();
-		this.linhas = img.getHeight();
+		this.largura = img.getWidth();
+		this.altura = img.getHeight();
 	}
 
 	/**
-	 * Adiciona as informações das imagens em um array de Dados.
+	 * Escala uma imagem usando o algoritmo de vizinhança 4 para preeenchimento
+	 * de pixels
 	 * 
-	 * @param img imagem pare extrair dados
-	 * @return dados da imagem
-	 * @throws IOException
+	 * @param imagem de entrada para ser escalada
+	 * @param mais zoomIn True, zoomOut False
+	 * @return imagem escalada
 	 */
-	private static ImageINFO dadosdaImagem(BufferedImage img) throws IOException {
+	public BufferedImage escalar(Boolean mais) {
 
-		// Dados da Imagem
-		int largura = img.getWidth();
-		int altura = img.getHeight();
-		int[] pixels = img.getRGB(0, 0, largura, altura, null, 0, largura);
-
-		for (int x = 0; x < largura; x++)
-			for (int y = 0; y < altura; y++)
-				pixels[largura * y + x] = img.getRGB(x, y);
-
-		return new ImageINFO(pixels, largura, altura);
-	}
-
-	/**
-	 * Gera uma BufferedImage contento a imagem de saída para ser impressa na
-	 * tela.
-	 * 
-	 * @param img array com os valores da imagem
-	 * @return imagem de saída
-	 * @throws IOException
-	 */
-	private BufferedImage imagemDeSaida(ImageINFO img) throws IOException {
-		BufferedImage imagemSaida = new BufferedImage(img.getLargura(), img.getAltura(), BufferedImage.TYPE_INT_ARGB);
-		imagemSaida.setRGB(0, 0, img.getLargura(), img.getAltura(), img.getPixels(), 0, img.getLargura());
-		return imagemSaida;
-	}
-
-		
-	public BufferedImage resizePixels2(BufferedImage imagem, Boolean mais) {
-		
+		// Verifica se aumenta ou diminui a escala
 		if (mais)
 			escala += 20;
 		else
 			escala -= 20;
-		
-		int largura = imagem.getWidth();
-		int altura = imagem.getHeight();
-		BufferedImage temp = new BufferedImage(largura+escala, altura+escala, BufferedImage.TYPE_INT_ARGB);
-		
-		// EDIT: added +1 to account for an early rounding problem
-		int x_ratio = (int) ((largura << 16) / (largura+escala)) + 1;
-		int y_ratio = (int) ((altura << 16) / (altura+escala)) + 1;
+
+		BufferedImage novaImagem = new BufferedImage(largura + escala, altura + escala, BufferedImage.TYPE_INT_ARGB);
+
+		// +1 adicionado para um problema de arredondamento
+		int proporcaoX = (int) ((largura << 16) / (largura + escala)) + 1;
+		int proporcaoY = (int) ((altura << 16) / (altura + escala)) + 1;
 
 		int x2, y2;
-		
-		for (int i = 0; i < (altura+escala); i++) {
-			for (int j = 0; j < largura+escala; j++) {
-				x2 = ((j * x_ratio) >> 16);
-				y2 = ((i * y_ratio) >> 16);
-				temp.setRGB(j,i , imagem.getRGB(x2, y2));
-				//temp[(i * largura+escala) + j] = pixels[(y2 * largura) + x2];
+
+		// Faz a escala da imagem preenchendo a vizinhança
+		for (int i = 0; i < (altura + escala); i++) {
+			for (int j = 0; j < largura + escala; j++) {
+				x2 = ((j * proporcaoX) >> 16);
+				y2 = ((i * proporcaoY) >> 16);
+				novaImagem.setRGB(j, i, img.getRGB(x2, y2));
 			}
 		}
-		
-		return temp;
+
+		return novaImagem;
 	}
 
 	/**
-	 * Rotaciona uma imagem préviamente aberta.
+	 * Rotaciona uma imagem com base em um ângulo
 	 * 
 	 * @param pic imagem a ser rotacionada.
 	 * @param esquerda True, rotação à direita. False, rotação à esquerda
 	 * @return imagem rotacionada
 	 */
-	public BufferedImage rotacao(BufferedImage imagem, Boolean esquerda) {
+	public BufferedImage rotacionar(Boolean esquerda) {
 
 		// Verifica para que lado rotacionar a imagem
 		if (esquerda)
@@ -97,8 +69,6 @@ public class TransformacoesControl {
 		else
 			angulo -= 5;
 
-		int largura = imagem.getWidth();
-		int altura = imagem.getHeight();
 		double angle = Math.toRadians(angulo);
 		double sin = Math.sin(angle);
 		double cos = Math.cos(angle);
@@ -113,11 +83,61 @@ public class TransformacoesControl {
 				int xx = (int) (+a * cos - b * sin + x0);
 				int yy = (int) (+a * sin + b * cos + y0);
 
-				// Plota o pixel(x, y) da mesma cor que o pixel (xx, yy),
-				// se não for borda
-				if (xx >= 0 && xx < largura && yy >= 0 && yy < altura) {
-					novaImagem.setRGB(x, y, imagem.getRGB(xx, yy));
-				}
+				// Plota o pixel(x, y) da mesma cor que o pixel (xx, yy), se não
+				// for borda
+				if (xx >= 0 && xx < largura && yy >= 0 && yy < altura)
+					novaImagem.setRGB(x, y, img.getRGB(xx, yy));
+			}
+		}
+
+		return novaImagem;
+	}
+
+	/**
+	 * Inverte os pixels das imagens, fazendo o espelhamento.
+	 * 
+	 * @return imagem espelhada
+	 */
+	public BufferedImage espelhar() {
+		BufferedImage novaImagem = new BufferedImage(largura, altura, BufferedImage.TYPE_INT_ARGB);
+
+		// Cria a imagem espelhada pixel a pixel
+		for (int y = 0; y < altura; y++) {
+			for (int lx = 0, rx = largura - 1; lx < largura; lx++, rx--) {
+				// Pega o valor do pixel e seta o pixel espelhado na imagem
+				novaImagem.setRGB(rx, y, img.getRGB(lx, y));
+			}
+		}
+
+		img = novaImagem;
+
+		return novaImagem;
+	}
+
+	/**
+	 * Translada uma imagem com base nos parametros recebidos.
+	 * 
+	 * @param xx distância em x para movimentar
+	 * @param yy distância em y para movimentar
+	 * @return imagem transladada
+	 */
+	public BufferedImage transladar(int xx, int yy) {
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		double width = screenSize.getWidth();
+		double height = screenSize.getHeight();
+		int cgx = (int) ((width - largura) / 2);
+		int cgy = (int) ((height - altura) / 2);
+
+		// Incrementos de altura e largura
+		l += xx;
+		a += yy;
+
+		BufferedImage novaImagem = new BufferedImage((int) width, (int) height, BufferedImage.TYPE_INT_ARGB);
+
+		for (int x = 0; x < largura; x++) {
+			for (int y = 0; y < altura; y++) {
+				// Pega o valor do pixel e seta o pixel espelhado na imagem
+				novaImagem.setRGB(cgx + x + l, cgy + y + a, img.getRGB(x, y));
 			}
 		}
 

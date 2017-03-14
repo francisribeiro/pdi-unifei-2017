@@ -30,6 +30,8 @@ public class TelaApp extends JFrame {
 		// Adicionando a barra de ferramentas ao JFrame.
 		toolBar(this, appControl);
 		canvas = new JPanel();
+		canvas.setBackground(Color.DARK_GRAY);
+
 		this.add(canvas, BorderLayout.CENTER);
 
 		// Empacotando e exibindo a aplicação.
@@ -137,12 +139,12 @@ public class TelaApp extends JFrame {
 	 */
 	private void limparTela(Graphics g) {
 		g.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-		g.setColor(getBackground());
+		g.setColor(Color.DARK_GRAY);
 		g.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 	}
 
 	/**
-	 * Responsável gráfico por colocar a imagem na tela
+	 * Método para sobreescrever o método de pintura da tela
 	 * 
 	 * @param g gráficos
 	 * @param img imagem para ser plotada
@@ -162,10 +164,8 @@ public class TelaApp extends JFrame {
 	 * @param img de entrada
 	 */
 	public void plotaImagem(BufferedImage img) {
-		if (img != null) {
+		if (img != null) 
 			paintComponent(canvas.getGraphics(), img);
-
-		}
 	}
 
 	/** 

@@ -17,7 +17,7 @@ public class AppControl implements ActionListener {
 
 	private TelaApp appView;
 	private BufferedImage img;
-	private TransformacoesControl imagemControl;
+	private TransformacoesControl transformacoes;
 
 	/**
 	 * Construtor da classe. Exibe a aplicação.
@@ -33,53 +33,53 @@ public class AppControl implements ActionListener {
 			appView.plotaImagem(abrirImagem());
 			if (img != null){
 				appView.habilitarBotoes();
-				imagemControl = new TransformacoesControl(img);
+				transformacoes = new TransformacoesControl(img);
 			}
 		}
 
 		// Zoom +
 		if (e.getSource() == appView.btnZoomMais) {
-			appView.plotaImagem(imagemControl.resizePixels2(img, true) );
+			appView.plotaImagem(transformacoes.escalar(true));
 		}
 
 		// Zoom -
 		if (e.getSource() == appView.btnZoomMenos) {
-			appView.plotaImagem(imagemControl.resizePixels2(img, false) );
+			appView.plotaImagem(transformacoes.escalar(false) );
 		}
 
 		// Girar esquerda
 		if (e.getSource() == appView.btnGirarEsquerda) {
-			appView.plotaImagem(imagemControl.rotacao(img, true));
+			appView.plotaImagem(transformacoes.rotacionar(true));
 		}
 
 		// Girar direta
 		if (e.getSource() == appView.btnGirarDireita) {
-			appView.plotaImagem(imagemControl.rotacao(img, false));
+			appView.plotaImagem(transformacoes.rotacionar(false));
 		}
 
 		// Abrir Imagem
 		if (e.getSource() == appView.btnEspelhar) {
-			System.out.println("Espelhar");
+			appView.plotaImagem(transformacoes.espelhar());
 		}
 
 		// Mover frente
 		if (e.getSource() == appView.btnFrente) {
-			System.out.println("Frente");
+			appView.plotaImagem(transformacoes.transladar(20, 0));
 		}
 
 		// Mover trás
 		if (e.getSource() == appView.btnTras) {
-			System.out.println("Trás");
+			appView.plotaImagem(transformacoes.transladar(-20, 0));
 		}
 
 		// Mover cima
 		if (e.getSource() == appView.btnCima) {
-			System.out.println("Cima");
+			appView.plotaImagem(transformacoes.transladar(0, -20));
 		}
 
 		// Mover baixo
 		if (e.getSource() == appView.btnBaixo) {
-			System.out.println("Baixo");
+			appView.plotaImagem(transformacoes.transladar(0, 20));
 		}
 
 	}
