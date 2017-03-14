@@ -17,7 +17,7 @@ public class AppControl implements ActionListener {
 
 	private TelaApp appView;
 	private BufferedImage img;
-	private ImagemControl imagemControl;
+	private TransformacoesControl imagemControl;
 
 	/**
 	 * Construtor da classe. Exibe a aplicação.
@@ -33,28 +33,40 @@ public class AppControl implements ActionListener {
 			appView.plotaImagem(abrirImagem());
 			if (img != null){
 				appView.habilitarBotoes();
-				imagemControl = new ImagemControl(img);
+				imagemControl = new TransformacoesControl(img);
 			}
 		}
 
 		// Zoom +
 		if (e.getSource() == appView.btnZoomMais) {
-			appView.plotaImagem(imagemControl.zoomIn());
+			//appView.plotaImagem(imagemControl.zoomIn(img));
+			try {
+				appView.plotaImagem(imagemControl.escalar(img, true) );
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
 
 		// Zoom -
 		if (e.getSource() == appView.btnZoomMenos) {
-			appView.plotaImagem(imagemControl.zoomOut());
+			//appView.plotaImagem(imagemControl.zoomOut(img));
+			try {
+				appView.plotaImagem(imagemControl.escalar(img, false) );
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
 
 		// Girar esquerda
 		if (e.getSource() == appView.btnGirarEsquerda) {
-			System.out.println("Girar esquerda");
+			appView.plotaImagem(imagemControl.rotacao(img, true));
 		}
 
 		// Girar direta
 		if (e.getSource() == appView.btnGirarDireita) {
-			System.out.println("Girar direita");
+			appView.plotaImagem(imagemControl.rotacao(img, false));
 		}
 
 		// Abrir Imagem
