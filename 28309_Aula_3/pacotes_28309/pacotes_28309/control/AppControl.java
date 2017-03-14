@@ -39,24 +39,12 @@ public class AppControl implements ActionListener {
 
 		// Zoom +
 		if (e.getSource() == appView.btnZoomMais) {
-			//appView.plotaImagem(imagemControl.zoomIn(img));
-			try {
-				appView.plotaImagem(imagemControl.escalar(img, true) );
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+			appView.plotaImagem(imagemControl.resizePixels2(img, true) );
 		}
 
 		// Zoom -
 		if (e.getSource() == appView.btnZoomMenos) {
-			//appView.plotaImagem(imagemControl.zoomOut(img));
-			try {
-				appView.plotaImagem(imagemControl.escalar(img, false) );
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+			appView.plotaImagem(imagemControl.resizePixels2(img, false) );
 		}
 
 		// Girar esquerda

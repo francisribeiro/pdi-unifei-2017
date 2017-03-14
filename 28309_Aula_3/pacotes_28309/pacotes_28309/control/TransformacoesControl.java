@@ -11,7 +11,6 @@ public class TransformacoesControl {
 	protected int angulo = 0;
 	protected int escala = 0;
 
-
 	public TransformacoesControl(BufferedImage img) {
 		this.img = img;
 		this.colunas = img.getWidth();
@@ -53,94 +52,34 @@ public class TransformacoesControl {
 		return imagemSaida;
 	}
 
-	/**
-	 * Bilinear resize ARGB image. pixels is an array of size w * h. Target
-	 * dimension is w2 * h2. w2 * h2 cannot be zero.
-	 * 
-	 * @param pixels Image pixels.
-	 * @param w Image width.
-	 * @param h Image height.
-	 * @param w2 New width.
-	 * @param h2 New height.
-	 * @return New array with size w2 * h2.
-	 */
-	public int[] resizeBilinear(int[] pixels, int w, int h, int w2, int h2) {
-		int[] temp = new int[w2 * h2];
-		int a, b, c, d, x, y, index;
-		float x_ratio = ((float) (w - 1)) / w2;
-		float y_ratio = ((float) (h - 1)) / h2;
-		float x_diff, y_diff, blue, red, green;
-		int offset = 0;
-		for (int i = 0; i < h2; i++) {
-			for (int j = 0; j < w2; j++) {
-				x = (int) (x_ratio * j);
-				y = (int) (y_ratio * i);
-				x_diff = (x_ratio * j) - x;
-				y_diff = (y_ratio * i) - y;
-				index = (y * w + x);
-				a = pixels[index];
-				b = pixels[index + 1];
-				c = pixels[index + w];
-				d = pixels[index + w + 1];
-
-				// blue element
-				// Yb = Ab(1-w)(1-h) + Bb(w)(1-h) + Cb(h)(1-w) + Db(wh)
-				blue = (a & 0xff) * (1 - x_diff) * (1 - y_diff) + (b & 0xff) * (x_diff) * (1 - y_diff)
-						+ (c & 0xff) * (y_diff) * (1 - x_diff) + (d & 0xff) * (x_diff * y_diff);
-
-				// green element
-				// Yg = Ag(1-w)(1-h) + Bg(w)(1-h) + Cg(h)(1-w) + Dg(wh)
-				green = ((a >> 8) & 0xff) * (1 - x_diff) * (1 - y_diff) + ((b >> 8) & 0xff) * (x_diff) * (1 - y_diff)
-						+ ((c >> 8) & 0xff) * (y_diff) * (1 - x_diff) + ((d >> 8) & 0xff) * (x_diff * y_diff);
-
-				// red element
-				// Yr = Ar(1-w)(1-h) + Br(w)(1-h) + Cr(h)(1-w) + Dr(wh)
-				red = ((a >> 16) & 0xff) * (1 - x_diff) * (1 - y_diff) + ((b >> 16) & 0xff) * (x_diff) * (1 - y_diff)
-						+ ((c >> 16) & 0xff) * (y_diff) * (1 - x_diff) + ((d >> 16) & 0xff) * (x_diff * y_diff);
-
-				temp[offset++] = 0xff000000 | // hardcode alpha
-						((((int) red) << 16) & 0xff0000) | ((((int) green) << 8) & 0xff00) | ((int) blue);
-			}
-		}
-		return temp;
-	}
-
-	
-	public int[] resizePixels(int[] pixels,int w1,int h1,int w2,int h2) {
-	    int[] temp = new int[w2*h2] ;
-	    // EDIT: added +1 to account for an early rounding problem
-	    int x_ratio = (int)((w1<<16)/w2) +1;
-	    int y_ratio = (int)((h1<<16)/h2) +1;
-	    //int x_ratio = (int)((w1<<16)/w2) ;
-	    //int y_ratio = (int)((h1<<16)/h2) ;
-	    int x2, y2 ;
-	    for (int i=0;i<h2;i++) {
-	        for (int j=0;j<w2;j++) {
-	            x2 = ((j*x_ratio)>>16) ;
-	            y2 = ((i*y_ratio)>>16) ;
-	            temp[(i*w2)+j] = pixels[(y2*w1)+x2] ;
-	        }                
-	    }                
-	    return temp ;
-	}
-	
-	public BufferedImage escalar(BufferedImage imagem, boolean mais) throws IOException {
-		ImageINFO data = dadosdaImagem(imagem);
+		
+	public BufferedImage resizePixels2(BufferedImage imagem, Boolean mais) {
 		
 		if (mais)
 			escala += 20;
 		else
-			escala -=20;
+			escala -= 20;
+		
+		int largura = imagem.getWidth();
+		int altura = imagem.getHeight();
+		BufferedImage temp = new BufferedImage(largura+escala, altura+escala, BufferedImage.TYPE_INT_ARGB);
+		
+		// EDIT: added +1 to account for an early rounding problem
+		int x_ratio = (int) ((largura << 16) / (largura+escala)) + 1;
+		int y_ratio = (int) ((altura << 16) / (altura+escala)) + 1;
 
-		int[] pixels = resizePixels(data.getPixels(), data.getLargura(), data.getAltura(), data.getAltura() + escala,
-				data.getLargura() + escala);
-
-		data.setAltura(data.getAltura() + escala);
-		data.setLargura(data.getLargura() + escala);
-		data.setPixels(pixels);
-
-		return imagemDeSaida(data);
-
+		int x2, y2;
+		
+		for (int i = 0; i < (altura+escala); i++) {
+			for (int j = 0; j < largura+escala; j++) {
+				x2 = ((j * x_ratio) >> 16);
+				y2 = ((i * y_ratio) >> 16);
+				temp.setRGB(j,i , imagem.getRGB(x2, y2));
+				//temp[(i * largura+escala) + j] = pixels[(y2 * largura) + x2];
+			}
+		}
+		
+		return temp;
 	}
 
 	/**
