@@ -10,15 +10,16 @@ import pacotes_28309.control.*;
 
 @SuppressWarnings("serial")
 public class AppView extends JFrame {
-	public JButton btnAbrirImagem, btnSalvarImagem, btnZoomMais, btnZoomMenos, btnGirarEsquerda, btnGirarDireita;
-	public JButton btnEspelhar, btnFrente, btnTras, btnCima, btnBaixo, btnCor;
-	private JPanel container, toolBarTransformacoes, tooBarImagem;
-	private JPanel left, right;
+	public JButton btnAbrirImagem, btnSalvarImagem, btnZoomMais, btnZoomMenos;
+	public JButton btnGirarEsquerda, btnGirarDireita, btnEspelhar, btnFrente;
+	public JButton btnTras, btnCima, btnBaixo, btnCor;
+	private JPanel container, toolBarTransformacoes, tooBarImagem, left, right;
 	public JPanel leftImg;
 	public JSlider sldrLargura, sldrAltura;
 	private Border borda;
 	private TitledBorder one, two;
-	public JLabel linhas, colunas, cor;
+	private JLabel linhas, colunas;
+	public JLabel cor;
 
 	/**
 	 * Contrutor da classe. Define as configurações da janela principal da
@@ -34,8 +35,10 @@ public class AppView extends JFrame {
 		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		this.setLayout(new BorderLayout());
 
-		// Adicionando a barra de ferramentas ao JFrame.
+		// Montando o layout
 		imagemLayout();
+
+		// Adicionando as barras de ferramentas ao JFrame.
 		tooBarImagem(appControl);
 		toolBarTransformacoes(appControl);
 
@@ -47,13 +50,13 @@ public class AppView extends JFrame {
 
 	private void imagemLayout() {
 
-		// Criando os painéis
+		// Criando os painéis e adicionado os gerenciadores de layout
 		container = new JPanel(new GridLayout(1, 2, 10, 10));
 		left = new JPanel(new BorderLayout());
 		right = new JPanel(new BorderLayout());
 		leftImg = new JPanel(new BorderLayout());
-		
-		// Adicionando as Bordas dos painéis
+
+		// Adicionando as Bordas dos painéis e suas propriedades
 		borda = BorderFactory.createLineBorder(Color.gray, 0);
 		one = BorderFactory.createTitledBorder(borda, "Imagem Original");
 		two = BorderFactory.createTitledBorder(borda, "Imagem Transformada");
@@ -74,12 +77,13 @@ public class AppView extends JFrame {
 	}
 
 	/**
+	 * Barra de ferramentas para as transformações geométricas
 	 * 
-	 * @param frame JFrame da classe {@link #Tela(AppControl)}.
-	 * @param appControl Controle principal da aplicação.
+	 * @param appControl controle principal
 	 */
 	private void toolBarTransformacoes(AppControl appControl) {
 
+		// Painel da barra de ferramentas
 		toolBarTransformacoes = new JPanel(new GridLayout(9, 1, 10, 10));
 
 		// Cria os botões.
@@ -141,32 +145,40 @@ public class AppView extends JFrame {
 		right.add(toolBarTransformacoes, BorderLayout.WEST);
 	}
 
+	/**
+	 * Barra de ferramentas para as opções de imagem
+	 * 
+	 * @param appControl controle principal
+	 */
 	private void tooBarImagem(AppControl appControl) {
 
+		// Painel da barra de ferramentas
 		tooBarImagem = new JPanel(new GridBagLayout());
 
-		// Cria os botões.
+		// Cria os botões
 		btnAbrirImagem = new JButton("Abrir Imagem");
 		btnSalvarImagem = new JButton("Salvar Imagem");
 		btnCor = new JButton("Selecionar Cor");
 		linhas = new JLabel("Linhas: ");
 		colunas = new JLabel("Colunas: ");
+
+		// Label de cor e suas propriedades
 		cor = new JLabel();
 		cor.setPreferredSize(new Dimension(140, 50));
 		cor.setOpaque(true);
 		cor.setBackground(Color.RED);
-		
-		btnAbrirImagem.setPreferredSize(new Dimension(140,40));
-		btnSalvarImagem.setPreferredSize(new Dimension(140,40));
-		btnCor.setPreferredSize(new Dimension(140,40));
-		
-		// Cria Slider.
+
+		// Propriedades dos botões
+		btnAbrirImagem.setPreferredSize(new Dimension(140, 40));
+		btnSalvarImagem.setPreferredSize(new Dimension(140, 40));
+		btnCor.setPreferredSize(new Dimension(140, 40));
+
+		// Cria Sliders.
 		sldrLargura = new JSlider(0, 35, 1);
 		sldrLargura.setMajorTickSpacing(5);
 		sldrLargura.setMinorTickSpacing(1);
 		sldrLargura.setPaintTicks(true);
 		sldrLargura.setPaintLabels(true);
-
 		sldrAltura = new JSlider(0, 35, 1);
 		sldrAltura.setMajorTickSpacing(5);
 		sldrAltura.setMinorTickSpacing(1);
@@ -181,7 +193,6 @@ public class AppView extends JFrame {
 		btnCor.addActionListener(appControl);
 
 		// Adicionado os botões na barra de ferramentas
-		// Componentes da Imagem
 		addComp(tooBarImagem, btnAbrirImagem, 0, 0, 1, 1, GridBagConstraints.EAST, GridBagConstraints.NONE);
 		addComp(tooBarImagem, colunas, 1, 0, 1, 1, GridBagConstraints.EAST, GridBagConstraints.NONE);
 		addComp(tooBarImagem, btnSalvarImagem, 0, 2, 1, 1, GridBagConstraints.EAST, GridBagConstraints.NONE);
@@ -195,6 +206,9 @@ public class AppView extends JFrame {
 		left.add(tooBarImagem, BorderLayout.SOUTH);
 	}
 
+	/**
+	 * Habilita os botões na barra de ferramentas
+	 */
 	public void habilitarBotoes() {
 		btnZoomMais.setEnabled(true);
 		btnZoomMenos.setEnabled(true);
