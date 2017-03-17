@@ -1,7 +1,6 @@
 package pacotes_28309.view;
 
 import java.awt.*;
-import java.awt.image.*;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
@@ -14,7 +13,7 @@ public class AppView extends JFrame {
 	public JButton btnGirarEsquerda, btnGirarDireita, btnEspelhar, btnFrente;
 	public JButton btnTras, btnCima, btnBaixo, btnCor;
 	private JPanel container, toolBarTransformacoes, tooBarImagem, left, right;
-	public JPanel leftImg;
+	public JPanel leftImg, rightImg;
 	public JSlider sldrLargura, sldrAltura;
 	private Border borda;
 	private TitledBorder one, two;
@@ -55,6 +54,7 @@ public class AppView extends JFrame {
 		left = new JPanel(new BorderLayout());
 		right = new JPanel(new BorderLayout());
 		leftImg = new JPanel(new BorderLayout());
+		rightImg = new JPanel(new BorderLayout());
 
 		// Adicionando as Bordas dos painéis e suas propriedades
 		borda = BorderFactory.createLineBorder(Color.gray, 0);
@@ -69,6 +69,7 @@ public class AppView extends JFrame {
 
 		// Adicionando paineis ao container
 		left.add(leftImg);
+		right.add(rightImg);
 		container.add(left);
 		container.add(right);
 
@@ -140,7 +141,7 @@ public class AppView extends JFrame {
 		toolBarTransformacoes.add(btnTras);
 		toolBarTransformacoes.add(btnCima);
 		toolBarTransformacoes.add(btnBaixo);
-
+		
 		// Adiciona toolbar ao JFrame.
 		right.add(toolBarTransformacoes, BorderLayout.WEST);
 	}
@@ -201,9 +202,15 @@ public class AppView extends JFrame {
 		addComp(tooBarImagem, sldrLargura, 5, 0, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
 		addComp(tooBarImagem, btnCor, 6, 2, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
 		addComp(tooBarImagem, cor, 6, 0, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
-
+		
 		// Adiciona toolbar ao JFrame.
 		left.add(tooBarImagem, BorderLayout.SOUTH);
+		
+		JPanel aux = new JPanel();
+		aux.setPreferredSize(new Dimension(0,110));
+		aux.setBackground(new Color(238, 238, 238));
+		
+		right.add(aux, BorderLayout.SOUTH);
 	}
 
 	/**

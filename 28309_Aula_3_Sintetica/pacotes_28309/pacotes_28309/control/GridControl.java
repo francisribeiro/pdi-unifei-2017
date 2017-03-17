@@ -50,7 +50,7 @@ public class GridControl {
 	 * 
 	 * @return imagem do grid
 	 */
-	public BufferedImage img() {
+	private BufferedImage img() {
 		BufferedImage img = new BufferedImage(colunas, linhas, BufferedImage.TYPE_INT_RGB);
 		int[] pixels = img.getRGB(0, 0, colunas, linhas, null, 0, colunas);
 
@@ -134,6 +134,10 @@ public class GridControl {
 			return;
 
 		salvaPixels(fileToSave.toString(), "png", tipo);
+	}
+	
+	public BufferedImage getImg(){
+		return img();
 	}
 
 }
