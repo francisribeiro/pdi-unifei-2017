@@ -19,18 +19,25 @@ public class AppControl implements ActionListener, ChangeListener {
 	public AppControl() {
 		appView = new AppView(this);
 		imgSet = false;
-		transformacoes = new Transformacoes();
 	}
 
 	@Override
 	public void stateChanged(ChangeEvent e) {
 		// Slider de linhas da Imagem
 		if (e.getSource() == appView.sldrAltura) {
+			appView.rightImg.removeAll();
+			appView.rightImg.repaint();
+			appView.rightImg.revalidate();
+			transformacoes = new Transformacoes();
 			imageGrid(appView.sldrAltura.getValue(), appView.sldrLargura.getValue());
 		}
 
 		// Slider de colunas da Imagem
 		if (e.getSource() == appView.sldrLargura) {
+			appView.rightImg.removeAll();
+			appView.rightImg.repaint();
+			appView.rightImg.revalidate();
+			transformacoes = new Transformacoes();
 			imageGrid(appView.sldrAltura.getValue(), appView.sldrLargura.getValue());
 		}
 	}
@@ -39,6 +46,7 @@ public class AppControl implements ActionListener, ChangeListener {
 	public void actionPerformed(ActionEvent e) {
 		// Abre uma imagem previamente salva
 		if (e.getActionCommand().equals("Abrir Imagem")) {
+			transformacoes = new Transformacoes();
 			abrirImagem();
 		}
 
@@ -59,15 +67,13 @@ public class AppControl implements ActionListener, ChangeListener {
 
 		// Zoom +
 		if (e.getSource() == appView.btnZoomMais) {
-			img = gridImg.getImg();
-			transformacoes.setImg(img);
+			iniciaTransformacao();
 			imgTransformadaGrid(img.getHeight(), img.getWidth(), transformacoes.escalar(true));
 		}
 
 		// Zoom -
 		if (e.getSource() == appView.btnZoomMenos) {
-			img = gridImg.getImg();
-			transformacoes.setImg(img);
+			iniciaTransformacao();
 			imgTransformadaGrid(img.getHeight(), img.getWidth(), transformacoes.escalar(false));
 		}
 
@@ -80,44 +86,38 @@ public class AppControl implements ActionListener, ChangeListener {
 
 		// Girar Esquerda
 		if (e.getSource() == appView.btnGirarEsquerda) {
-			img = gridImg.getImg();
-			transformacoes.setImg(img);
+			iniciaTransformacao();
 			imgTransformadaGrid(img.getHeight(), img.getWidth(), transformacoes.rotacionar(true));
 		}
 
 		// Espelhar
 		if (e.getSource() == appView.btnEspelhar) {
-			img = gridImg.getImg();
-			transformacoes.setImg(img);
+			iniciaTransformacao();
 			imgTransformadaGrid(img.getHeight(), img.getWidth(), transformacoes.espelhar());
 		}
 		
 		// Mover frente
 		if (e.getSource() == appView.btnFrente) {
-			img = gridImg.getImg();
-			transformacoes.setImg(img);
+			iniciaTransformacao();
 			imgTransformadaGrid(img.getHeight(), img.getWidth(), transformacoes.transladar(-1, 0));
 		}
 
 		// Mover trás
 		if (e.getSource() == appView.btnTras) {
-			img = gridImg.getImg();
-			transformacoes.setImg(img);
-			imgTransformadaGrid(img.getHeight(), img.getWidth(), transformacoes.transladar(-1, 0));
+			iniciaTransformacao();
+			imgTransformadaGrid(img.getHeight(), img.getWidth(), transformacoes.transladar(1, 0));
 		}
 
 		// Mover cima
 		if (e.getSource() == appView.btnCima) {
-			img = gridImg.getImg();
-			transformacoes.setImg(img);
-			imgTransformadaGrid(img.getHeight(), img.getWidth(), transformacoes.transladar(0, -1));
+			iniciaTransformacao();
+			imgTransformadaGrid(img.getHeight(), img.getWidth(), transformacoes.transladar(0, 1));
 		}
 
 		// Mover baixo
 		if (e.getSource() == appView.btnBaixo) {
-			img = gridImg.getImg();
-			transformacoes.setImg(img);
-			imgTransformadaGrid(img.getHeight(), img.getWidth(), transformacoes.transladar(0, 1));
+			iniciaTransformacao();
+			imgTransformadaGrid(img.getHeight(), img.getWidth(), transformacoes.transladar(0, -1));
 		}
 	}
 
@@ -167,6 +167,11 @@ public class AppControl implements ActionListener, ChangeListener {
 		appView.rightImg.repaint();
 		appView.rightImg.revalidate();
 		appView.addGrid(appView.rightImg, gridImgTransformada.criarGrid());
+	}
+	
+	private void iniciaTransformacao(){
+		img = gridImg.getImg();
+		transformacoes.setImg(img);
 	}
 
 }

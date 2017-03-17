@@ -14,7 +14,9 @@ public class Transformacoes {
 	protected int l = 0;
 	protected int a = 0;
 
-	public Transformacoes() {}
+	public Transformacoes() {
+		
+	}
 
 	public void setImg(BufferedImage img) {
 		this.img = img;
