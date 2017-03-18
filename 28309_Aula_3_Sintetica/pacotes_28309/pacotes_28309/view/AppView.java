@@ -68,8 +68,8 @@ public class AppView extends JFrame {
 		right.setBorder(two);
 
 		// Adicionando paineis ao container
-		left.add(leftImg);
-		right.add(rightImg);
+		left.add(leftImg, BorderLayout.CENTER);
+		right.add(rightImg, BorderLayout.CENTER);
 		container.add(left);
 		container.add(right);
 
@@ -85,7 +85,7 @@ public class AppView extends JFrame {
 	private void toolBarTransformacoes(AppControl appControl) {
 
 		// Painel da barra de ferramentas
-		toolBarTransformacoes = new JPanel(new GridLayout(9, 1, 10, 10));
+		toolBarTransformacoes = new JPanel(new GridBagLayout());
 
 		// Cria os botões.
 		btnZoomMais = new JButton();
@@ -97,6 +97,16 @@ public class AppView extends JFrame {
 		btnTras = new JButton();
 		btnCima = new JButton();
 		btnBaixo = new JButton();
+
+		btnZoomMais.setPreferredSize(new Dimension(60, 60));
+		btnZoomMenos.setPreferredSize(new Dimension(60, 60));
+		btnGirarEsquerda.setPreferredSize(new Dimension(60, 60));
+		btnGirarDireita.setPreferredSize(new Dimension(60, 60));
+		btnEspelhar.setPreferredSize(new Dimension(60, 60));
+		btnFrente.setPreferredSize(new Dimension(60, 60));
+		btnTras.setPreferredSize(new Dimension(60, 60));
+		btnCima.setPreferredSize(new Dimension(60, 60));
+		btnBaixo.setPreferredSize(new Dimension(60, 60));
 
 		// Adiciona os icones
 		btnZoomMais.setIcon(new ImageIcon(this.getClass().getResource("zoom_in.png")));
@@ -132,16 +142,16 @@ public class AppView extends JFrame {
 		btnBaixo.addActionListener(appControl);
 
 		// Adicionado os botões na barra de ferramentas
-		toolBarTransformacoes.add(btnZoomMais);
-		toolBarTransformacoes.add(btnZoomMenos);
-		toolBarTransformacoes.add(btnGirarEsquerda);
-		toolBarTransformacoes.add(btnGirarDireita);
-		toolBarTransformacoes.add(btnEspelhar);
-		toolBarTransformacoes.add(btnFrente);
-		toolBarTransformacoes.add(btnTras);
-		toolBarTransformacoes.add(btnCima);
-		toolBarTransformacoes.add(btnBaixo);
-		
+		addComp(toolBarTransformacoes, btnZoomMais, 0, 0, 1, 1, GridBagConstraints.WEST);
+		addComp(toolBarTransformacoes, btnZoomMenos, 0, 1, 1, 1, GridBagConstraints.WEST);
+		addComp(toolBarTransformacoes, btnGirarDireita, 0, 2, 1, 1, GridBagConstraints.WEST);
+		addComp(toolBarTransformacoes, btnGirarEsquerda, 0, 3, 1, 1, GridBagConstraints.WEST);
+		addComp(toolBarTransformacoes, btnEspelhar, 0, 4, 1, 1, GridBagConstraints.WEST);
+		addComp(toolBarTransformacoes, btnFrente, 0, 5, 1, 1, GridBagConstraints.WEST);
+		addComp(toolBarTransformacoes, btnTras, 0, 6, 1, 1, GridBagConstraints.WEST);
+		addComp(toolBarTransformacoes, btnCima, 0, 7, 1, 1, GridBagConstraints.WEST);
+		addComp(toolBarTransformacoes, btnBaixo, 0, 8, 1, 1, GridBagConstraints.WEST);
+
 		// Adiciona toolbar ao JFrame.
 		right.add(toolBarTransformacoes, BorderLayout.WEST);
 	}
@@ -157,34 +167,41 @@ public class AppView extends JFrame {
 		tooBarImagem = new JPanel(new GridBagLayout());
 
 		// Cria os botões
-		btnAbrirImagem = new JButton("Abrir Imagem");
-		btnSalvarImagem = new JButton("Salvar Imagem");
-		btnCor = new JButton("Selecionar Cor");
-		linhas = new JLabel("Linhas: ");
-		colunas = new JLabel("Colunas: ");
+		btnAbrirImagem = new JButton("Abrir");
+		btnSalvarImagem = new JButton("Salvar");
+		btnCor = new JButton("Cor");
+		linhas = new JLabel("Linhas");
+		colunas = new JLabel("Colunas");
+
+		// PROPRIEDADES LABEL
+		linhas.setPreferredSize(new Dimension(80, 20));
+		colunas.setPreferredSize(new Dimension(80, 20));
 
 		// Label de cor e suas propriedades
 		cor = new JLabel();
-		cor.setPreferredSize(new Dimension(140, 50));
+		cor.setPreferredSize(new Dimension(80, 50));
 		cor.setOpaque(true);
 		cor.setBackground(Color.RED);
 
 		// Propriedades dos botões
-		btnAbrirImagem.setPreferredSize(new Dimension(140, 40));
-		btnSalvarImagem.setPreferredSize(new Dimension(140, 40));
-		btnCor.setPreferredSize(new Dimension(140, 40));
+		btnAbrirImagem.setPreferredSize(new Dimension(80, 40));
+		btnSalvarImagem.setPreferredSize(new Dimension(80, 40));
+		btnCor.setPreferredSize(new Dimension(80, 40));
 
 		// Cria Sliders.
-		sldrLargura = new JSlider(0, 35, 1);
+		sldrLargura = new JSlider(0, 25, 1);
 		sldrLargura.setMajorTickSpacing(5);
-		sldrLargura.setMinorTickSpacing(1);
 		sldrLargura.setPaintTicks(true);
 		sldrLargura.setPaintLabels(true);
-		sldrAltura = new JSlider(0, 35, 1);
+		sldrLargura.setPreferredSize(new Dimension(80, 165));
+		sldrLargura.setOrientation(JSlider.VERTICAL);
+
+		sldrAltura = new JSlider(0, 25, 1);
 		sldrAltura.setMajorTickSpacing(5);
-		sldrAltura.setMinorTickSpacing(1);
 		sldrAltura.setPaintTicks(true);
 		sldrAltura.setPaintLabels(true);
+		sldrAltura.setPreferredSize(new Dimension(80, 165));
+		sldrAltura.setOrientation(JSlider.VERTICAL);
 
 		// Adiciona os listeners.
 		btnAbrirImagem.addActionListener(appControl);
@@ -194,23 +211,17 @@ public class AppView extends JFrame {
 		btnCor.addActionListener(appControl);
 
 		// Adicionado os botões na barra de ferramentas
-		addComp(tooBarImagem, btnAbrirImagem, 0, 0, 1, 1, GridBagConstraints.EAST, GridBagConstraints.NONE);
-		addComp(tooBarImagem, colunas, 1, 0, 1, 1, GridBagConstraints.EAST, GridBagConstraints.NONE);
-		addComp(tooBarImagem, btnSalvarImagem, 0, 2, 1, 1, GridBagConstraints.EAST, GridBagConstraints.NONE);
-		addComp(tooBarImagem, linhas, 1, 2, 1, 1, GridBagConstraints.EAST, GridBagConstraints.NONE);
-		addComp(tooBarImagem, sldrAltura, 5, 2, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
-		addComp(tooBarImagem, sldrLargura, 5, 0, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
-		addComp(tooBarImagem, btnCor, 6, 2, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
-		addComp(tooBarImagem, cor, 6, 0, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
-		
+		addComp(tooBarImagem, btnAbrirImagem, 0, 0, 1, 1, GridBagConstraints.WEST);
+		addComp(tooBarImagem, colunas, 0, 4, 1, 1, GridBagConstraints.WEST);
+		addComp(tooBarImagem, btnSalvarImagem, 0, 1, 1, 1, GridBagConstraints.WEST);
+		addComp(tooBarImagem, linhas, 0, 6, 1, 1, GridBagConstraints.WEST);
+		addComp(tooBarImagem, sldrAltura, 0, 7, 1, 1, GridBagConstraints.WEST);
+		addComp(tooBarImagem, sldrLargura, 0, 5, 1, 1, GridBagConstraints.WEST);
+		addComp(tooBarImagem, btnCor, 0, 3, 1, 1, GridBagConstraints.WEST);
+		addComp(tooBarImagem, cor, 0, 2, 1, 1, GridBagConstraints.WEST);
+
 		// Adiciona toolbar ao JFrame.
-		left.add(tooBarImagem, BorderLayout.SOUTH);
-		
-		JPanel aux = new JPanel();
-		aux.setPreferredSize(new Dimension(0,110));
-		aux.setBackground(new Color(238, 238, 238));
-		
-		right.add(aux, BorderLayout.SOUTH);
+		left.add(tooBarImagem, BorderLayout.WEST);
 	}
 
 	/**
@@ -243,8 +254,7 @@ public class AppView extends JFrame {
 	 * @param place localização
 	 * @param stretch preenchimento
 	 */
-	private void addComp(JPanel painel, JComponent comp, int xPos, int yPos, int compWidth, int compHeight, int place,
-			int stretch) {
+	private void addComp(JPanel painel, JComponent comp, int xPos, int yPos, int compWidth, int compHeight, int place) {
 
 		GridBagConstraints gridConstraints = new GridBagConstraints();
 
@@ -252,11 +262,10 @@ public class AppView extends JFrame {
 		gridConstraints.gridy = yPos;
 		gridConstraints.gridwidth = compWidth;
 		gridConstraints.gridheight = compHeight;
-		gridConstraints.weightx = 100;
-		gridConstraints.weighty = 100;
+		gridConstraints.weightx = 0;
+		gridConstraints.weighty = 0;
 		gridConstraints.insets = new Insets(5, 5, 5, 5);
 		gridConstraints.anchor = place;
-		gridConstraints.fill = stretch;
 
 		painel.add(comp, gridConstraints);
 	}

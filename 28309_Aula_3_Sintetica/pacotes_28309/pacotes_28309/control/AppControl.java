@@ -45,13 +45,13 @@ public class AppControl implements ActionListener, ChangeListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// Abre uma imagem previamente salva
-		if (e.getActionCommand().equals("Abrir Imagem")) {
+		if (e.getActionCommand().equals("Abrir")) {
 			transformacoes = new Transformacoes();
 			abrirImagem();
 		}
 
 		// Salvar imagem
-		if (e.getActionCommand().equals("Salvar Imagem")) {
+		if (e.getActionCommand().equals("Salvar")) {
 			if (imgSet)
 				gridImg.salvarImagem("IMAGEM");
 			else// Emite aviso de imagem vazia
@@ -59,7 +59,7 @@ public class AppControl implements ActionListener, ChangeListener {
 		}
 
 		// Alterar cor da imagem
-		if (e.getActionCommand().equals("Selecionar Cor")) {
+		if (e.getActionCommand().equals("Cor")) {
 			imgLabelColor = appView.selecionarCor(appView.getDefaultColor(appView.cor));
 			appView.setLabelColor(appView.cor, imgLabelColor);
 			gridImg.setColor(imgLabelColor);
