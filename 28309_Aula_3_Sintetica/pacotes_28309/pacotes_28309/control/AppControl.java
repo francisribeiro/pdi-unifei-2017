@@ -95,7 +95,7 @@ public class AppControl implements ActionListener, ChangeListener {
 			iniciaTransformacao();
 			imgTransformadaGrid(img.getHeight(), img.getWidth(), transformacoes.espelhar());
 		}
-		
+
 		// Mover frente
 		if (e.getSource() == appView.btnFrente) {
 			iniciaTransformacao();
@@ -168,8 +168,11 @@ public class AppControl implements ActionListener, ChangeListener {
 		appView.rightImg.revalidate();
 		appView.addGrid(appView.rightImg, gridImgTransformada.criarGrid());
 	}
-	
-	private void iniciaTransformacao(){
+
+	/**
+	 * Auxilia nas transformações
+	 */
+	private void iniciaTransformacao() {
 		img = gridImg.getImg();
 		transformacoes.setImg(img);
 	}

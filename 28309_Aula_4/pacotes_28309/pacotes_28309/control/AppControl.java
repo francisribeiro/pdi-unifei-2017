@@ -13,8 +13,9 @@ public class AppControl implements ActionListener, ChangeListener {
 
 	private AppView appView;
 	private BufferedImage img;
-	private TransformacoesControl transformacoes;
-	private FiltroControl filtro;
+	private Transformacoes transformacoes;
+	private Histograma histograma;
+	private Threshold threshold;
 	private int limiar = 0;
 
 	/**
@@ -22,7 +23,8 @@ public class AppControl implements ActionListener, ChangeListener {
 	 */
 	public AppControl() {
 		appView = new AppView(this);
-		filtro = new FiltroControl();
+		threshold = new Threshold();
+		histograma = new Histograma();
 	}
 
 	@Override
@@ -32,7 +34,8 @@ public class AppControl implements ActionListener, ChangeListener {
 			appView.plotaImagem(abrirImagem(), appView.left);
 			if (img != null) {
 				appView.habilitarBotoes();
-				transformacoes = new TransformacoesControl(img);
+				transformacoes = new Transformacoes(img);
+				desenharGrafico();
 			}
 		}
 
@@ -41,7 +44,7 @@ public class AppControl implements ActionListener, ChangeListener {
 			this.img = transformacoes.escalar(true);
 			appView.plotaImagem(img, appView.left);
 			if (limiar > 0)
-				appView.plotaImagem(filtro.threshold(img, limiar), appView.right);
+				appView.plotaImagem(threshold.threshold(img, limiar), appView.right);
 		}
 
 		// Zoom -
@@ -49,7 +52,7 @@ public class AppControl implements ActionListener, ChangeListener {
 			this.img = transformacoes.escalar(false);
 			appView.plotaImagem(img, appView.left);
 			if (limiar > 0)
-				appView.plotaImagem(filtro.threshold(img, limiar), appView.right);
+				appView.plotaImagem(threshold.threshold(img, limiar), appView.right);
 		}
 
 		// Girar esquerda
@@ -57,7 +60,7 @@ public class AppControl implements ActionListener, ChangeListener {
 			this.img = transformacoes.rotacionar(true);
 			appView.plotaImagem(img, appView.left);
 			if (limiar > 0)
-				appView.plotaImagem(filtro.threshold(img, limiar), appView.right);
+				appView.plotaImagem(threshold.threshold(img, limiar), appView.right);
 		}
 
 		// Girar direta
@@ -65,7 +68,7 @@ public class AppControl implements ActionListener, ChangeListener {
 			this.img = transformacoes.rotacionar(false);
 			appView.plotaImagem(img, appView.left);
 			if (limiar > 0)
-				appView.plotaImagem(filtro.threshold(img, limiar), appView.right);
+				appView.plotaImagem(threshold.threshold(img, limiar), appView.right);
 		}
 
 		// Abrir Imagem
@@ -73,7 +76,7 @@ public class AppControl implements ActionListener, ChangeListener {
 			this.img = transformacoes.espelhar();
 			appView.plotaImagem(img, appView.left);
 			if (limiar > 0)
-				appView.plotaImagem(filtro.threshold(img, limiar), appView.right);
+				appView.plotaImagem(threshold.threshold(img, limiar), appView.right);
 		}
 
 		// Mover frente
@@ -81,7 +84,7 @@ public class AppControl implements ActionListener, ChangeListener {
 			this.img = transformacoes.transladar(20, 0);
 			appView.plotaImagem(img, appView.left);
 			if (limiar > 0)
-				appView.plotaImagem(filtro.threshold(img, limiar), appView.right);
+				appView.plotaImagem(threshold.threshold(img, limiar), appView.right);
 		}
 
 		// Mover trás
@@ -89,7 +92,7 @@ public class AppControl implements ActionListener, ChangeListener {
 			this.img = transformacoes.transladar(-20, 0);
 			appView.plotaImagem(img, appView.left);
 			if (limiar > 0)
-				appView.plotaImagem(filtro.threshold(img, limiar), appView.right);
+				appView.plotaImagem(threshold.threshold(img, limiar), appView.right);
 		}
 
 		// Mover cima
@@ -97,7 +100,7 @@ public class AppControl implements ActionListener, ChangeListener {
 			this.img = transformacoes.transladar(0, -20);
 			appView.plotaImagem(img, appView.left);
 			if (limiar > 0)
-				appView.plotaImagem(filtro.threshold(img, limiar), appView.right);
+				appView.plotaImagem(threshold.threshold(img, limiar), appView.right);
 		}
 
 		// Mover baixo
@@ -105,7 +108,7 @@ public class AppControl implements ActionListener, ChangeListener {
 			this.img = transformacoes.transladar(0, 20);
 			appView.plotaImagem(img, appView.left);
 			if (limiar > 0)
-				appView.plotaImagem(filtro.threshold(img, limiar), appView.right);
+				appView.plotaImagem(threshold.threshold(img, limiar), appView.right);
 		}
 	}
 
@@ -113,7 +116,8 @@ public class AppControl implements ActionListener, ChangeListener {
 	public void stateChanged(ChangeEvent e) {
 		if (e.getSource() == appView.sldrRegua) {
 			this.limiar = appView.sldrRegua.getValue();
-			appView.plotaImagem(filtro.threshold(img, limiar), appView.right);
+			appView.plotaImagem(threshold.threshold(img, limiar), appView.right);
+			desenharGrafico();
 		}
 	}
 
@@ -148,4 +152,9 @@ public class AppControl implements ActionListener, ChangeListener {
 		return img;
 	}
 
+	private void desenharGrafico() {
+		histograma.load(img);
+		appView.desenhaHistograma(histograma.getRED(), histograma.getGREEN(), histograma.getBLUE(),
+				histograma.getColourBins(), histograma.getMaxY());
+	}
 }

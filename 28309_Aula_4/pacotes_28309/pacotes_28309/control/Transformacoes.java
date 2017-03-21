@@ -3,7 +3,7 @@ package pacotes_28309.control;
 import java.awt.*;
 import java.awt.image.*;
 
-public class TransformacoesControl {
+public class Transformacoes {
 
 	private BufferedImage img;
 	private int largura, altura;
@@ -12,7 +12,7 @@ public class TransformacoesControl {
 	protected int l = 0;
 	protected int a = 0;
 
-	public TransformacoesControl(BufferedImage img) {
+	public Transformacoes(BufferedImage img) {
 		this.img = img;
 		this.largura = img.getWidth();
 		this.altura = img.getHeight();

@@ -10,7 +10,7 @@ public class AppView extends JFrame {
 	public JButton btnAbrirImagem, btnZoomMais, btnZoomMenos, btnGirarEsquerda, btnGirarDireita;
 	public JButton btnEspelhar, btnFrente, btnTras, btnCima, btnBaixo;
 	private JPanel container;
-	public JPanel left, right, histograma;
+	public JPanel left, right, histogramaContainer, histograma;
 	public JSlider sldrRegua;
 
 	/**
@@ -43,17 +43,23 @@ public class AppView extends JFrame {
 		container = new JPanel(new GridLayout(1, 2));
 		left = new JPanel();
 		right = new JPanel(new BorderLayout());
-		histograma = new JPanel(new BorderLayout());
+		histogramaContainer = new JPanel(new BorderLayout());
+		histograma = new JPanel();
 
 		// Cor dos painéis
 		left.setBackground(Color.GRAY);
 		right.setBackground(Color.DARK_GRAY);
 
+		// propriedades do histograma
+		histograma.setPreferredSize(new Dimension(histogramaContainer.getWidth(), 100));
+		histograma.setBackground(Color.white);
+
 		// Slider ao painel
-		histograma.add(sldrRegua, BorderLayout.CENTER);
+		histogramaContainer.add(histograma, BorderLayout.NORTH);
+		histogramaContainer.add(sldrRegua, BorderLayout.SOUTH);
 
 		// Adicionando paineis ao container
-		right.add(histograma, BorderLayout.PAGE_END);
+		right.add(histogramaContainer, BorderLayout.PAGE_END);
 		container.add(left);
 		container.add(right);
 
@@ -175,9 +181,9 @@ public class AppView extends JFrame {
 			g.setColor(Color.GRAY);
 			g.fillRect(0, 0, panel.getWidth(), panel.getHeight());
 		} else {
-			g.clearRect(0, 0, panel.getWidth(), panel.getHeight() - histograma.getHeight());
-			g.setColor(Color.BLUE);
-			g.fillRect(0, 0, panel.getWidth(), panel.getHeight() - histograma.getHeight());
+			g.clearRect(0, 0, panel.getWidth(), panel.getHeight() - histogramaContainer.getHeight());
+			g.setColor(Color.DARK_GRAY);
+			g.fillRect(0, 0, panel.getWidth(), panel.getHeight() - histogramaContainer.getHeight());
 		}
 
 	}
@@ -203,7 +209,7 @@ public class AppView extends JFrame {
 	 * @param img de entrada
 	 */
 	public void plotaImagem(BufferedImage img, JPanel panel) {
-		if (img != null) 
+		if (img != null)
 			paintComponent(panel.getGraphics(), img, panel);
 	}
 
@@ -218,5 +224,40 @@ public class AppView extends JFrame {
 		btnCima.setEnabled(true);
 		btnBaixo.setEnabled(true);
 		sldrRegua.setEnabled(true);
+	}
+
+	public void desenhaHistograma(int RED, int GREEN, int BLUE, int[][] colourBins, int maxY) {
+		Graphics2D g2 = (Graphics2D) histograma.getGraphics();
+		g2.setColor(Color.white);
+		g2.fillRect(0, 0, histograma.getWidth(), histograma.getHeight());
+
+		g2.setStroke(new BasicStroke(2));
+
+		int xIntervalo = (int) ((double) histograma.getWidth() / ((double) 256 + 1));
+
+		g2.setColor(Color.black);
+
+		for (int i = 0; i < 3; i++) {
+
+			// Set the graph
+			if (i == RED) {
+				g2.setColor(Color.red);
+			} else if (i == GREEN) {
+				g2.setColor(Color.GREEN);
+			} else if (i == BLUE) {
+				g2.setColor(Color.blue);
+			}
+
+			// draw the graph for the spesific colour.
+			for (int j = 0; j < 256 - 1; j++) {
+				int value = (int) (((double) colourBins[i][j] / (double) maxY) * histograma.getHeight());
+				int value2 = (int) (((double) colourBins[i][j + 1] / (double) maxY) * histograma.getHeight());
+				
+				g2.drawLine(j * xIntervalo, histograma.getHeight() - value, (j + 1) * xIntervalo,
+						histograma.getHeight() - value2);
+
+			}
+		}
+
 	}
 }

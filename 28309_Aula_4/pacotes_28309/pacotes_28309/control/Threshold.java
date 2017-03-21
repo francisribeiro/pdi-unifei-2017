@@ -3,9 +3,9 @@ package pacotes_28309.control;
 import java.awt.*;
 import java.awt.image.*;
 
-public class FiltroControl {
+public class Threshold {
 
-	public static BufferedImage  threshold(BufferedImage image, int limiar) {
+	public static BufferedImage threshold(BufferedImage image, int limiar) {
 		int width = image.getWidth();
 		int height = image.getHeight();
 		BufferedImage newImg = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
