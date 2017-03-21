@@ -155,6 +155,6 @@ public class AppControl implements ActionListener, ChangeListener {
 	private void desenharGrafico() {
 		histograma.load(img);
 		appView.desenhaHistograma(histograma.getRED(), histograma.getGREEN(), histograma.getBLUE(),
-				histograma.getColourBins(), histograma.getMaxY());
+				histograma.getCaixaDeCores(), histograma.getMaxY());
 	}
 }

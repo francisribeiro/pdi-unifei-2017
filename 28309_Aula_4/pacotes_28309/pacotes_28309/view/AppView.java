@@ -226,7 +226,7 @@ public class AppView extends JFrame {
 		sldrRegua.setEnabled(true);
 	}
 
-	public void desenhaHistograma(int RED, int GREEN, int BLUE, int[][] colourBins, int maxY) {
+	public void desenhaHistograma(int RED, int GREEN, int BLUE, int[][] caixaDeCores, int maxY) {
 		Graphics2D g2 = (Graphics2D) histograma.getGraphics();
 		g2.setColor(Color.white);
 		g2.fillRect(0, 0, histograma.getWidth(), histograma.getHeight());
@@ -250,11 +250,11 @@ public class AppView extends JFrame {
 
 			// draw the graph for the spesific colour.
 			for (int j = 0; j < 256 - 1; j++) {
-				int value = (int) (((double) colourBins[i][j] / (double) maxY) * histograma.getHeight());
-				int value2 = (int) (((double) colourBins[i][j + 1] / (double) maxY) * histograma.getHeight());
+				int valor = (int) (((double) caixaDeCores[i][j] / (double) maxY) * histograma.getHeight());
+				int valor2 = (int) (((double) caixaDeCores[i][j + 1] / (double) maxY) * histograma.getHeight());
 				
-				g2.drawLine(j * xIntervalo, histograma.getHeight() - value, (j + 1) * xIntervalo,
-						histograma.getHeight() - value2);
+				g2.drawLine(j * xIntervalo, histograma.getHeight() - valor, (j + 1) * xIntervalo,
+						histograma.getHeight() - valor2);
 
 			}
 		}

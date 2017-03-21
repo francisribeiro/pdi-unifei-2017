@@ -7,14 +7,14 @@ public class Histograma {
 	public final int RED = 0;
 	public final int GREEN = 1;
 	public final int BLUE = 2;
-	private int[][] colourBins;
+	private int[][] caixaDeCores;
 	private int maxY = 0;
 
 	public Histograma() {
-		colourBins = new int[3][];// Red, Green, Blue
+		caixaDeCores = new int[3][];// Red, Green, Blue
 
 		for (int i = 0; i < 3; i++) // Red, Green, Blue
-			colourBins[i] = new int[256];
+			caixaDeCores[i] = new int[256];
 	}
 
 	public void load(BufferedImage img) {
@@ -22,7 +22,7 @@ public class Histograma {
 		// Reset all the bins
 		for (int i = 0; i < 3; i++) {// Red, Green, Blue
 			for (int j = 0; j < 256; j++) {
-				colourBins[i][j] = 0;
+				caixaDeCores[i][j] = 0;
 			}
 		}
 
@@ -30,16 +30,16 @@ public class Histograma {
 			for (int y = 0; y < img.getHeight(); y++) {
 				Color c = new Color(img.getRGB(x, y));
 
-				colourBins[RED][c.getRed()]++;
-				colourBins[GREEN][c.getGreen()]++;
-				colourBins[BLUE][c.getBlue()]++;
+				caixaDeCores[RED][c.getRed()]++;
+				caixaDeCores[GREEN][c.getGreen()]++;
+				caixaDeCores[BLUE][c.getBlue()]++;
 			}
 		}
 
 		for (int i = 0; i < 3; i++) {// Red, Green, Blue
 			for (int j = 0; j < 256; j++) {
-				if (maxY < colourBins[i][j]) {
-					maxY = colourBins[i][j];
+				if (maxY < caixaDeCores[i][j]) {
+					maxY = caixaDeCores[i][j];
 				}
 			}
 		}
@@ -57,8 +57,8 @@ public class Histograma {
 		return BLUE;
 	}
 
-	public int[][] getColourBins() {
-		return colourBins;
+	public int[][] getCaixaDeCores() {
+		return caixaDeCores;
 	}
 
 	public int getMaxY() {
