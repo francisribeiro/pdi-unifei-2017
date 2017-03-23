@@ -9,8 +9,8 @@ import pacotes_28309.control.*;
 public class AppView extends JFrame {
 	public JButton btnAbrirImagem, btnZoomMais, btnZoomMenos, btnGirarEsquerda, btnGirarDireita;
 	public JButton btnEspelhar, btnFrente, btnTras, btnCima, btnBaixo;
-	private JPanel container;
-	public JPanel left, right, histogramaContainer, histograma;
+	private JPanel imgContainer, containerGeral;
+	public JPanel left, right, histogramaContainer, histograma, left2, right2;
 	public JSlider sldrRegua;
 
 	/**
@@ -40,31 +40,44 @@ public class AppView extends JFrame {
 	private void montaLayout() {
 
 		// Criando os painéis
-		container = new JPanel(new GridLayout(1, 2));
+		containerGeral = new JPanel(new BorderLayout());
+		imgContainer = new JPanel(new GridLayout(1, 2));
 		left = new JPanel();
 		right = new JPanel(new BorderLayout());
-		histogramaContainer = new JPanel(new BorderLayout());
+
+		histogramaContainer = new JPanel(new GridLayout(1, 2));
+		left2 = new JPanel();
+		right2 = new JPanel(new BorderLayout());
 		histograma = new JPanel();
 
 		// Cor dos painéis
 		left.setBackground(Color.GRAY);
-		right.setBackground(Color.DARK_GRAY);
+		right.setBackground(Color.black);
 
 		// propriedades do histograma
-		histograma.setPreferredSize(new Dimension(histogramaContainer.getWidth(), 100));
-		histograma.setBackground(Color.white);
+		histograma.setPreferredSize(new Dimension(256*2, 100));
+		sldrRegua.setPreferredSize(new Dimension(256*2, 50));
+
+		right2.add(histograma, BorderLayout.NORTH);
+		right2.add(sldrRegua, BorderLayout.SOUTH);
+
+		JPanel aux = new JPanel(new GridBagLayout());
+		
+		addComp(aux, right2, 0, 0, 1, 1, GridBagConstraints.WEST);
 
 		// Slider ao painel
-		histogramaContainer.add(histograma, BorderLayout.NORTH);
-		histogramaContainer.add(sldrRegua, BorderLayout.SOUTH);
+		histogramaContainer.add(left2);
+		histogramaContainer.add(aux);
 
 		// Adicionando paineis ao container
-		right.add(histogramaContainer, BorderLayout.PAGE_END);
-		container.add(left);
-		container.add(right);
+		imgContainer.add(left);
+		imgContainer.add(right);
 
 		// Adicionando ao frame
-		add(container);
+		containerGeral.add(imgContainer, BorderLayout.CENTER);
+		containerGeral.add(histogramaContainer, BorderLayout.PAGE_END);
+		add(containerGeral);
+
 	}
 
 	/**
@@ -78,6 +91,7 @@ public class AppView extends JFrame {
 		// Cria a barra de ferramentas.
 		toolBar = new JToolBar();
 		toolBar.setFloatable(false);
+		toolBar.setOrientation(JToolBar.VERTICAL);
 
 		// Cria os botões.
 		btnAbrirImagem = new JButton();
@@ -105,7 +119,7 @@ public class AppView extends JFrame {
 
 		// Cria Slider.
 		sldrRegua = new JSlider(0, 255, 0);
-		sldrRegua.setMajorTickSpacing(15);
+		sldrRegua.setMajorTickSpacing(30);
 		sldrRegua.setMinorTickSpacing(5);
 		sldrRegua.setPaintTicks(true);
 		sldrRegua.setPaintLabels(true);
@@ -121,7 +135,7 @@ public class AppView extends JFrame {
 		btnCima.setEnabled(false);
 		btnBaixo.setEnabled(false);
 		sldrRegua.setEnabled(false);
-
+		
 		// Adiciona os listeners.
 		btnAbrirImagem.addActionListener(appControl);
 		btnZoomMais.addActionListener(appControl);
@@ -167,7 +181,7 @@ public class AppView extends JFrame {
 		toolBar.addSeparator();
 
 		// Adiciona toolbar ao JFrame.
-		frame.add(toolBar, BorderLayout.NORTH);
+		add(toolBar, BorderLayout.WEST);
 	}
 
 	/**
@@ -182,7 +196,7 @@ public class AppView extends JFrame {
 			g.fillRect(0, 0, panel.getWidth(), panel.getHeight());
 		} else {
 			g.clearRect(0, 0, panel.getWidth(), panel.getHeight() - histogramaContainer.getHeight());
-			g.setColor(Color.DARK_GRAY);
+			g.setColor(Color.black);
 			g.fillRect(0, 0, panel.getWidth(), panel.getHeight() - histogramaContainer.getHeight());
 		}
 
@@ -226,38 +240,63 @@ public class AppView extends JFrame {
 		sldrRegua.setEnabled(true);
 	}
 
-	public void desenhaHistograma(int RED, int GREEN, int BLUE, int[][] caixaDeCores, int maxY) {
+	public void desenhaHistograma(int[] dadosHistograma, int maxY) {
+		Toolkit toolkit =  Toolkit.getDefaultToolkit ();
+		Dimension dim = toolkit.getScreenSize();
+		
 		Graphics2D g2 = (Graphics2D) histograma.getGraphics();
-		g2.setColor(Color.white);
-		g2.fillRect(0, 0, histograma.getWidth(), histograma.getHeight());
+		g2.setColor(new Color(238, 238, 238));
+		g2.fillRect(0, 0, histograma.getWidth(), 100);
 
 		g2.setStroke(new BasicStroke(2));
 
-		int xIntervalo = (int) ((double) histograma.getWidth() / ((double) 256 + 1));
+		int xIntervalo = 2;
 
 		g2.setColor(Color.black);
 
-		for (int i = 0; i < 3; i++) {
+		// draw the graph for the spesific colour.
+		for (int j = 0; j < 256 - 1; j++) {
+			// int valor = (int) (((double) dadosHistograma[j] / (double) maxY)
+			// * 100);
+			int valor2 = (int) (((double) dadosHistograma[j + 1] / (double) maxY) * 100);
 
-			// Set the graph
-			if (i == RED) {
-				g2.setColor(Color.red);
-			} else if (i == GREEN) {
-				g2.setColor(Color.GREEN);
-			} else if (i == BLUE) {
-				g2.setColor(Color.blue);
-			}
+			// g2.drawLine(j * xIntervalo, 100 - valor, (j + 1) * xIntervalo,
+			// 100 - valor2);
 
-			// draw the graph for the spesific colour.
-			for (int j = 0; j < 256 - 1; j++) {
-				int valor = (int) (((double) caixaDeCores[i][j] / (double) maxY) * histograma.getHeight());
-				int valor2 = (int) (((double) caixaDeCores[i][j + 1] / (double) maxY) * histograma.getHeight());
-				
-				g2.drawLine(j * xIntervalo, histograma.getHeight() - valor, (j + 1) * xIntervalo,
-						histograma.getHeight() - valor2);
+			g2.setColor(Color.blue);
 
-			}
+			g2.drawLine(j * xIntervalo, 100, j * xIntervalo, 100 - valor2);
+
 		}
-
 	}
+	
+	/**
+	 * Método auxiliar para setar as regras para um componente destinado ao
+	 * GridBagLayout e o adicionar.
+	 * 
+	 * @param painel painel de destino
+	 * @param comp componente de destino
+	 * @param xPos posição em x
+	 * @param yPos posição em y
+	 * @param compWidth largura do componente
+	 * @param compHeight altura do componente
+	 * @param place localização
+	 * @param stretch preenchimento
+	 */
+	private void addComp(JPanel painel, JComponent comp, int xPos, int yPos, int compWidth, int compHeight, int place) {
+
+		GridBagConstraints gridConstraints = new GridBagConstraints();
+
+		gridConstraints.gridx = xPos;
+		gridConstraints.gridy = yPos;
+		gridConstraints.gridwidth = compWidth;
+		gridConstraints.gridheight = compHeight;
+		gridConstraints.weightx = 0;
+		gridConstraints.weighty = 0;
+		gridConstraints.insets = new Insets(5, 5, 5, 5);
+		gridConstraints.anchor = place;
+
+		painel.add(comp, gridConstraints);
+	}
+
 }

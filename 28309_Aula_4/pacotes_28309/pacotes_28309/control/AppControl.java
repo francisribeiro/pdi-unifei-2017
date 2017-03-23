@@ -14,8 +14,7 @@ public class AppControl implements ActionListener, ChangeListener {
 	private AppView appView;
 	private BufferedImage img;
 	private Transformacoes transformacoes;
-	private Histograma histograma;
-	private Threshold threshold;
+	private Thresholder threshold;
 	private int limiar = 0;
 
 	/**
@@ -23,8 +22,6 @@ public class AppControl implements ActionListener, ChangeListener {
 	 */
 	public AppControl() {
 		appView = new AppView(this);
-		threshold = new Threshold();
-		histograma = new Histograma();
 	}
 
 	@Override
@@ -117,7 +114,6 @@ public class AppControl implements ActionListener, ChangeListener {
 		if (e.getSource() == appView.sldrRegua) {
 			this.limiar = appView.sldrRegua.getValue();
 			appView.plotaImagem(threshold.threshold(img, limiar), appView.right);
-			desenharGrafico();
 		}
 	}
 
@@ -153,8 +149,8 @@ public class AppControl implements ActionListener, ChangeListener {
 	}
 
 	private void desenharGrafico() {
-		histograma.load(img);
-		appView.desenhaHistograma(histograma.getRED(), histograma.getGREEN(), histograma.getBLUE(),
-				histograma.getCaixaDeCores(), histograma.getMaxY());
+		threshold = new Thresholder(img);
+		threshold.histograma(threshold.escalaDeCinza());
+		appView.desenhaHistograma(threshold.getDadosHistograma(), threshold.getMaxY());
 	}
 }
