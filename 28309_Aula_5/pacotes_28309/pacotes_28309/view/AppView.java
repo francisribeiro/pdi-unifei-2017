@@ -66,6 +66,7 @@ public class AppView extends JFrame {
 		addComp(aux, right2, 0, 0, 1, 1, GridBagConstraints.WEST);
 
 		// Slider ao painel
+		histogramaContainer.add(left2);
 		histogramaContainer.add(aux);
 
 		// Adicionando paineis ao container
