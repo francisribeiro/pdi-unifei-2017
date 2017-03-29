@@ -75,7 +75,7 @@ public class Thresholder {
 
 	public void histograma(BufferedImage img) {
 		dadosHistograma = new int[256];
-		// Reset all the bins
+		
 		for (int j = 0; j < 256; j++) {
 			dadosHistograma[j] = 0;
 		}
