@@ -3,13 +3,13 @@ package pacotes_28309.control;
 import java.awt.*;
 import java.awt.image.*;
 
-public class Thresholder {
+public class Histograma {
 
 	private int[] dadosHistograma;
 	private int maxY = 0;
 	private BufferedImage imagem;
 
-	public Thresholder(BufferedImage imagem) {
+	public Histograma(BufferedImage imagem) {
 		this.imagem = imagem;
 	}
 

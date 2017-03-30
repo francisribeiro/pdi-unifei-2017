@@ -9,11 +9,11 @@ import javax.swing.event.*;
 
 import pacotes_28309.view.*;
 
-public class AppControl implements ActionListener, ChangeListener {
+public class AppControl implements ActionListener {
 
 	private AppView appView;
 	private BufferedImage img;
-	private Thresholder threshold;
+	private Histograma threshold;
 	private int limiar = 0;
 
 	/**
@@ -34,76 +34,16 @@ public class AppControl implements ActionListener, ChangeListener {
 			}
 		}
 
-		// Zoom +
-		if (e.getSource() == appView.btnZoomMais) {
-			appView.plotaImagem(img, appView.left);
-			if (limiar > 0)
-				appView.plotaImagem(threshold.threshold(img, limiar), appView.right);
+		// Equalizar
+		if (e.getSource() == appView.btnEqualizar) {
+
 		}
 
-		// Zoom -
-		if (e.getSource() == appView.btnZoomMenos) {
-			appView.plotaImagem(img, appView.left);
-			if (limiar > 0)
-				appView.plotaImagem(threshold.threshold(img, limiar), appView.right);
+		// Fechar
+		if (e.getSource() == appView.btnFechar) {
+			System.exit(0);
 		}
 
-		// Girar esquerda
-		if (e.getSource() == appView.btnGirarEsquerda) {
-			appView.plotaImagem(img, appView.left);
-			if (limiar > 0)
-				appView.plotaImagem(threshold.threshold(img, limiar), appView.right);
-		}
-
-		// Girar direta
-		if (e.getSource() == appView.btnGirarDireita) {
-			appView.plotaImagem(img, appView.left);
-			if (limiar > 0)
-				appView.plotaImagem(threshold.threshold(img, limiar), appView.right);
-		}
-
-		// Abrir Imagem
-		if (e.getSource() == appView.btnEspelhar) {
-			appView.plotaImagem(img, appView.left);
-			if (limiar > 0)
-				appView.plotaImagem(threshold.threshold(img, limiar), appView.right);
-		}
-
-		// Mover frente
-		if (e.getSource() == appView.btnFrente) {
-			appView.plotaImagem(img, appView.left);
-			if (limiar > 0)
-				appView.plotaImagem(threshold.threshold(img, limiar), appView.right);
-		}
-
-		// Mover trás
-		if (e.getSource() == appView.btnTras) {
-			appView.plotaImagem(img, appView.left);
-			if (limiar > 0)
-				appView.plotaImagem(threshold.threshold(img, limiar), appView.right);
-		}
-
-		// Mover cima
-		if (e.getSource() == appView.btnCima) {
-			appView.plotaImagem(img, appView.left);
-			if (limiar > 0)
-				appView.plotaImagem(threshold.threshold(img, limiar), appView.right);
-		}
-
-		// Mover baixo
-		if (e.getSource() == appView.btnBaixo) {
-			appView.plotaImagem(img, appView.left);
-			if (limiar > 0)
-				appView.plotaImagem(threshold.threshold(img, limiar), appView.right);
-		}
-	}
-
-	@Override
-	public void stateChanged(ChangeEvent e) {
-		if (e.getSource() == appView.sldrRegua) {
-			this.limiar = appView.sldrRegua.getValue();
-			appView.plotaImagem(threshold.threshold(img, limiar), appView.right);
-		}
 	}
 
 	/**
@@ -138,8 +78,8 @@ public class AppControl implements ActionListener, ChangeListener {
 	}
 
 	private void desenharGrafico() {
-		threshold = new Thresholder(img);
+		threshold = new Histograma(img);
 		threshold.histograma(threshold.escalaDeCinza());
-		appView.desenhaHistograma(threshold.getDadosHistograma(), threshold.getMaxY());
+		appView.desenhaHistograma(threshold.getDadosHistograma(), threshold.getMaxY(), appView.histograma);
 	}
 }
