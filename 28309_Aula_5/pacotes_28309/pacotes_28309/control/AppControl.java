@@ -14,7 +14,6 @@ public class AppControl implements ActionListener {
 	private AppView appView;
 	private BufferedImage img;
 	private Histograma threshold;
-	private int limiar = 0;
 
 	/**
 	 * Construtor da classe. Exibe a aplicação.
@@ -30,13 +29,15 @@ public class AppControl implements ActionListener {
 			appView.plotaImagem(abrirImagem(), appView.left);
 			if (img != null) {
 				appView.habilitarBotoes();
-				desenharGrafico();
+				threshold = new Histograma(img);
+				appView.desenhaHistograma(threshold.getDadosHistograma(), threshold.getMaxYH(), appView.histograma);
 			}
 		}
 
 		// Equalizar
 		if (e.getSource() == appView.btnEqualizar) {
-
+			appView.plotaImagem(threshold.equalize(), appView.right);
+			appView.desenhaHistograma(threshold.getDadosHistogramaEqualizado(), threshold.getMaxYHE(), appView.histogramaEqualizado);
 		}
 
 		// Fechar
@@ -75,11 +76,5 @@ public class AppControl implements ActionListener {
 		}
 
 		return img;
-	}
-
-	private void desenharGrafico() {
-		threshold = new Histograma(img);
-		threshold.histograma(threshold.escalaDeCinza());
-		appView.desenhaHistograma(threshold.getDadosHistograma(), threshold.getMaxY(), appView.histograma);
 	}
 }

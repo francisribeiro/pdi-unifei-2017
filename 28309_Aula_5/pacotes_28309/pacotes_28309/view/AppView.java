@@ -52,7 +52,7 @@ public class AppView extends JFrame {
 
 		// Cor dos painéis
 		left.setBackground(Color.GRAY);
-		right.setBackground(Color.DARK_GRAY);
+		right.setBackground(Color.BLACK);
 
 		// propriedades do histograma
 		histograma.setPreferredSize(new Dimension(300, 100));
