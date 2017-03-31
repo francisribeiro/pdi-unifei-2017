@@ -36,13 +36,16 @@ public class AppView extends JFrame {
 		this.setResizable(false);
 	}
 
+	/**
+	 * Monta o layout de janelas
+	 */
 	private void montaLayout() {
 
 		// Criando os painéis
 		containerGeral = new JPanel(new BorderLayout());
 		imgContainer = new JPanel(new GridLayout(1, 2));
 		left = new JPanel();
-		right = new JPanel(new BorderLayout());
+		right = new JPanel();
 
 		histogramaContainer = new JPanel(new GridLayout(1, 2));
 		left2 = new JPanel();
@@ -51,13 +54,17 @@ public class AppView extends JFrame {
 		histogramaEqualizado = new JPanel();
 
 		// Cor dos painéis
-		left.setBackground(Color.GRAY);
-		right.setBackground(Color.BLACK);
+		left.setBackground(Color.BLACK);
+		right.setBackground(Color.DARK_GRAY);
+		left2.setBackground(Color.BLACK);
+		right2.setBackground(Color.DARK_GRAY);
 
 		// propriedades do histograma
-		histograma.setPreferredSize(new Dimension(300, 100));
-		histogramaEqualizado.setPreferredSize(new Dimension(300, 100));
-		
+		histograma.setPreferredSize(new Dimension(450, 150));
+		histogramaEqualizado.setPreferredSize(new Dimension(450, 150));
+		histograma.setBackground(Color.BLACK);
+		histogramaEqualizado.setBackground(Color.DARK_GRAY);
+
 		left2.add(histograma);
 		right2.add(histogramaEqualizado);
 
@@ -96,7 +103,7 @@ public class AppView extends JFrame {
 
 		// Desabilita os botões
 		btnEqualizar.setEnabled(false);
-		
+
 		// Adiciona os listeners.
 		btnAbrirImagem.addActionListener(appControl);
 		btnEqualizar.addActionListener(appControl);
@@ -124,12 +131,12 @@ public class AppView extends JFrame {
 	private void limparTela(Graphics g, JPanel panel) {
 		if (panel == left) {
 			g.clearRect(0, 0, panel.getWidth(), panel.getHeight());
-			g.setColor(Color.GRAY);
+			g.setColor(Color.BLACK);
 			g.fillRect(0, 0, panel.getWidth(), panel.getHeight());
 		} else {
-			g.clearRect(0, 0, panel.getWidth(), panel.getHeight() - histogramaContainer.getHeight());
-			g.setColor(Color.black);
-			g.fillRect(0, 0, panel.getWidth(), panel.getHeight() - histogramaContainer.getHeight());
+			g.clearRect(0, 0, panel.getWidth(), panel.getHeight());
+			g.setColor(Color.DARK_GRAY);
+			g.fillRect(0, 0, panel.getWidth(), panel.getHeight());
 		}
 
 	}
@@ -159,67 +166,42 @@ public class AppView extends JFrame {
 			paintComponent(panel.getGraphics(), img, panel);
 	}
 
+	/**
+	 * Habilita botão de equalizar a imagem, logo após uma imagem ser aberta.
+	 */
 	public void habilitarBotoes() {
 		btnEqualizar.setEnabled(true);
 	}
 
-	public void desenhaHistograma(int[] dadosHistograma, int maxY, JPanel panel) {
-		Toolkit toolkit =  Toolkit.getDefaultToolkit ();
-		Dimension dim = toolkit.getScreenSize();
-		
+	/**
+	 * Desenha um histograma com base nos parâmetros.
+	 * 
+	 * @param dadosHistograma array de dados
+	 * @param maxY valor máximo do array
+	 * @param panel painel em que será incluído o histograma
+	 */
+	public void desenhaHistograma(int[][] dadosHistograma, int maxY, JPanel panel) {
 		Graphics2D g2 = (Graphics2D) panel.getGraphics();
-		g2.setColor(new Color(238, 238, 238));
-		g2.fillRect(0, 0, panel.getWidth(), 100);
+		double xIntervalo = 1.7;
 
+		if (panel == histograma)
+			g2.setColor(Color.BLACK);
+		else
+			g2.setColor(Color.DARK_GRAY);
+		
+		g2.fillRect(0, 0, panel.getWidth(), 150);
 		g2.setStroke(new BasicStroke(2));
+		
+		if (panel == histograma)
+			g2.setColor(Color.RED);
+		else
+			g2.setColor(Color.YELLOW);
 
-		int xIntervalo = 2;
-
-		g2.setColor(Color.black);
-
-		// draw the graph for the spesific colour.
+		// Desenha o gráfico para a cor específica
 		for (int j = 0; j < 256 - 1; j++) {
-			// int valor = (int) (((double) dadosHistograma[j] / (double) maxY)
-			// * 100);
-			int valor2 = (int) (((double) dadosHistograma[j + 1] / (double) maxY) * 100);
-
-			// g2.drawLine(j * xIntervalo, 100 - valor, (j + 1) * xIntervalo,
-			// 100 - valor2);
-
-			g2.setColor(Color.blue);
-
-			g2.drawLine(j * xIntervalo, 100, j * xIntervalo, 100 - valor2);
+			int valor = (int) (((double) dadosHistograma[0][j + 1] / (double) maxY) * 150);
+			g2.drawLine((int) (j * xIntervalo), 150, (int) (j * xIntervalo), 150 - valor);
 
 		}
 	}
-	
-	/**
-	 * Método auxiliar para setar as regras para um componente destinado ao
-	 * GridBagLayout e o adicionar.
-	 * 
-	 * @param painel painel de destino
-	 * @param comp componente de destino
-	 * @param xPos posição em x
-	 * @param yPos posição em y
-	 * @param compWidth largura do componente
-	 * @param compHeight altura do componente
-	 * @param place localização
-	 * @param stretch preenchimento
-	 */
-	private void addComp(JPanel painel, JComponent comp, int xPos, int yPos, int compWidth, int compHeight, int place) {
-
-		GridBagConstraints gridConstraints = new GridBagConstraints();
-
-		gridConstraints.gridx = xPos;
-		gridConstraints.gridy = yPos;
-		gridConstraints.gridwidth = compWidth;
-		gridConstraints.gridheight = compHeight;
-		gridConstraints.weightx = 0;
-		gridConstraints.weighty = 0;
-		gridConstraints.insets = new Insets(5, 5, 5, 5);
-		gridConstraints.anchor = place;
-
-		painel.add(comp, gridConstraints);
-	}
-
 }

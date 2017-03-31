@@ -12,14 +12,15 @@ import pacotes_28309.view.*;
 public class AppControl implements ActionListener {
 
 	private AppView appView;
-	private BufferedImage img;
-	private Histograma threshold;
+	private BufferedImage img, grayScale, equalized;
+	private Histograma his;
 
 	/**
 	 * Construtor da classe. Exibe a aplicação.
 	 */
 	public AppControl() {
 		appView = new AppView(this);
+		his = new Histograma();
 	}
 
 	@Override
@@ -29,15 +30,18 @@ public class AppControl implements ActionListener {
 			appView.plotaImagem(abrirImagem(), appView.left);
 			if (img != null) {
 				appView.habilitarBotoes();
-				threshold = new Histograma(img);
-				appView.desenhaHistograma(threshold.getDadosHistograma(), threshold.getMaxYH(), appView.histograma);
+				grayScale = his.escalaDeCinza(img);
+				his.load(grayScale);
+				appView.desenhaHistograma(his.getcolourBins(), his.getMaxY(), appView.histograma);
 			}
 		}
 
 		// Equalizar
 		if (e.getSource() == appView.btnEqualizar) {
-			appView.plotaImagem(threshold.equalize(), appView.right);
-			appView.desenhaHistograma(threshold.getDadosHistogramaEqualizado(), threshold.getMaxYHE(), appView.histogramaEqualizado);
+			appView.plotaImagem(his.equalizar(grayScale), appView.right);
+			equalized = his.equalizar(grayScale);
+			his.load(equalized);
+			appView.desenhaHistograma(his.getcolourBins(), his.getMaxY(), appView.histogramaEqualizado);
 		}
 
 		// Fechar
