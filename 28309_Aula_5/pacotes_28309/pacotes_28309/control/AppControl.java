@@ -31,7 +31,7 @@ public class AppControl implements ActionListener {
 			if (img != null) {
 				appView.habilitarBotoes();
 				grayScale = his.escalaDeCinza(img);
-				his.load(grayScale);
+				his.gerarHistograma(grayScale);
 				appView.desenhaHistograma(his.getcolourBins(), his.getMaxY(), appView.histograma);
 			}
 		}
@@ -40,7 +40,7 @@ public class AppControl implements ActionListener {
 		if (e.getSource() == appView.btnEqualizar) {
 			appView.plotaImagem(his.equalizar(grayScale), appView.right);
 			equalized = his.equalizar(grayScale);
-			his.load(equalized);
+			his.gerarHistograma(equalized);
 			appView.desenhaHistograma(his.getcolourBins(), his.getMaxY(), appView.histogramaEqualizado);
 		}
 

@@ -6,26 +6,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class Histograma {
-	private int SIZE = 256;
-	// Red, Green, Blue
-	private int NUMBER_OF_COLOURS = 3;
-
-	private int[][] colourBins;
-	private int maxY;
+	private int[] dadosHistograma;
+	private int maxY = 0;
 
 	/**
 	 * 
-	 * @param Path
-	 *            of image to create Histogram of.
+	 * @param Path of image to create Histogram of.
 	 */
 	public Histograma() {
-		colourBins = new int[NUMBER_OF_COLOURS][];
-
-		for (int i = 0; i < NUMBER_OF_COLOURS; i++)
-			colourBins[i] = new int[SIZE];
+		dadosHistograma = new int[256];
 	}
 
-	
 	public BufferedImage escalaDeCinza(BufferedImage imagem) {
 		// pegar largura e altura da imagem
 		int width = imagem.getWidth();
@@ -53,40 +44,29 @@ public class Histograma {
 		}
 		return imagem;
 	}
-	
-	public void load(BufferedImage img){
 
-		// Reset all the bins
-		for (int i = 0; i < NUMBER_OF_COLOURS; i++) {
-			for (int j = 0; j < SIZE; j++) {
-				colourBins[i][j] = 0;
-			}
-		}
+	public void gerarHistograma(BufferedImage img) {
+
+		for (int j = 0; j < 256; j++) 
+			dadosHistograma[j] = 0;
 
 		for (int x = 0; x < img.getWidth(); x++) {
 			for (int y = 0; y < img.getHeight(); y++) {
 				Color c = new Color(img.getRGB(x, y));
 
-				colourBins[0][c.getRed()]++;
-				colourBins[1][c.getGreen()]++;
-				colourBins[2][c.getBlue()]++;
+				dadosHistograma[c.getBlue()]++;
 			}
 		}
 
-		maxY = 0;
+		//maxY = 0;
 
-		for (int i = 0; i < NUMBER_OF_COLOURS; i++) {
-			for (int j = 0; j < SIZE; j++) {
-				if (maxY < colourBins[i][j]) {
-					maxY = colourBins[i][j];
-				}
-			}
-		}
-
+		for (int j = 0; j < 256; j++) 
+			if (maxY < dadosHistograma[j]) 
+				maxY = dadosHistograma[j];
 	}
 
-	public int[][] getcolourBins() {
-		return colourBins;
+	public int[] getcolourBins() {
+		return dadosHistograma;
 	}
 
 	public int getMaxY() {
@@ -128,7 +108,7 @@ public class Histograma {
 				blue = histLUT.get(2)[blue];
 
 				// Return back to original format
-				newPixel = colorToRGB(alpha, red, green, blue);
+				newPixel = corParaRGB(alpha, red, green, blue);
 
 				// Write pixels into image
 				histogramEQ.setRGB(i, j, newPixel);
@@ -141,7 +121,7 @@ public class Histograma {
 	}
 
 	// Get the histogram equalization lookup table for separate R, G, B channels
-	private  ArrayList<int[]> histogramEqualizationLUT(BufferedImage input) {
+	private ArrayList<int[]> histogramEqualizationLUT(BufferedImage input) {
 
 		// Get an image histogram - calculated values by R, G, B channels
 		ArrayList<int[]> imageHist = imageHistogram(input);
@@ -238,20 +218,17 @@ public class Histograma {
 
 	}
 
-	// Convert R, G, B, Alpha to standard 8 bit
-	private int colorToRGB(int alpha, int red, int green, int blue) {
-
-		int newPixel = 0;
-		newPixel += alpha;
-		newPixel = newPixel << 8;
-		newPixel += red;
-		newPixel = newPixel << 8;
-		newPixel += green;
-		newPixel = newPixel << 8;
-		newPixel += blue;
-
-		return newPixel;
-
+	// Converte RGB e Alfa para o padrão 8 bit
+	private int corParaRGB(int alpha, int red, int green, int blue) {
+		int novoPixel = 0;
+		novoPixel += alpha;
+		novoPixel = novoPixel << 8;
+		novoPixel += red;
+		novoPixel = novoPixel << 8;
+		novoPixel += green;
+		novoPixel = novoPixel << 8;
+		novoPixel += blue;
+		return novoPixel;
 	}
 
 }

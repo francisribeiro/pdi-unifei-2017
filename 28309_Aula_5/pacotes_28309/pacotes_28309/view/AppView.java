@@ -180,7 +180,7 @@ public class AppView extends JFrame {
 	 * @param maxY valor máximo do array
 	 * @param panel painel em que será incluído o histograma
 	 */
-	public void desenhaHistograma(int[][] dadosHistograma, int maxY, JPanel panel) {
+	public void desenhaHistograma(int[] dadosHistograma, int maxY, JPanel panel) {
 		Graphics2D g2 = (Graphics2D) panel.getGraphics();
 		double xIntervalo = 1.7;
 
@@ -199,7 +199,7 @@ public class AppView extends JFrame {
 
 		// Desenha o gráfico para a cor específica
 		for (int j = 0; j < 256 - 1; j++) {
-			int valor = (int) (((double) dadosHistograma[0][j + 1] / (double) maxY) * 150);
+			int valor = (int) (((double) dadosHistograma[j + 1] / (double) maxY) * 150);
 			g2.drawLine((int) (j * xIntervalo), 150, (int) (j * xIntervalo), 150 - valor);
 
 		}
