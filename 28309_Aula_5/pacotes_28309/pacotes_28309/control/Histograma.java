@@ -47,7 +47,7 @@ public class Histograma {
 
 	public void gerarHistograma(BufferedImage img) {
 
-		for (int j = 0; j < 256; j++) 
+		for (int j = 0; j < 256; j++)
 			dadosHistograma[j] = 0;
 
 		for (int x = 0; x < img.getWidth(); x++) {
@@ -58,10 +58,8 @@ public class Histograma {
 			}
 		}
 
-		//maxY = 0;
-
-		for (int j = 0; j < 256; j++) 
-			if (maxY < dadosHistograma[j]) 
+		for (int j = 0; j < 256; j++)
+			if (maxY < dadosHistograma[j])
 				maxY = dadosHistograma[j];
 	}
 
@@ -81,38 +79,27 @@ public class Histograma {
 	 * 
 	 */
 	public BufferedImage equalizar(BufferedImage original) {
+		int r, g, b, a;
+		int novoPixel = 0;
 
-		int red;
-		int green;
-		int blue;
-		int alpha;
-		int newPixel = 0;
-
-		// Get the Lookup table for histogram equalization
 		ArrayList<int[]> histLUT = histogramEqualizationLUT(original);
 
 		BufferedImage histogramEQ = new BufferedImage(original.getWidth(), original.getHeight(), original.getType());
 
 		for (int i = 0; i < original.getWidth(); i++) {
 			for (int j = 0; j < original.getHeight(); j++) {
+				a = new Color(original.getRGB(i, j)).getAlpha();
+				r = new Color(original.getRGB(i, j)).getRed();
+				g = new Color(original.getRGB(i, j)).getGreen();
+				b = new Color(original.getRGB(i, j)).getBlue();
 
-				// Get pixels by R, G, B
-				alpha = new Color(original.getRGB(i, j)).getAlpha();
-				red = new Color(original.getRGB(i, j)).getRed();
-				green = new Color(original.getRGB(i, j)).getGreen();
-				blue = new Color(original.getRGB(i, j)).getBlue();
+				r = histLUT.get(0)[r];
+				g = histLUT.get(1)[g];
+				b = histLUT.get(2)[b];
 
-				// Set new pixel values using the histogram lookup table
-				red = histLUT.get(0)[red];
-				green = histLUT.get(1)[green];
-				blue = histLUT.get(2)[blue];
+				novoPixel = converterRGB(a, r, g, b);
 
-				// Return back to original format
-				newPixel = corParaRGB(alpha, red, green, blue);
-
-				// Write pixels into image
-				histogramEQ.setRGB(i, j, newPixel);
-
+				histogramEQ.setRGB(i, j, novoPixel);
 			}
 		}
 
@@ -120,106 +107,91 @@ public class Histograma {
 
 	}
 
-	// Get the histogram equalization lookup table for separate R, G, B channels
 	private ArrayList<int[]> histogramEqualizationLUT(BufferedImage input) {
 
-		// Get an image histogram - calculated values by R, G, B channels
 		ArrayList<int[]> imageHist = imageHistogram(input);
-
-		// Create the lookup table
 		ArrayList<int[]> imageLUT = new ArrayList<int[]>();
-
-		// Fill the lookup table
-		int[] rhistogram = new int[256];
-		int[] ghistogram = new int[256];
-		int[] bhistogram = new int[256];
-
-		for (int i = 0; i < rhistogram.length; i++)
-			rhistogram[i] = 0;
-		for (int i = 0; i < ghistogram.length; i++)
-			ghistogram[i] = 0;
-		for (int i = 0; i < bhistogram.length; i++)
-			bhistogram[i] = 0;
-
+		int[] rh = new int[256];
+		int[] gh = new int[256];
+		int[] bh = new int[256];
 		long sumr = 0;
 		long sumg = 0;
 		long sumb = 0;
 
-		// Calculate the scale factor
+		for (int i = 0; i < rh.length; i++)
+			rh[i] = 0;
+		for (int i = 0; i < gh.length; i++)
+			gh[i] = 0;
+		for (int i = 0; i < bh.length; i++)
+			bh[i] = 0;
+
 		float scale_factor = (float) (255.0 / (input.getWidth() * input.getHeight()));
 
-		for (int i = 0; i < rhistogram.length; i++) {
+		for (int i = 0; i < rh.length; i++) {
 			sumr += imageHist.get(0)[i];
 			int valr = (int) (sumr * scale_factor);
-			if (valr > 255) {
-				rhistogram[i] = 255;
-			} else
-				rhistogram[i] = valr;
+			if (valr > 255)
+				rh[i] = 255;
+			else
+				rh[i] = valr;
 
 			sumg += imageHist.get(1)[i];
 			int valg = (int) (sumg * scale_factor);
-			if (valg > 255) {
-				ghistogram[i] = 255;
-			} else
-				ghistogram[i] = valg;
+			if (valg > 255)
+				gh[i] = 255;
+			else
+				gh[i] = valg;
 
 			sumb += imageHist.get(2)[i];
 			int valb = (int) (sumb * scale_factor);
-			if (valb > 255) {
-				bhistogram[i] = 255;
-			} else
-				bhistogram[i] = valb;
+			if (valb > 255)
+				bh[i] = 255;
+			else
+				bh[i] = valb;
 		}
 
-		imageLUT.add(rhistogram);
-		imageLUT.add(ghistogram);
-		imageLUT.add(bhistogram);
+		imageLUT.add(rh);
+		imageLUT.add(gh);
+		imageLUT.add(bh);
 
 		return imageLUT;
-
 	}
 
-	// Return an ArrayList containing histogram values for separate R, G, B
-	// channels
 	public ArrayList<int[]> imageHistogram(BufferedImage input) {
 
-		int[] rhistogram = new int[256];
-		int[] ghistogram = new int[256];
-		int[] bhistogram = new int[256];
+		int[] rh = new int[256];
+		int[] gh = new int[256];
+		int[] bh = new int[256];
 
-		for (int i = 0; i < rhistogram.length; i++)
-			rhistogram[i] = 0;
-		for (int i = 0; i < ghistogram.length; i++)
-			ghistogram[i] = 0;
-		for (int i = 0; i < bhistogram.length; i++)
-			bhistogram[i] = 0;
+		for (int i = 0; i < rh.length; i++)
+			rh[i] = 0;
+		for (int i = 0; i < gh.length; i++)
+			gh[i] = 0;
+		for (int i = 0; i < bh.length; i++)
+			bh[i] = 0;
 
 		for (int i = 0; i < input.getWidth(); i++) {
 			for (int j = 0; j < input.getHeight(); j++) {
-
 				int red = new Color(input.getRGB(i, j)).getRed();
 				int green = new Color(input.getRGB(i, j)).getGreen();
 				int blue = new Color(input.getRGB(i, j)).getBlue();
-
-				// Increase the values of colors
-				rhistogram[red]++;
-				ghistogram[green]++;
-				bhistogram[blue]++;
-
+				rh[red]++;
+				gh[green]++;
+				bh[blue]++;
 			}
 		}
 
 		ArrayList<int[]> hist = new ArrayList<int[]>();
-		hist.add(rhistogram);
-		hist.add(ghistogram);
-		hist.add(bhistogram);
+		hist.add(rh);
+		hist.add(gh);
+		hist.add(bh);
 
 		return hist;
 
 	}
 
 	// Converte RGB e Alfa para o padrão 8 bit
-	private int corParaRGB(int alpha, int red, int green, int blue) {
+	private int converterRGB(int alpha, int red, int green, int blue) {
 		int novoPixel = 0;
 		novoPixel += alpha;
 		novoPixel = novoPixel << 8;
