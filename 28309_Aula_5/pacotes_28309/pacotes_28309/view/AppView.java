@@ -55,15 +55,15 @@ public class AppView extends JFrame {
 
 		// Cor dos painéis
 		left.setBackground(Color.BLACK);
-		right.setBackground(Color.DARK_GRAY);
+		right.setBackground(Color.GREEN);
 		left2.setBackground(Color.BLACK);
-		right2.setBackground(Color.DARK_GRAY);
+		right2.setBackground(Color.GREEN);
 
 		// propriedades do histograma
 		histograma.setPreferredSize(new Dimension(450, 150));
 		histogramaEqualizado.setPreferredSize(new Dimension(450, 150));
 		histograma.setBackground(Color.BLACK);
-		histogramaEqualizado.setBackground(Color.DARK_GRAY);
+		histogramaEqualizado.setBackground(Color.GREEN);
 
 		left2.add(histograma);
 		right2.add(histogramaEqualizado);
@@ -135,7 +135,7 @@ public class AppView extends JFrame {
 			g.fillRect(0, 0, panel.getWidth(), panel.getHeight());
 		} else {
 			g.clearRect(0, 0, panel.getWidth(), panel.getHeight());
-			g.setColor(Color.DARK_GRAY);
+			g.setColor(Color.GREEN);
 			g.fillRect(0, 0, panel.getWidth(), panel.getHeight());
 		}
 
@@ -187,15 +187,15 @@ public class AppView extends JFrame {
 		if (panel == histograma)
 			g2.setColor(Color.BLACK);
 		else
-			g2.setColor(Color.DARK_GRAY);
+			g2.setColor(Color.GREEN);
 		
 		g2.fillRect(0, 0, panel.getWidth(), 150);
 		g2.setStroke(new BasicStroke(2));
 		
 		if (panel == histograma)
-			g2.setColor(Color.RED);
+			g2.setColor(Color.GREEN);
 		else
-			g2.setColor(Color.YELLOW);
+			g2.setColor(Color.BLACK);
 
 		// Desenha o gráfico para a cor específica
 		for (int j = 0; j < 256 - 1; j++) {
