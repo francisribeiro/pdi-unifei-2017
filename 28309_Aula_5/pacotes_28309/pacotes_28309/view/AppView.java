@@ -54,16 +54,16 @@ public class AppView extends JFrame {
 		histogramaEqualizado = new JPanel();
 
 		// Cor dos painéis
-		left.setBackground(Color.BLACK);
-		right.setBackground(Color.GREEN);
-		left2.setBackground(Color.BLACK);
-		right2.setBackground(Color.GREEN);
+		left.setBackground(Color.GRAY);
+		right.setBackground(Color.LIGHT_GRAY);
+		left2.setBackground(Color.GRAY);
+		right2.setBackground(Color.LIGHT_GRAY);
 
 		// propriedades do histograma
 		histograma.setPreferredSize(new Dimension(450, 150));
 		histogramaEqualizado.setPreferredSize(new Dimension(450, 150));
-		histograma.setBackground(Color.BLACK);
-		histogramaEqualizado.setBackground(Color.GREEN);
+		histograma.setBackground(Color.GRAY);
+		histogramaEqualizado.setBackground(Color.LIGHT_GRAY);
 
 		left2.add(histograma);
 		right2.add(histogramaEqualizado);
@@ -131,11 +131,11 @@ public class AppView extends JFrame {
 	private void limparTela(Graphics g, JPanel panel) {
 		if (panel == left) {
 			g.clearRect(0, 0, panel.getWidth(), panel.getHeight());
-			g.setColor(Color.BLACK);
+			g.setColor(Color.GRAY);
 			g.fillRect(0, 0, panel.getWidth(), panel.getHeight());
 		} else {
 			g.clearRect(0, 0, panel.getWidth(), panel.getHeight());
-			g.setColor(Color.GREEN);
+			g.setColor(Color.LIGHT_GRAY);
 			g.fillRect(0, 0, panel.getWidth(), panel.getHeight());
 		}
 
@@ -185,15 +185,15 @@ public class AppView extends JFrame {
 		double xIntervalo = 1.7;
 
 		if (panel == histograma)
-			g2.setColor(Color.BLACK);
+			g2.setColor(Color.GRAY);
 		else
-			g2.setColor(Color.GREEN);
+			g2.setColor(Color.LIGHT_GRAY);
 		
 		g2.fillRect(0, 0, panel.getWidth(), 150);
 		g2.setStroke(new BasicStroke(2));
 		
 		if (panel == histograma)
-			g2.setColor(Color.GREEN);
+			g2.setColor(Color.BLACK);
 		else
 			g2.setColor(Color.BLACK);
 
