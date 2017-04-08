@@ -24,7 +24,7 @@ public class AppControl implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		// Abrir Imagem
 		if (e.getSource() == appView.btnAbrirImagem) {
-			//appView.plotaImagem(abrirImagem(), appView.left);
+			appView.plotaImagem(abrirImagem(), appView.um_top);
 			if (img != null) {
 				appView.habilitarBotoes();
 			}

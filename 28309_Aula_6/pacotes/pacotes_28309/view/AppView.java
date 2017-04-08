@@ -3,6 +3,9 @@ package pacotes_28309.view;
 import java.awt.*;
 import java.awt.image.*;
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.border.TitledBorder;
+
 import pacotes_28309.control.*;
 
 @SuppressWarnings("serial")
@@ -10,6 +13,8 @@ public class AppView extends JFrame {
 	public JButton btnAbrirImagem, btnRuidos, btnFechar;
 	private JPanel container, um, dois, tres, quatro;
 	public JPanel um_top, um_bottom, dois_top, dois_bottom, tres_top, tres_bottom, quatro_top, quatro_bottom;
+	private Border borda;
+	private TitledBorder one, two, three, four;
 
 	/**
 	 * Contrutor da classe. Define as configurações da janela principal da
@@ -20,7 +25,7 @@ public class AppView extends JFrame {
 	public AppView(AppControl appControl) {
 
 		// Setando as configurações da janela.
-		this.setTitle("App Equalizar");
+		this.setTitle("App Filtros");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		this.setLayout(new BorderLayout());
@@ -56,7 +61,27 @@ public class AppView extends JFrame {
 		tres_bottom = new JPanel();
 		quatro_top = new JPanel();
 		quatro_bottom = new JPanel();
-		
+
+		// Adicionando as Bordas dos painéis e suas propriedades
+		borda = BorderFactory.createLineBorder(Color.gray, 0);
+		one = BorderFactory.createTitledBorder(borda, "Original");
+		two = BorderFactory.createTitledBorder(borda, "Pimenta");
+		three = BorderFactory.createTitledBorder(borda, "Sal");
+		four = BorderFactory.createTitledBorder(borda, "Pimenta e Sal");
+		one.setTitleJustification(TitledBorder.CENTER);
+		two.setTitleJustification(TitledBorder.CENTER);
+		three.setTitleJustification(TitledBorder.CENTER);
+		four.setTitleJustification(TitledBorder.CENTER);
+		one.setTitleFont(new Font("Arial", Font.PLAIN, 17));
+		two.setTitleFont(new Font("Arial", Font.PLAIN, 17));
+		three.setTitleFont(new Font("Arial", Font.PLAIN, 17));
+		four.setTitleFont(new Font("Arial", Font.PLAIN, 17));
+
+		um_top.setBorder(one);
+		dois_top.setBorder(two);
+		tres_top.setBorder(three);
+		quatro_top.setBorder(four);
+
 		um.add(um_top);
 		um.add(um_bottom);
 		dois.add(dois_top);
@@ -65,22 +90,18 @@ public class AppView extends JFrame {
 		tres.add(tres_bottom);
 		quatro.add(quatro_top);
 		quatro.add(quatro_bottom);
-		
-		um_top.setBackground(Color.blue);
+
 		um_bottom.setBackground(Color.cyan);
-		dois_top.setBackground(Color.black);
 		dois_bottom.setBackground(Color.yellow);
-		tres_top.setBackground(Color.blue);
 		tres_bottom.setBackground(Color.cyan);
-		quatro_top.setBackground(Color.black);
 		quatro_bottom.setBackground(Color.yellow);
-		
+
 		container.add(um);
 		container.add(dois);
 		container.add(tres);
 		container.add(quatro);
-		add(container);
 
+		add(container);
 	}
 
 	/**
@@ -129,9 +150,9 @@ public class AppView extends JFrame {
 	 * @param g graficos
 	 */
 	private void limparTela(Graphics g, JPanel panel) {
-		g.clearRect(0, 0, panel.getWidth(), panel.getHeight());
-		g.setColor(Color.GRAY);
-		g.fillRect(0, 0, panel.getWidth(), panel.getHeight());
+		g.clearRect(0, 22, panel.getWidth(), panel.getHeight());
+		g.setColor(new Color(238, 238, 238));
+		g.fillRect(0, 22, panel.getWidth(), panel.getHeight());
 	}
 
 	/**
@@ -165,5 +186,4 @@ public class AppView extends JFrame {
 	public void habilitarBotoes() {
 		btnRuidos.setEnabled(true);
 	}
-
 }
