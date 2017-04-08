@@ -11,13 +11,16 @@ import pacotes_28309.view.*;
 public class AppControl implements ActionListener {
 
 	private AppView appView;
-	private BufferedImage img;
+	@SuppressWarnings("unused")
+	private BufferedImage img, grayScale, sal, pimenta, salPimenta;
+	private Ruidos ruidos;
 
 	/**
 	 * Construtor da classe. Exibe a aplicação.
 	 */
 	public AppControl() {
 		appView = new AppView(this);
+		ruidos = new Ruidos();
 	}
 
 	@Override
@@ -25,14 +28,24 @@ public class AppControl implements ActionListener {
 		// Abrir Imagem
 		if (e.getSource() == appView.btnAbrirImagem) {
 			appView.plotaImagem(abrirImagem(), appView.um_top);
+
 			if (img != null) {
-				appView.habilitarBotoes();
+				// Ruídos
+				grayScale = ruidos.escalaDeCinza(img);
+				sal = ruidos.Sal(grayScale);
+				pimenta = ruidos.Pimenta(grayScale);
+				salPimenta = ruidos.Pimenta(sal);
+				
+				//Plotando Ruídos
+				appView.plotaImagem(pimenta, appView.dois_top);
+				appView.plotaImagem(sal, appView.tres_top);
+				appView.plotaImagem(salPimenta, appView.quatro_top);
 			}
 		}
 
 		// Equalizar
 		if (e.getSource() == appView.btnRuidos) {
-		
+
 		}
 
 		// Fechar

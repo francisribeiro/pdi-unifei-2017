@@ -123,7 +123,7 @@ public class AppView extends JFrame {
 		btnFechar = new JButton("Fechar");
 
 		// Desabilita os botões
-		btnRuidos.setEnabled(false);
+		//btnRuidos.setEnabled(false);
 
 		// Adiciona os listeners.
 		btnAbrirImagem.addActionListener(appControl);
@@ -184,6 +184,6 @@ public class AppView extends JFrame {
 	 * Habilita botão de equalizar a imagem, logo após uma imagem ser aberta.
 	 */
 	public void habilitarBotoes() {
-		btnRuidos.setEnabled(true);
+		//btnRuidos.setEnabled(true);
 	}
 }
