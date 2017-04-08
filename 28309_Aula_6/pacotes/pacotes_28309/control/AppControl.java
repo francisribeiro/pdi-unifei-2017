@@ -27,25 +27,68 @@ public class AppControl implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		// Abrir Imagem
 		if (e.getSource() == appView.btnAbrirImagem) {
-			appView.plotaImagem(abrirImagem(), appView.um_top);
+			appView.plotaImagem(abrirImagem(), appView.o);
 
 			if (img != null) {
+				appView.habilitarBotoes();
+				appView.limparFiltros();
+				
 				// Ruídos
 				grayScale = ruidos.escalaDeCinza(img);
 				sal = ruidos.Sal(grayScale);
 				pimenta = ruidos.Pimenta(grayScale);
 				salPimenta = ruidos.Pimenta(sal);
-				
-				//Plotando Ruídos
-				appView.plotaImagem(pimenta, appView.dois_top);
-				appView.plotaImagem(sal, appView.tres_top);
-				appView.plotaImagem(salPimenta, appView.quatro_top);
+
+				// Plotando Ruídos
+				appView.plotaImagem(pimenta, appView.p);
+				appView.plotaImagem(sal, appView.s);
+				appView.plotaImagem(salPimenta, appView.sp);
 			}
 		}
 
-		// Equalizar
-		if (e.getSource() == appView.btnRuidos) {
+		// Media
+		if (e.getSource() == appView.btnMedia) {
+			appView.setFilterTitle("Media");
 
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					appView.plotaImagem(grayScale, appView.o_f);
+					appView.plotaImagem(grayScale, appView.p_f);
+					appView.plotaImagem(grayScale, appView.s_f);
+					appView.plotaImagem(grayScale, appView.sp_f);
+				}
+			});
+		}
+
+		// Mediana
+		if (e.getSource() == appView.btnMediana) {
+			appView.setFilterTitle("Mediana");
+
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					appView.plotaImagem(pimenta, appView.o_f);
+					appView.plotaImagem(pimenta, appView.p_f);
+					appView.plotaImagem(pimenta, appView.s_f);
+					appView.plotaImagem(pimenta, appView.sp_f);
+				}
+			});
+		}
+
+		// PseudoMediana
+		if (e.getSource() == appView.btnPseudoMediana) {
+			appView.setFilterTitle("Pseudo Mediana");
+
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					appView.plotaImagem(sal, appView.o_f);
+					appView.plotaImagem(sal, appView.p_f);
+					appView.plotaImagem(sal, appView.s_f);
+					appView.plotaImagem(sal, appView.sp_f);
+				}
+			});
 		}
 
 		// Fechar
