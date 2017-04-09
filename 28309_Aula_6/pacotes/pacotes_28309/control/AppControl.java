@@ -13,7 +13,10 @@ public class AppControl implements ActionListener {
 	private AppView appView;
 	@SuppressWarnings("unused")
 	private BufferedImage img, grayScale, sal, pimenta, salPimenta;
+	private BufferedImage Nimg, Nsal, Npimenta, NsalPimenta;
+	private boolean mediana = false, media = false, pseudo = false;
 	private Ruidos ruidos;
+	private Filtros filtro;
 
 	/**
 	 * Construtor da classe. Exibe a aplicação.
@@ -21,6 +24,7 @@ public class AppControl implements ActionListener {
 	public AppControl() {
 		appView = new AppView(this);
 		ruidos = new Ruidos();
+		filtro = new Filtros();
 	}
 
 	@Override
@@ -32,7 +36,7 @@ public class AppControl implements ActionListener {
 			if (img != null) {
 				appView.habilitarBotoes();
 				appView.limparFiltros();
-				
+
 				// Ruídos
 				grayScale = ruidos.escalaDeCinza(img);
 				sal = ruidos.Sal(grayScale);
@@ -50,6 +54,17 @@ public class AppControl implements ActionListener {
 		if (e.getSource() == appView.btnMedia) {
 			appView.setFilterTitle("Media");
 
+			mediana = false;
+			pseudo = false;
+			
+			if (!media) {
+				Nimg = img;
+				Nsal = sal;
+				Npimenta = pimenta;
+				NsalPimenta = salPimenta;
+				media = true;
+			}
+			
 			SwingUtilities.invokeLater(new Runnable() {
 				@Override
 				public void run() {
@@ -65,28 +80,51 @@ public class AppControl implements ActionListener {
 		if (e.getSource() == appView.btnMediana) {
 			appView.setFilterTitle("Mediana");
 
+			media = false;
+			pseudo = false;
+			
+			if (!mediana) {
+				Nimg = img;
+				Nsal = sal;
+				Npimenta = pimenta;
+				NsalPimenta = salPimenta;
+				mediana = true;
+			}
+
 			SwingUtilities.invokeLater(new Runnable() {
 				@Override
 				public void run() {
-					appView.plotaImagem(pimenta, appView.o_f);
-					appView.plotaImagem(pimenta, appView.p_f);
-					appView.plotaImagem(pimenta, appView.s_f);
-					appView.plotaImagem(pimenta, appView.sp_f);
+					appView.plotaImagem(Nimg = filtro.mediana(Nimg), appView.o_f);
+					appView.plotaImagem(Npimenta = filtro.mediana(Npimenta), appView.p_f);
+					appView.plotaImagem(Nsal = filtro.mediana(Nsal), appView.s_f);
+					appView.plotaImagem(NsalPimenta = filtro.mediana(NsalPimenta), appView.sp_f);
 				}
 			});
+			
 		}
 
 		// PseudoMediana
 		if (e.getSource() == appView.btnPseudoMediana) {
 			appView.setFilterTitle("Pseudo Mediana");
-
+			
+			mediana = false;
+			media = false;
+			
+			if (!pseudo) {
+				Nimg = img;
+				Nsal = sal;
+				Npimenta = pimenta;
+				NsalPimenta = salPimenta;
+				pseudo = true;
+			}
+			
 			SwingUtilities.invokeLater(new Runnable() {
 				@Override
 				public void run() {
-					appView.plotaImagem(sal, appView.o_f);
-					appView.plotaImagem(sal, appView.p_f);
-					appView.plotaImagem(sal, appView.s_f);
-					appView.plotaImagem(sal, appView.sp_f);
+					appView.plotaImagem(Nimg = filtro.pseudoMediana(Nimg), appView.o_f);
+					appView.plotaImagem(Npimenta = filtro.pseudoMediana(Npimenta), appView.p_f);
+					appView.plotaImagem(Nsal = filtro.pseudoMediana(Nsal), appView.s_f);
+					appView.plotaImagem(NsalPimenta = filtro.pseudoMediana(NsalPimenta), appView.sp_f);
 				}
 			});
 		}

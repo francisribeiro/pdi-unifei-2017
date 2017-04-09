@@ -9,8 +9,9 @@ public class Ruidos {
 		// pegar largura e altura da imagem
 		int width = imagem.getWidth();
 		int height = imagem.getHeight();
-
 		int media = 0;
+		BufferedImage nImg = new BufferedImage(imagem.getWidth(), imagem.getHeight(), imagem.getType());
+
 		// laço para varrer a matriz de pixels da imagem
 		for (int i = 0; i < width; i++) {
 			for (int j = 0; j < height; j++) { // rgb recebe o valor RGB do
@@ -27,18 +28,18 @@ public class Ruidos {
 				// criar uma instância de Color
 				Color color = new Color(media, media, media);
 				// setar o valor do pixel com a nova cor
-				imagem.setRGB(i, j, color.getRGB());
+				nImg.setRGB(i, j, color.getRGB());
 			}
 		}
 
-		return imagem;
+		return nImg;
 	}
 
 	public BufferedImage Sal(BufferedImage imagem) {
 		double low, high, amount;
 		BufferedImage nImg = new BufferedImage(imagem.getWidth(), imagem.getHeight(), imagem.getType());
 
-		amount = 0.05;
+		amount = 0.1;
 		low = amount / 2;
 		high = 1 - low;
 
@@ -56,7 +57,7 @@ public class Ruidos {
 		double low, amount;
 		BufferedImage nImg = new BufferedImage(imagem.getWidth(), imagem.getHeight(), imagem.getType());
 
-		amount = 0.05;
+		amount = 0.1;
 		low = amount / 2;
 
 		for (int i = 0; i < imagem.getWidth(); i++)
