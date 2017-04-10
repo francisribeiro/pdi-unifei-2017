@@ -2,7 +2,10 @@ package pacotes_28309.control;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.Arrays;
+
+import pacotes_28309.model.ImageINFO;
 
 public class Filtros {
 
@@ -134,118 +137,95 @@ public class Filtros {
 	////////////////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////////////////////////////////
 
-	public static class ArrayData {
-		public final int[] dataArray;
-		public final int width;
-		public final int height;
-
-		public ArrayData(int width, int height) {
-			this(new int[width * height], width, height);
-		}
-
-		public ArrayData(int[] dataArray, int width, int height) {
-			this.dataArray = dataArray;
-			this.width = width;
-			this.height = height;
-		}
-
-		public int get(int x, int y) {
-			return dataArray[y * width + x];
-		}
-
-		public void set(int x, int y, int value) {
-			dataArray[y * width + x] = value;
-		}
-	}
-
-	private static int bound(int value, int endIndex) {
-		if (value < 0)
+	private static int limites(int valor, int indiceFinal) {
+		if (valor < 0)
 			return 0;
-		if (value < endIndex)
-			return value;
-		return endIndex - 1;
+		if (valor < indiceFinal)
+			return valor;
+
+		return indiceFinal - 1;
 	}
 
-	public static ArrayData convolute(ArrayData inputData, ArrayData kernel, int kernelDivisor) {
-		int inputWidth = inputData.width;
-		int inputHeight = inputData.height;
-		int kernelWidth = kernel.width;
-		int kernelHeight = kernel.height;
-		if ((kernelWidth <= 0) || ((kernelWidth & 1) != 1))
-			throw new IllegalArgumentException("Kernel must have odd width");
-		if ((kernelHeight <= 0) || ((kernelHeight & 1) != 1))
-			throw new IllegalArgumentException("Kernel must have odd height");
-		int kernelWidthRadius = kernelWidth >>> 1;
-		int kernelHeightRadius = kernelHeight >>> 1;
+	private static ImageINFO[] dadosdaImagem(BufferedImage img) {
 
-		ArrayData outputData = new ArrayData(inputWidth, inputHeight);
-		for (int i = inputWidth - 1; i >= 0; i--) {
-			for (int j = inputHeight - 1; j >= 0; j--) {
-				double newValue = 0.0;
-				for (int kw = kernelWidth - 1; kw >= 0; kw--)
-					for (int kh = kernelHeight - 1; kh >= 0; kh--)
-						newValue += kernel.get(kw, kh) * inputData.get(bound(i + kw - kernelWidthRadius, inputWidth),
-								bound(j + kh - kernelHeightRadius, inputHeight));
-				outputData.set(i, j, (int) Math.round(newValue / kernelDivisor));
+		// Dados da Imagem
+		int largura = img.getWidth();
+		int altura = img.getHeight();
+		int[] dadosRGB = img.getRGB(0, 0, largura, altura, null, 0, largura);
+
+		// Dados das cores da Imagem
+		ImageINFO r = new ImageINFO(largura, altura);
+		ImageINFO g = new ImageINFO(largura, altura);
+		ImageINFO b = new ImageINFO(largura, altura);
+
+		// Aloca os valores em um array
+		for (int y = 0; y < altura; y++)
+			for (int x = 0; x < largura; x++) {
+				int valorRGB = dadosRGB[y * largura + x];
+				r.set(x, y, (valorRGB >>> 16) & 0xFF);
+				g.set(x, y, (valorRGB >>> 8) & 0xFF);
+				b.set(x, y, valorRGB & 0xFF);
 			}
-		}
-		return outputData;
+
+		return new ImageINFO[] { r, g, b };
 	}
 
-	public static ArrayData[] getArrayDatasFromImage(BufferedImage inputImage) {
-		int width = inputImage.getWidth();
-		int height = inputImage.getHeight();
-		int[] rgbData = inputImage.getRGB(0, 0, width, height, null, 0, width);
-		ArrayData reds = new ArrayData(width, height);
-		ArrayData greens = new ArrayData(width, height);
-		ArrayData blues = new ArrayData(width, height);
-		for (int y = 0; y < height; y++) {
-			for (int x = 0; x < width; x++) {
-				int rgbValue = rgbData[y * width + x];
-				reds.set(x, y, (rgbValue >>> 16) & 0xFF);
-				greens.set(x, y, (rgbValue >>> 8) & 0xFF);
-				blues.set(x, y, rgbValue & 0xFF);
+	private BufferedImage imagemDeSaida(ImageINFO[] rgb) {
+		ImageINFO r = rgb[0], g = rgb[1], b = rgb[2];
+		BufferedImage imagemSaida = new BufferedImage(r.getLargura(), g.getAltura(), BufferedImage.TYPE_INT_ARGB);
+
+		for (int y = 0; y < r.getAltura(); y++)
+			for (int x = 0; x < r.getLargura(); x++) {
+				int red = limites(r.get(x, y), 256);
+				int green = limites(g.get(x, y), 256);
+				int blue = limites(b.get(x, y), 256);
+
+				// Gera uma imagem RGB
+				imagemSaida.setRGB(x, y, (red << 16) | (green << 8) | blue | -0x01000000);
 			}
-		}
-		return new ArrayData[] { reds, greens, blues };
+
+		return imagemSaida;
 	}
 
-	public static BufferedImage writeOutputImage(ArrayData[] redGreenBlue) {
-		ArrayData reds = redGreenBlue[0];
-		ArrayData greens = redGreenBlue[1];
-		ArrayData blues = redGreenBlue[2];
-		BufferedImage outputImage = new BufferedImage(reds.width, reds.height, BufferedImage.TYPE_INT_ARGB);
-		for (int y = 0; y < reds.height; y++) {
-			for (int x = 0; x < reds.width; x++) {
-				int red = bound(reds.get(x, y), 256);
-				int green = bound(greens.get(x, y), 256);
-				int blue = bound(blues.get(x, y), 256);
-				outputImage.setRGB(x, y, (red << 16) | (green << 8) | blue | -0x01000000);
+	private static ImageINFO processoDeConvolucao(ImageINFO imagemEntrada, int[] template, int size, int divisor) {
+		int imgLargura = imagemEntrada.getLargura();
+		int imgAltura = imagemEntrada.getAltura();
+		int tmplLargura = size;
+		int tmplAltura = size;
+		int raiolargura = tmplLargura >>> 1;
+		int raioAltura = tmplAltura >>> 1;
+		ImageINFO dadosImgSaida = new ImageINFO(imgLargura, imgAltura);
+
+		// Faz a convolução multiplicando as matrizes
+		for (int i = imgLargura - 1; i >= 0; i--) {
+			for (int j = imgAltura - 1; j >= 0; j--) {
+				double novoValor = 0.0;
+				for (int kw = tmplLargura - 1; kw >= 0; kw--)
+					for (int kh = tmplAltura - 1; kh >= 0; kh--)
+						novoValor += template[kh * tmplAltura + kw] * imagemEntrada.get(
+								limites(i - kw + raiolargura, imgLargura), limites(j - kh + raioAltura, imgAltura));
+
+				dadosImgSaida.set(i, j, (int) Math.round(novoValor / divisor));
 			}
 		}
-		return outputImage;
+
+		return dadosImgSaida;
 	}
 
 	public BufferedImage media(BufferedImage img, int size) {
-		int kernelWidth = size;
-		int kernelHeight = size;
-		int kernelDivisor = size * size;
+		int divisor = size * size;
 
-		int y = size;
-		
-		ArrayData kernel = new ArrayData(kernelWidth, kernelHeight);
-		
-		for (int i = 0; i < kernelHeight; i++) {
-			for (int j = 0; j < kernelWidth; j++) {
-				kernel.set(j, i, 1);
-			}
-		}
+		ImageINFO[] imgArray = dadosdaImagem(img);
+		int[] kernel = new int[size * size];
 
-		ArrayData[] dataArrays = getArrayDatasFromImage(img);
-		for (int i = 0; i < dataArrays.length; i++)
-			dataArrays[i] = convolute(dataArrays[i], kernel, kernelDivisor);
-		
-		return writeOutputImage(dataArrays);
+		for (int i = 0; i < size; i++)
+			for (int j = 0; j < size; j++)
+				kernel[i * size + j] = 1;
+
+		for (int i = 0; i < imgArray.length; i++)
+			imgArray[i] = processoDeConvolucao(imgArray[i], kernel, size, divisor);
+
+		return imagemDeSaida(imgArray);
 	}
 
 }
