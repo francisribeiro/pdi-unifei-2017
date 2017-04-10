@@ -68,10 +68,10 @@ public class AppControl implements ActionListener {
 			SwingUtilities.invokeLater(new Runnable() {
 				@Override
 				public void run() {
-					appView.plotaImagem(grayScale, appView.o_f);
-					appView.plotaImagem(grayScale, appView.p_f);
-					appView.plotaImagem(grayScale, appView.s_f);
-					appView.plotaImagem(grayScale, appView.sp_f);
+					appView.plotaImagem(Nimg =filtro.media(Nimg, 3), appView.o_f);
+					appView.plotaImagem(Npimenta = filtro.media(Npimenta, 3),appView.p_f);
+					appView.plotaImagem(Nsal = filtro.media(Nsal, 3), appView.s_f);
+					appView.plotaImagem(NsalPimenta = filtro.media(NsalPimenta, 3), appView.sp_f);
 				}
 			});
 		}
