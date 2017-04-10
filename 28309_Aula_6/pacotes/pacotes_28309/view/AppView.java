@@ -64,30 +64,35 @@ public class AppView extends JFrame {
 		sp = new JPanel();
 
 		original = new JLabel("Original", SwingConstants.CENTER);
-		pimenta = new JLabel("Pimenta", SwingConstants.CENTER);
-		sal = new JLabel("Sal", SwingConstants.CENTER);
-		salPimenta = new JLabel("Pimenta e Sal", SwingConstants.CENTER);
+		pimenta = new JLabel("c/ Pimenta", SwingConstants.CENTER);
+		sal = new JLabel("c/ Sal", SwingConstants.CENTER);
+		salPimenta = new JLabel("c/ Pimenta e Sal", SwingConstants.CENTER);
 
-		original.setFont(new Font("Arial", Font.PLAIN, 16));
-		pimenta.setFont(new Font("Arial", Font.PLAIN, 16));
-		sal.setFont(new Font("Arial", Font.PLAIN, 16));
-		salPimenta.setFont(new Font("Arial", Font.PLAIN, 16));
+		original.setFont(new Font("Arial", Font.BOLD, 15));
+		pimenta.setFont(new Font("Arial", Font.BOLD, 15));
+		sal.setFont(new Font("Arial", Font.BOLD, 15));
+		salPimenta.setFont(new Font("Arial", Font.BOLD, 15));
 
 		original.setForeground(new Color(238, 238, 238));
 		pimenta.setForeground(new Color(238, 238, 238));
 		sal.setForeground(new Color(238, 238, 238));
 		salPimenta.setForeground(new Color(238, 238, 238));
 		
-		um_top.add(original, BorderLayout.PAGE_START);
+		original.setOpaque(true);
+		pimenta.setOpaque(true);
+		sal.setOpaque(true);
+		salPimenta.setOpaque(true);
+				
+		um_top.add(original, BorderLayout.PAGE_END);
 		um_top.add(o, BorderLayout.CENTER);
 
-		dois_top.add(pimenta, BorderLayout.PAGE_START);
+		dois_top.add(pimenta, BorderLayout.PAGE_END);
 		dois_top.add(p, BorderLayout.CENTER);
 
-		tres_top.add(sal, BorderLayout.PAGE_START);
+		tres_top.add(sal, BorderLayout.PAGE_END);
 		tres_top.add(s, BorderLayout.CENTER);
 
-		quatro_top.add(salPimenta, BorderLayout.PAGE_START);
+		quatro_top.add(salPimenta, BorderLayout.PAGE_END);
 		quatro_top.add(sp, BorderLayout.CENTER);
 
 		//////////////////////////////////////
@@ -107,21 +112,31 @@ public class AppView extends JFrame {
 		sal_fil = new JLabel("", SwingConstants.CENTER);
 		salP_fil = new JLabel("", SwingConstants.CENTER);
 
-		ori_fil.setFont(new Font("Arial", Font.PLAIN, 16));
-		pim_fil.setFont(new Font("Arial", Font.PLAIN, 16));
-		sal_fil.setFont(new Font("Arial", Font.PLAIN, 16));
-		salP_fil.setFont(new Font("Arial", Font.PLAIN, 16));
-
-		um_bottom.add(ori_fil, BorderLayout.PAGE_START);
+		ori_fil.setFont(new Font("Arial", Font.BOLD, 15));
+		pim_fil.setFont(new Font("Arial", Font.BOLD, 15));
+		sal_fil.setFont(new Font("Arial", Font.BOLD, 15));
+		salP_fil.setFont(new Font("Arial", Font.BOLD, 15));
+		
+		ori_fil.setOpaque(true);
+		pim_fil.setOpaque(true);
+		sal_fil.setOpaque(true);
+		salP_fil.setOpaque(true);
+		
+		ori_fil.setBackground(Color.CYAN);
+		pim_fil.setBackground(Color.YELLOW);
+		sal_fil.setBackground(Color.CYAN);
+		salP_fil.setBackground(Color.YELLOW);
+		
+		um_bottom.add(ori_fil, BorderLayout.PAGE_END);
 		um_bottom.add(o_f, BorderLayout.CENTER);
 
-		dois_bottom.add(pim_fil, BorderLayout.PAGE_START);
+		dois_bottom.add(pim_fil, BorderLayout.PAGE_END);
 		dois_bottom.add(p_f, BorderLayout.CENTER);
 
-		tres_bottom.add(sal_fil, BorderLayout.PAGE_START);
+		tres_bottom.add(sal_fil, BorderLayout.PAGE_END);
 		tres_bottom.add(s_f, BorderLayout.CENTER);
 
-		quatro_bottom.add(salP_fil, BorderLayout.PAGE_START);
+		quatro_bottom.add(salP_fil, BorderLayout.PAGE_END);
 		quatro_bottom.add(sp_f, BorderLayout.CENTER);
 
 		um.add(um_top);
@@ -146,6 +161,10 @@ public class AppView extends JFrame {
 		pimenta.setForeground(Color.BLACK);
 		sal.setForeground(Color.BLACK);
 		salPimenta.setForeground(Color.BLACK);
+		original.setBackground(Color.CYAN);
+		pimenta.setBackground(Color.YELLOW);
+		sal.setBackground(Color.CYAN);
+		salPimenta.setBackground(Color.YELLOW);
 	}
 
 	public void setFilterTitle(String txt) {
