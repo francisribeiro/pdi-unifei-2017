@@ -2,10 +2,7 @@ package pacotes_28309.control;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.Arrays;
-
-import pacotes_28309.model.ImageINFO;
 
 public class Filtros {
 
@@ -146,7 +143,7 @@ public class Filtros {
 		return indiceFinal - 1;
 	}
 
-	private static ImageINFO[] dadosdaImagem(BufferedImage img) {
+	private static BuferedImage[] dadosdaImagem(BufferedImage img) {
 
 		// Dados da Imagem
 		int largura = img.getWidth();
@@ -154,9 +151,9 @@ public class Filtros {
 		int[] dadosRGB = img.getRGB(0, 0, largura, altura, null, 0, largura);
 
 		// Dados das cores da Imagem
-		ImageINFO r = new ImageINFO(largura, altura);
-		ImageINFO g = new ImageINFO(largura, altura);
-		ImageINFO b = new ImageINFO(largura, altura);
+		BuferedImage r = new BuferedImage(largura, altura);
+		BuferedImage g = new BuferedImage(largura, altura);
+		BuferedImage b = new BuferedImage(largura, altura);
 
 		// Aloca os valores em um array
 		for (int y = 0; y < altura; y++)
@@ -167,11 +164,11 @@ public class Filtros {
 				b.set(x, y, valorRGB & 0xFF);
 			}
 
-		return new ImageINFO[] { r, g, b };
+		return new BuferedImage[] { r, g, b };
 	}
 
-	private BufferedImage imagemDeSaida(ImageINFO[] rgb) {
-		ImageINFO r = rgb[0], g = rgb[1], b = rgb[2];
+	private BufferedImage imagemDeSaida(BuferedImage[] rgb) {
+		BuferedImage r = rgb[0], g = rgb[1], b = rgb[2];
 		BufferedImage imagemSaida = new BufferedImage(r.getLargura(), g.getAltura(), BufferedImage.TYPE_INT_ARGB);
 
 		for (int y = 0; y < r.getAltura(); y++)
@@ -187,14 +184,14 @@ public class Filtros {
 		return imagemSaida;
 	}
 
-	private static ImageINFO processoDeConvolucao(ImageINFO imagemEntrada, int[] template, int size, int divisor) {
+	private static BuferedImage processoDeConvolucao(BuferedImage imagemEntrada, int[] template, int size, int divisor) {
 		int imgLargura = imagemEntrada.getLargura();
 		int imgAltura = imagemEntrada.getAltura();
 		int tmplLargura = size;
 		int tmplAltura = size;
 		int raiolargura = tmplLargura >>> 1;
 		int raioAltura = tmplAltura >>> 1;
-		ImageINFO dadosImgSaida = new ImageINFO(imgLargura, imgAltura);
+		BuferedImage dadosImgSaida = new BuferedImage(imgLargura, imgAltura);
 
 		// Faz a convolução multiplicando as matrizes
 		for (int i = imgLargura - 1; i >= 0; i--) {
@@ -215,7 +212,7 @@ public class Filtros {
 	public BufferedImage media(BufferedImage img, int size) {
 		int divisor = size * size;
 
-		ImageINFO[] imgArray = dadosdaImagem(img);
+		BuferedImage[] imgArray = dadosdaImagem(img);
 		int[] kernel = new int[size * size];
 
 		for (int i = 0; i < size; i++)
@@ -226,6 +223,677 @@ public class Filtros {
 			imgArray[i] = processoDeConvolucao(imgArray[i], kernel, size, divisor);
 
 		return imagemDeSaida(imgArray);
+	}
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+class BuferedImage {
+	private int[] arrayDeDados;
+	private int largura;
+	private int altura;
+
+	public BuferedImage(int largura, int altura) {
+		this(new int[largura * altura], largura, altura);
+	}
+
+	public BuferedImage(int[] arrayDeDados, int largura, int altura) {
+		this.arrayDeDados = arrayDeDados;
+		this.largura = largura;
+		this.altura = altura;
+	}
+
+	public int get(int x, int y) {
+		return arrayDeDados[y * largura + x];
+	}
+
+	public void set(int x, int y, int value) {
+		arrayDeDados[y * largura + x] = value;
+	}
+
+	public int getLargura() {
+		return largura;
+	}
+
+	public int getAltura() {
+		return altura;
 	}
 
 }
