@@ -164,6 +164,8 @@ public class AppControl implements ActionListener {
 			e.printStackTrace();
 		}
 
+		img = ruidos.escalaDeCinza(img);
+		
 		return img;
 	}
 }
