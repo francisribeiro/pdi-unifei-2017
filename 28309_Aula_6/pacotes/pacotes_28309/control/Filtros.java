@@ -228,6 +228,9 @@ public class Filtros {
 
 }
 
+
+
+
 class BuferedImage {
 	private int[] arrayDeDados;
 	private int largura;
