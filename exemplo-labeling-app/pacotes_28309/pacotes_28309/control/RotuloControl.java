@@ -4,12 +4,6 @@ import java.awt.Color;
 import java.awt.image.*;
 import java.util.*;
 
-/**
- * Classe RotuloControl: Controla todas as operações de rotulação da imagem.
- * 
- * @author Francis Ribeiro
- *
- */
 public class RotuloControl {
 
 	private int w; // Width.
